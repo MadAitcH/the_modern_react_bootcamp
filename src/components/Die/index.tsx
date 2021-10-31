@@ -1,5 +1,4 @@
 import "./Die.css";
-import { Component } from "react";
 
 interface DieProps {
   face: number;
@@ -14,14 +13,12 @@ const faces: { [key: number]: string } = {
   6: "six",
 };
 
-class Die extends Component<DieProps> {
-  render() {
-    return (
-      <div className="Die">
-        <i className={`fas fa-dice-${faces[this.props.face]}`} />
-      </div>
-    );
-  }
-}
+const Die: React.FC<DieProps> = ({ face }) => {
+  return (
+    <div className="Die">
+      <i className={`fas fa-dice-${faces[face]}`} />
+    </div>
+  );
+};
 
 export default Die;
