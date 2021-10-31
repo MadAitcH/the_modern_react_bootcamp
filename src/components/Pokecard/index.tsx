@@ -2,17 +2,16 @@ import "./Pokecard.css";
 
 import { Component } from "react";
 
-interface PokecardProps {
-  name: string;
-  image: string;
-  type: string;
-  exp: number;
+export interface IPokecard {
   id: number;
+  name: string;
+  type: string;
+  base_experience: number;
 }
 
-class Pokecard extends Component<PokecardProps> {
+class Pokecard extends Component<IPokecard> {
   render() {
-    const { id, name, image, type, exp } = this.props;
+    const { id, name, type, base_experience } = this.props;
 
     return (
       <div className="Pokecard">
@@ -29,7 +28,7 @@ class Pokecard extends Component<PokecardProps> {
         <p className="Pokecard__type">
           Type: <span>{type}</span>
           <br />
-          Exp: <span>{exp}</span>
+          Exp: <span>{base_experience}</span>
         </p>
       </div>
     );

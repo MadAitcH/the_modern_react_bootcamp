@@ -1,7 +1,7 @@
 .Pokecard {
-  width: 20vw;
+  max-width: 20vw;
   min-width: fit-content;
-  margin: 4vw;
+  margin: 2vw;
   padding: 10px;
   padding-bottom: 0;
   box-shadow: 7px 10px 12px -5px rgba(0, 0, 0, 0.56);
@@ -21,7 +21,7 @@
 
 .Pokecard__image {
   max-width: 100%;
-  margin: 0;
+  margin: 4px;
   margin-bottom: 2px;
   align-items: center;
   border-radius: 3px;
