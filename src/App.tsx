@@ -1,4 +1,4 @@
-import Pokedex from "./components/Pokedex";
+import Pokegame from "./components/Pokegame";
 
 const items = [
   { id: 4, name: "Charmander", type: "fire", base_experience: 62 },
@@ -14,7 +14,7 @@ const items = [
 function App() {
   return (
     <div className="App">
-      <Pokedex items={items} />
+      <Pokegame items={items} />
     </div>
   );
 }
