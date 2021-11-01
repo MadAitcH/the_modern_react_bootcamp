@@ -8,6 +8,8 @@ import img3 from "./3.jpg";
 import img4 from "./4.jpg";
 import img5 from "./5.jpg";
 import img6 from "./6.jpg";
+import { randomWord } from "./words";
+import { checkGuess } from "../../utils";
 
 interface HangmanProps {
   maxWrong: number;
@@ -30,9 +32,10 @@ class Hangman extends Component<HangmanProps, HangmanState> {
   constructor(props: HangmanProps) {
     super(props);
 
-    this.state = { nWrong: 0, guessed: new Set(), answer: "apple" };
+    this.state = { nWrong: 0, guessed: new Set(), answer: randomWord() };
 
     this.handleGuess = this.handleGuess.bind(this);
+    this.onRestartClick = this.onRestartClick.bind(this);
   }
 
   /** guessedWord: show current-state of word:
@@ -57,10 +60,19 @@ class Hangman extends Component<HangmanProps, HangmanState> {
     }));
   }
 
+  onRestartClick() {
+    this.setState({
+      answer: randomWord(),
+      nWrong: 0,
+      guessed: new Set(),
+    });
+  }
+
   /** generateButtons: return array of letter buttons to render */
   generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map((ltr) => (
       <button
+        key={ltr}
         value={ltr}
         onClick={this.handleGuess}
         disabled={this.state.guessed.has(ltr)}
@@ -77,10 +89,32 @@ class Hangman extends Component<HangmanProps, HangmanState> {
         <h1>Hangman</h1>
         <img
           src={this.props.images[this.state.nWrong]}
-          alt={`${this.state.nWrong}/${this.props.maxWrong} wronges guesses`}
+          alt={`${this.state.nWrong}/${this.props.maxWrong} wrong guesses`}
         />
-        <p className="Hangman-word">{this.guessedWord()}</p>
-        <p className="Hangman-btns">{this.generateButtons()}</p>
+        <p className="Hangman-wrong">Wrong Guesses: {this.state.nWrong}</p>
+        <p className="Hangman-word">
+          {this.state.nWrong < this.props.maxWrong
+            ? this.guessedWord()
+            : this.state.answer}
+        </p>
+
+        {checkGuess(this.state.guessed, this.state.answer) ? (
+          <div>
+            <h2>You Won!</h2>
+            <button onClick={this.onRestartClick} className="Hangman-restart">
+              Restart!
+            </button>
+          </div>
+        ) : this.state.nWrong < this.props.maxWrong ? (
+          <p className="Hangman-btns">{this.generateButtons()}</p>
+        ) : (
+          <div>
+            <h2>Game Over</h2>
+            <button onClick={this.onRestartClick} className="Hangman-restart">
+              Restart!
+            </button>
+          </div>
+        )}
       </div>
     );
   }
