@@ -1,0 +1,11 @@
+.ColorPalette {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 1px;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 0;
+}

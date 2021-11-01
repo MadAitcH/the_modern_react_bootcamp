@@ -1,9 +1,9 @@
-import ColorBox from "./components/ColorBox";
+import ColorPalette from "./components/ColorPalette";
 
 function App() {
   return (
     <div className="App">
-      <ColorBox />
+      <ColorPalette />
     </div>
   );
 }

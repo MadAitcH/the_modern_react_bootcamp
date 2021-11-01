@@ -12,18 +12,6 @@ interface ColorBoxState {
 }
 
 class ColorBox extends Component<ColorBoxProps, ColorBoxState> {
-  static defaultProps = {
-    palette: [
-      "red",
-      "yellow",
-      "#137174",
-      "rgb(00,00,09)",
-      "rgba(255, 93, 38, 200)",
-      "gold",
-      "whitesmoke",
-    ],
-  };
-
   constructor(props: ColorBoxProps) {
     super(props);
 
