@@ -10,6 +10,7 @@ import img5 from "./5.jpg";
 import img6 from "./6.jpg";
 import { randomWord } from "./words";
 import { checkGuess } from "../../utils";
+import AlphaButtons from "../AlphaButtons";
 
 interface HangmanProps {
   maxWrong: number;
@@ -68,20 +69,6 @@ class Hangman extends Component<HangmanProps, HangmanState> {
     });
   }
 
-  /** generateButtons: return array of letter buttons to render */
-  generateButtons() {
-    return "abcdefghijklmnopqrstuvwxyz".split("").map((ltr) => (
-      <button
-        key={ltr}
-        value={ltr}
-        onClick={this.handleGuess}
-        disabled={this.state.guessed.has(ltr)}
-      >
-        {ltr}
-      </button>
-    ));
-  }
-
   /** render: render game */
   render() {
     return (
@@ -106,7 +93,10 @@ class Hangman extends Component<HangmanProps, HangmanState> {
             </button>
           </div>
         ) : this.state.nWrong < this.props.maxWrong ? (
-          <p className="Hangman-btns">{this.generateButtons()}</p>
+          <AlphaButtons
+            guessed={this.state.guessed}
+            handleGuess={this.handleGuess}
+          />
         ) : (
           <div>
             <h2>Game Over</h2>
