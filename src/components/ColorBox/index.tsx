@@ -1,52 +1,35 @@
 import "./ColorBox.css";
 
-import { Component } from "react";
+import { FC, useState } from "react";
 
 interface ColorBoxProps {
   /** Array of colors for background of ColorBox */
   palette: string[];
 }
 
-interface ColorBoxState {
-  bg: string;
-}
-
-class ColorBox extends Component<ColorBoxProps, ColorBoxState> {
-  constructor(props: ColorBoxProps) {
-    super(props);
-
-    this.state = {
-      bg: this.randomPick(this.props.palette),
-    };
-
-    this.randomPick = this.randomPick.bind(this);
-    this.onBoxClick = this.onBoxClick.bind(this);
-  }
-
-  randomPick(arr: string[]): string {
+const ColorBox: FC<ColorBoxProps> = ({ palette }) => {
+  const randomPick = (arr: string[]): string => {
     return arr[Math.floor(Math.random() * arr.length)];
-  }
+  };
 
-  onBoxClick() {
+  const onBoxClick = () => {
     let newBg;
     do {
-      newBg = this.randomPick(this.props.palette);
-    } while (newBg === this.state.bg);
+      newBg = randomPick(palette);
+    } while (newBg === bg);
 
-    this.setState({
-      bg: newBg,
-    });
-  }
+    setBg(newBg);
+  };
 
-  render() {
-    return (
-      <div
-        className="ColorBox"
-        onClick={this.onBoxClick}
-        style={{ backgroundColor: this.state.bg }}
-      />
-    );
-  }
-}
+  const [bg, setBg] = useState(randomPick(palette));
+
+  return (
+    <div
+      className="ColorBox"
+      onClick={onBoxClick}
+      style={{ backgroundColor: bg }}
+    />
+  );
+};
 
 export default ColorBox;
