@@ -2,7 +2,7 @@ import "./Board.css";
 
 import { Component } from "react";
 import Cell from "../Cell";
-import { isSolvableArray, isBoardSolvable, hasWonTheGame } from "../../utils";
+import { hasWonTheGame } from "../../utils";
 
 interface BoardProps {
   /** number of rows of board */
@@ -51,32 +51,19 @@ class Board extends Component<BoardProps, BoardState> {
   createBoard() {
     let board: boolean[][] = [];
 
-    do {
-      board = [];
-      const j = this.props.colCount * this.props.rowCount;
-      let i = 0;
+    const j = this.props.colCount * this.props.rowCount;
+    let i = 0;
 
-      while (i < j) {
-        let row: boolean[] = [];
+    while (i < j) {
+      let row: boolean[] = [];
 
-        while (row.length < this.props.colCount) {
-          row.push(Math.random() < this.props.chanceLightStartsOn);
-          i++;
-        }
-
-        // I'm not sure about these functions (solvability is hard)
-        if (isSolvableArray(row)) {
-          board.push(row);
-
-          if (!isBoardSolvable(board)) {
-            board.pop();
-            i -= row.length;
-          }
-        } else {
-          i -= row.length;
-        }
+      while (row.length < this.props.colCount) {
+        row.push(Math.random() < this.props.chanceLightStartsOn);
+        i++;
       }
-    } while (hasWonTheGame(board));
+
+      board.push(row);
+    }
 
     return board;
   }
@@ -84,7 +71,7 @@ class Board extends Component<BoardProps, BoardState> {
   /** handle changing a cell: update board & determine if winner */
   flipCellsAround([y, x]: [number, number]) {
     let { colCount, rowCount } = this.props;
-    let board = this.state.board; // is this ok?
+    let board = JSON.parse(JSON.stringify(this.state.board));
 
     function flipCell(y: number, x: number) {
       // if this coord is actually on board, flip it
@@ -109,25 +96,36 @@ class Board extends Component<BoardProps, BoardState> {
 
   render() {
     return (
-      <div className="Board">
+      <div>
         {this.state.hasWon ? (
-          <h1>You Won!</h1>
+          <div className="winner">
+            <span className="neon-orange">You</span>
+            <span className="neon-blue">Win!</span>
+          </div>
         ) : (
-          <table>
-            {this.state.board.map((row, y) => {
-              return (
-                <tr key={y}>
-                  {row.map((c, x) => (
-                    <Cell
-                      isLit={c}
-                      coord={[y, x]}
-                      flipCellsAround={this.flipCellsAround}
-                    />
-                  ))}
-                </tr>
-              );
-            })}
-          </table>
+          <div>
+            <div className="Board-title">
+              <div className="neon-orange">Lights</div>
+              <div className="neon-blue">Out</div>
+            </div>
+            <table className="Board">
+              <tbody>
+                {this.state.board.map((row, y) => {
+                  return (
+                    <tr key={y}>
+                      {row.map((c, x) => (
+                        <Cell
+                          isLit={c}
+                          coord={[y, x]}
+                          flipCellsAround={this.flipCellsAround}
+                        />
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
         <button className="Board-reset" onClick={this.onResetClick}>
           Reset
