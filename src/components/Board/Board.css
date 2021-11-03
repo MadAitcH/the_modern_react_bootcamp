@@ -55,7 +55,6 @@ table tr:last-child td:last-child {
   font-size: 200px;
 }
 
-<<<<<<< HEAD
 .Board-reset {
   width: 100px;
   min-width: fit-content;
@@ -69,8 +68,6 @@ table tr:last-child td:last-child {
   letter-spacing: 1px;
 }
 
-=======
->>>>>>> a2f0a42a4aef200fe7609808e1f45455d2aab7a1
 @keyframes neon-orange {
   0%,
   100% {
