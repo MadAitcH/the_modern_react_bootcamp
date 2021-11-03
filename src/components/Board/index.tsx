@@ -2,7 +2,7 @@ import "./Board.css";
 
 import { Component } from "react";
 import Cell from "../Cell";
-import { hasWonTheGame } from "../../utils";
+import { flipCell, hasWonTheGame } from "../../utils";
 
 interface BoardProps {
   /** number of rows of board */
@@ -73,26 +73,15 @@ class Board extends Component<BoardProps, BoardState> {
     let { colCount, rowCount } = this.props;
     let board = JSON.parse(JSON.stringify(this.state.board));
 
-    function flipCell(y: number, x: number) {
-      // if this coord is actually on board, flip it
-
-      if (x >= 0 && x < colCount && y >= 0 && y < rowCount) {
-        board[y][x] = !board[y][x];
-      }
-    }
-
-    flipCell(y, x);
-    flipCell(y - 1, x);
-    flipCell(y + 1, x);
-    flipCell(y, x + 1);
-    flipCell(y, x - 1);
+    flipCell([y, x], colCount, rowCount, board);
+    flipCell([y - 1, x], colCount, rowCount, board);
+    flipCell([y + 1, x], colCount, rowCount, board);
+    flipCell([y, x + 1], colCount, rowCount, board);
+    flipCell([y, x - 1], colCount, rowCount, board);
 
     const hasWon = hasWonTheGame(board);
-
     this.setState({ board, hasWon });
   }
-
-  /** Render game board or winning message. */
 
   render() {
     return (

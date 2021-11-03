@@ -29,3 +29,14 @@ export function hasWonTheGame(board: boolean[][]): boolean {
 
   return true;
 }
+
+export function flipCell(
+  [y, x]: [number, number],
+  colCount: number,
+  rowCount: number,
+  board: boolean[][]
+) {
+  if (x >= 0 && x < colCount && y >= 0 && y < rowCount) {
+    board[y][x] = !board[y][x];
+  }
+}

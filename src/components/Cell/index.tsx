@@ -1,9 +1,9 @@
 import "./Cell.css";
 
-import { Component, MouseEvent } from "react";
+import { Component } from "react";
 
 interface CellProps {
-  flipCellsAround: (coord: [number, number]) => void; // TODO: fix the type
+  flipCellsAround: (coord: [number, number]) => void;
   isLit: boolean;
   coord: [number, number];
 }
@@ -15,7 +15,7 @@ class Cell extends Component<CellProps> {
     this.onCellClick = this.onCellClick.bind(this);
   }
 
-  onCellClick(e: MouseEvent<HTMLTableCellElement>) {
+  onCellClick() {
     // call up to the board to flip cells around this cell
     this.props.flipCellsAround(this.props.coord);
   }
@@ -28,4 +28,3 @@ class Cell extends Component<CellProps> {
 }
 
 export default Cell;
-
