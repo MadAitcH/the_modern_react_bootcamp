@@ -1,0 +1,50 @@
+.NewBoxForm {
+  background-color: #e6e6e6;
+  padding: 1rem;
+  font-weight: bold;
+  width: 30vw;
+  height: 100vh;
+  max-height: 100vh;
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.NewBoxForm label {
+  align-self: flex-start;
+}
+
+.NewBoxForm label:hover {
+  cursor: pointer;
+}
+
+.NewBoxForm input {
+  border: 1px solid #bbb;
+  border-radius: 1rem;
+  display: block;
+  outline: none;
+  width: 90%;
+  margin: 0.5rem auto;
+  margin-bottom: 0;
+  padding: 0.5rem;
+}
+
+.NewBoxForm__submit {
+  align-self: center;
+  width: 50%;
+  min-width: fit-content;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #bbb;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.NewBoxForm__submit:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+}

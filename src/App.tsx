@@ -1,9 +1,9 @@
-import Box from "./components/Box";
+import BoxList from "./components/BoxList";
 
 function App() {
   return (
     <div className="App">
-      <Box width={200} height={200} bgColor={"orange"} />
+      <BoxList />
     </div>
   );
 }
