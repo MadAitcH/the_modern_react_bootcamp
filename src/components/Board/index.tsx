@@ -6,14 +6,14 @@ import { createBoard, flipCell, hasWonTheGame } from "../../utils";
 
 interface BoardProps {
   /** number of rows of board */
-  rowCount: number;
+  rowCount?: number;
   /** number of cols of board */
-  colCount: number;
+  colCount?: number;
   /** float, chance any cell is lit at start of game */
-  chanceLightStartsOn: number;
+  chanceLightStartsOn?: number;
 }
 
-const defaultProps: BoardProps = {
+const defaultProps = {
   rowCount: 5,
   colCount: 5,
   chanceLightStartsOn: 0.2,
@@ -86,7 +86,5 @@ const Board: FC<BoardProps> = ({
     </div>
   );
 };
-
-Board.defaultProps = defaultProps;
 
 export default Board;
