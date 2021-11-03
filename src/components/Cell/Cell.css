@@ -3,11 +3,7 @@
   width: 100px;
   border-radius: 1px;
   background-color: #263238;
-<<<<<<< HEAD
   transition: background-color 0.3s ease;
-=======
-  transition: background-color 0.7s ease;
->>>>>>> a2f0a42a4aef200fe7609808e1f45455d2aab7a1
 }
 
 .Cell-lit {

@@ -2,11 +2,7 @@ import "./Board.css";
 
 import { Component } from "react";
 import Cell from "../Cell";
-<<<<<<< HEAD
 import { flipCell, hasWonTheGame } from "../../utils";
-=======
-import { hasWonTheGame } from "../../utils";
->>>>>>> a2f0a42a4aef200fe7609808e1f45455d2aab7a1
 
 interface BoardProps {
   /** number of rows of board */
@@ -76,12 +72,6 @@ class Board extends Component<BoardProps, BoardState> {
   flipCellsAround([y, x]: [number, number]) {
     let { colCount, rowCount } = this.props;
     let board = JSON.parse(JSON.stringify(this.state.board));
-<<<<<<< HEAD
-=======
-
-    function flipCell(y: number, x: number) {
-      // if this coord is actually on board, flip it
->>>>>>> a2f0a42a4aef200fe7609808e1f45455d2aab7a1
 
     flipCell([y, x], colCount, rowCount, board);
     flipCell([y - 1, x], colCount, rowCount, board);
