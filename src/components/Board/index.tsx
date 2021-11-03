@@ -1,8 +1,8 @@
 import "./Board.css";
 
-import { Component } from "react";
+import { FC, useState } from "react";
 import Cell from "../Cell";
-import { flipCell, hasWonTheGame } from "../../utils";
+import { createBoard, flipCell, hasWonTheGame } from "../../utils";
 
 interface BoardProps {
   /** number of rows of board */
@@ -13,115 +13,80 @@ interface BoardProps {
   chanceLightStartsOn: number;
 }
 
-interface BoardState {
-  /** boolean, true when board is all off */
-  hasWon: boolean;
-  /** array-of-arrays of true/false */
-  board: boolean[][];
-}
+const defaultProps: BoardProps = {
+  rowCount: 5,
+  colCount: 5,
+  chanceLightStartsOn: 0.2,
+};
 
-class Board extends Component<BoardProps, BoardState> {
-  static defaultProps = {
-    rowCount: 5,
-    colCount: 5,
-    chanceLightStartsOn: 0.25,
+const Board: FC<BoardProps> = ({
+  rowCount = defaultProps.rowCount,
+  colCount = defaultProps.colCount,
+  chanceLightStartsOn = defaultProps.chanceLightStartsOn,
+}) => {
+  const [hasWon, setHasWon] = useState(false);
+  const [board, setBoard] = useState<boolean[][]>(
+    createBoard(colCount, rowCount, chanceLightStartsOn)
+  );
+
+  const onResetClick = () => {
+    setBoard(createBoard(colCount, rowCount, chanceLightStartsOn));
+    setHasWon(false);
   };
 
-  constructor(props: BoardProps) {
-    super(props);
+  const flipCellsAround = ([y, x]: [number, number]) => {
+    let boardCopy = JSON.parse(JSON.stringify(board));
 
-    this.state = {
-      board: this.createBoard(),
-      hasWon: false,
-    };
+    flipCell([y, x], colCount, rowCount, boardCopy);
+    flipCell([y - 1, x], colCount, rowCount, boardCopy);
+    flipCell([y + 1, x], colCount, rowCount, boardCopy);
+    flipCell([y, x + 1], colCount, rowCount, boardCopy);
+    flipCell([y, x - 1], colCount, rowCount, boardCopy);
 
-    this.createBoard = this.createBoard.bind(this);
-    this.flipCellsAround = this.flipCellsAround.bind(this);
-    this.onResetClick = this.onResetClick.bind(this);
-  }
+    const hasWon = hasWonTheGame(boardCopy);
+    setBoard(boardCopy);
+    setHasWon(hasWon);
+  };
 
-  onResetClick() {
-    this.setState({
-      board: this.createBoard(),
-      hasWon: false,
-    });
-  }
-
-  /** create a board rowCount high/colCount wide, each cell randomly lit or unlit */
-  createBoard() {
-    let board: boolean[][] = [];
-
-    const j = this.props.colCount * this.props.rowCount;
-    let i = 0;
-
-    while (i < j) {
-      let row: boolean[] = [];
-
-      while (row.length < this.props.colCount) {
-        row.push(Math.random() < this.props.chanceLightStartsOn);
-        i++;
-      }
-
-      board.push(row);
-    }
-
-    return board;
-  }
-
-  /** handle changing a cell: update board & determine if winner */
-  flipCellsAround([y, x]: [number, number]) {
-    let { colCount, rowCount } = this.props;
-    let board = JSON.parse(JSON.stringify(this.state.board));
-
-    flipCell([y, x], colCount, rowCount, board);
-    flipCell([y - 1, x], colCount, rowCount, board);
-    flipCell([y + 1, x], colCount, rowCount, board);
-    flipCell([y, x + 1], colCount, rowCount, board);
-    flipCell([y, x - 1], colCount, rowCount, board);
-
-    const hasWon = hasWonTheGame(board);
-    this.setState({ board, hasWon });
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.hasWon ? (
-          <div className="winner">
-            <span className="neon-orange">You</span>
-            <span className="neon-blue">Win!</span>
+  return (
+    <div>
+      {hasWon ? (
+        <div className="winner">
+          <span className="neon-orange">You</span>
+          <span className="neon-blue">Win!</span>
+        </div>
+      ) : (
+        <div>
+          <div className="Board-title">
+            <div className="neon-orange">Lights</div>
+            <div className="neon-blue">Out</div>
           </div>
-        ) : (
-          <div>
-            <div className="Board-title">
-              <div className="neon-orange">Lights</div>
-              <div className="neon-blue">Out</div>
-            </div>
-            <table className="Board">
-              <tbody>
-                {this.state.board.map((row, y) => {
-                  return (
-                    <tr key={y}>
-                      {row.map((c, x) => (
-                        <Cell
-                          isLit={c}
-                          coord={[y, x]}
-                          flipCellsAround={this.flipCellsAround}
-                        />
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <button className="Board-reset" onClick={this.onResetClick}>
-          Reset
-        </button>
-      </div>
-    );
-  }
-}
+          <table className="Board">
+            <tbody>
+              {board.map((row, y) => {
+                return (
+                  <tr key={y}>
+                    {row.map((c, x) => (
+                      <Cell
+                        isLit={c}
+                        coord={[y, x]}
+                        flipCellsAround={flipCellsAround}
+                      />
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <button className="Board-reset" onClick={onResetClick}>
+        Reset
+      </button>
+    </div>
+  );
+};
+
+Board.defaultProps = defaultProps;
 
 export default Board;

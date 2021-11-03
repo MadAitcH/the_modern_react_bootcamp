@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Board />
+        <Board colCount={5} rowCount={5} chanceLightStartsOn={0.2} />
       </div>
     );
   }

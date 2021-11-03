@@ -40,3 +40,27 @@ export function flipCell(
     board[y][x] = !board[y][x];
   }
 }
+
+export function createBoard(
+  colCount: number,
+  rowCount: number,
+  chanceLightStartsOn: number
+) {
+  let board: boolean[][] = [];
+
+  const j = colCount * rowCount;
+  let i = 0;
+
+  while (i < j) {
+    let row: boolean[] = [];
+
+    while (row.length < colCount) {
+      row.push(Math.random() < chanceLightStartsOn);
+      i++;
+    }
+
+    board.push(row);
+  }
+
+  return board;
+}
