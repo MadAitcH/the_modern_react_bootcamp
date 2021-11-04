@@ -8,6 +8,7 @@ export interface ITodo {
   completed: boolean;
 }
 
+//interface TodoProps  extends ITodo;
 type TodoProps = ITodo & {
   removeTodo: (id: string) => void;
   editTodo: (id: string, task: string) => void;

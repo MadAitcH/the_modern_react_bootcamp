@@ -1,4 +1,5 @@
 import { Component } from "react";
+import NewTodoForm from "../NewTodoForm";
 import Todo, { ITodo } from "../Todo";
 
 interface TodoListState {
@@ -17,9 +18,18 @@ class TodoList extends Component<any, TodoListState> {
       ],
     };
 
-    this.removeTodo = this.removeTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
     this.completeTodo = this.completeTodo.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
+    this.addNewTodo = this.addNewTodo.bind(this);
+    this.editTodo = this.editTodo.bind(this);
+  }
+
+  addNewTodo(newTodo: ITodo) {
+    this.setState((st) => {
+      return {
+        todos: [...st.todos, newTodo],
+      };
+    });
   }
 
   removeTodo(id: string) {
@@ -74,6 +84,7 @@ class TodoList extends Component<any, TodoListState> {
       <div className="TodoLilst">
         <h1>Todo List</h1>
         <ul>{todos}</ul>
+        <NewTodoForm addNewTodo={this.addNewTodo} />
       </div>
     );
   }
