@@ -11,14 +11,15 @@ class TodoList extends Component<any, TodoListState> {
 
     this.state = {
       todos: [
-        { id: "1", task: "Build a todo app" },
-        { id: "2", task: "Style your app" },
-        { id: "3", task: "Practice MySQL" },
+        { id: "1", completed: false, task: "Build a todo app" },
+        { id: "2", completed: false, task: "Style your app" },
+        { id: "3", completed: false, task: "Practice MySQL" },
       ],
     };
 
     this.removeTodo = this.removeTodo.bind(this);
     this.editTodo = this.editTodo.bind(this);
+    this.completeTodo = this.completeTodo.bind(this);
   }
 
   removeTodo(id: string) {
@@ -40,7 +41,19 @@ class TodoList extends Component<any, TodoListState> {
         todos: st.todos.map((todo) => {
           if (todo.id !== id) return todo;
 
-          return { id, task };
+          return { id, task, completed: todo.completed };
+        }),
+      };
+    });
+  }
+
+  completeTodo(id: string) {
+    this.setState((st) => {
+      return {
+        todos: st.todos.map((todo) => {
+          if (todo.id !== id) return todo;
+
+          return { id, completed: !todo.completed, task: todo.task };
         }),
       };
     });
@@ -48,7 +61,13 @@ class TodoList extends Component<any, TodoListState> {
 
   render() {
     const todos = this.state.todos.map((todo) => (
-      <Todo {...todo} editTodo={this.editTodo} removeTodo={this.removeTodo} />
+      <Todo
+        {...todo}
+        key={todo.id}
+        editTodo={this.editTodo}
+        removeTodo={this.removeTodo}
+        completeTodo={this.completeTodo}
+      />
     ));
 
     return (

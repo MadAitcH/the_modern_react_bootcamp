@@ -1,16 +1,18 @@
+import "./Todo.css";
+
 import { ChangeEvent, Component } from "react";
 
 export interface ITodo {
   task: string;
   id: string;
+  completed: boolean;
 }
 
-interface TodoProps {
-  task: string;
-  id: string;
+type TodoProps = ITodo & {
   removeTodo: (id: string) => void;
   editTodo: (id: string, task: string) => void;
-}
+  completeTodo: (id: string) => void;
+};
 
 interface TodoState {
   task: string;
@@ -28,6 +30,7 @@ class Todo extends Component<TodoProps, TodoState> {
 
     this.onRemoveClick = this.onRemoveClick.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    this.onTodoClick = this.onTodoClick.bind(this);
     this.onEditClick = this.onEditClick.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
   }
@@ -52,6 +55,10 @@ class Todo extends Component<TodoProps, TodoState> {
     this.props.editTodo(this.props.id, this.state.task);
   }
 
+  onTodoClick() {
+    this.props.completeTodo(this.props.id);
+  }
+
   render() {
     return (
       <div className="Todo">
@@ -70,7 +77,14 @@ class Todo extends Component<TodoProps, TodoState> {
           </div>
         ) : (
           <div>
-            <li className="Todo__text">{this.props.task}</li>
+            <li
+              className={`Todo__text ${
+                this.props.completed && "Todo__striked"
+              }`}
+              onClick={this.onTodoClick}
+            >
+              {this.props.task}
+            </li>
             <button className="Todo__remove" onClick={this.onRemoveClick}>
               &#128465;
             </button>
