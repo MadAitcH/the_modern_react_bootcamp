@@ -1,6 +1,6 @@
 import "./Box.css";
 
-import { Component } from "react";
+import { FC } from "react";
 
 interface BoxProps {
   width: string;
@@ -10,33 +10,25 @@ interface BoxProps {
   removeBox(id: string): void;
 }
 
-class Box extends Component<BoxProps> {
-  constructor(props: BoxProps) {
-    super(props);
+const Box: FC<BoxProps> = ({ width, height, bgColor, id, removeBox }) => {
+  const onBoxRemoveClick = () => {
+    removeBox(id);
+  };
 
-    this.onBoxRemoveClick = this.onBoxRemoveClick.bind(this);
-  }
-
-  onBoxRemoveClick() {
-    this.props.removeBox(this.props.id);
-  }
-
-  render() {
-    return (
-      <div
-        className="Box"
-        style={{
-          backgroundColor: this.props.bgColor,
-          width: `${this.props.width}px`,
-          height: `${this.props.height}px`,
-        }}
-      >
-        <button className="Box__remove" onClick={this.onBoxRemoveClick}>
-          X
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div
+      className="Box"
+      style={{
+        backgroundColor: bgColor,
+        width: `${width}px`,
+        height: `${height}px`,
+      }}
+    >
+      <button className="Box__remove" onClick={onBoxRemoveClick}>
+        X
+      </button>
+    </div>
+  );
+};
 
 export default Box;
