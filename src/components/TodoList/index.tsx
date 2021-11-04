@@ -1,109 +1,79 @@
 import "./TodoList.css";
 
-import { Component } from "react";
+import { FC, useEffect, useState } from "react";
 import NewTodoForm from "../NewTodoForm";
 import Todo, { ITodo } from "../Todo";
 
-interface TodoListState {
-  todos: ITodo[];
-}
+const TodoList: FC = () => {
+  const [todos, setTodos] = useState<ITodo[]>([]);
 
-class TodoList extends Component<any, TodoListState> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      todos: [],
-    };
-
-    this.completeTodo = this.completeTodo.bind(this);
-    this.removeTodo = this.removeTodo.bind(this);
-    this.addNewTodo = this.addNewTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const savedTodos = localStorage.getItem("Mustafa's-todo-list");
 
     if (savedTodos) {
       const todos = JSON.parse(savedTodos);
-      this.setState({ todos });
+      setTodos(todos);
     }
-  }
+  }, []);
 
-  componentDidUpdate() {
-    localStorage.setItem(
-      "Mustafa's-todo-list",
-      JSON.stringify(this.state.todos)
-    );
-  }
+  useEffect(() => {
+    localStorage.setItem("Mustafa's-todo-list", JSON.stringify(todos));
+  }, [todos]);
 
-  addNewTodo(newTodo: ITodo) {
-    this.setState((st) => {
-      return {
-        todos: [...st.todos, newTodo],
-      };
-    });
-  }
+  const addNewTodo = (newTodo: ITodo) => {
+    setTodos([...todos, newTodo]);
+  };
 
-  removeTodo(id: string) {
-    this.setState((st) => ({
-      todos: st.todos.filter((todo) => todo.id !== id),
-    }));
-  }
+  const removeTodo = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
-  editTodo(id: string, task: string) {
-    const todo = this.state.todos.find((todo) => todo.id === id);
+  const editTodo = (id: string, task: string) => {
+    const todo = todos.find((todo) => todo.id === id);
     // Don't create a new task
     if (!todo) return;
 
     // Remove empty todos.
-    if (!task) return this.removeTodo(id);
+    if (!task) return removeTodo(id);
 
-    this.setState((st) => {
-      return {
-        todos: st.todos.map((todo) => {
-          if (todo.id !== id) return todo;
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
 
-          return { id, task, completed: todo.completed };
-        }),
-      };
-    });
-  }
-
-  completeTodo(id: string) {
-    this.setState((st) => {
-      return {
-        todos: st.todos.map((todo) => {
-          if (todo.id !== id) return todo;
-
-          return { id, completed: !todo.completed, task: todo.task };
-        }),
-      };
-    });
-  }
-
-  render() {
-    const todos = this.state.todos.map((todo) => (
-      <Todo
-        {...todo}
-        key={todo.id}
-        editTodo={this.editTodo}
-        removeTodo={this.removeTodo}
-        completeTodo={this.completeTodo}
-      />
-    ));
-
-    return (
-      <div className="TodoList">
-        <h1>
-          Todo List <span>A Simple React Todo List App.</span>
-        </h1>
-        <ul>{todos}</ul>
-        <NewTodoForm addNewTodo={this.addNewTodo} />
-      </div>
+        return { id, task, completed: todo.completed };
+      })
     );
-  }
-}
+  };
+
+  const completeTodo = (id: string) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        return { id, completed: !todo.completed, task: todo.task };
+      })
+    );
+  };
+
+  const todosEl = todos.map((todo) => (
+    <Todo
+      {...todo}
+      key={todo.id}
+      editTodo={editTodo}
+      removeTodo={removeTodo}
+      completeTodo={completeTodo}
+    />
+  ));
+
+  return (
+    <div className="TodoList">
+      <h1>
+        Todo List <span>A Simple React Todo List App.</span>
+      </h1>
+      <ul>{todosEl}</ul>
+      <NewTodoForm addNewTodo={addNewTodo} />
+    </div>
+  );
+};
 
 export default TodoList;
