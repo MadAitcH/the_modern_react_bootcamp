@@ -13,17 +13,29 @@ class TodoList extends Component<any, TodoListState> {
     super(props);
 
     this.state = {
-      todos: [
-        { id: "1", completed: false, task: "Build a todo app" },
-        { id: "2", completed: false, task: "Style your app" },
-        { id: "3", completed: false, task: "Practice MySQL" },
-      ],
+      todos: [],
     };
 
     this.completeTodo = this.completeTodo.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
     this.addNewTodo = this.addNewTodo.bind(this);
     this.editTodo = this.editTodo.bind(this);
+  }
+
+  componentDidMount() {
+    const savedTodos = localStorage.getItem("Mustafa's-todo-list");
+
+    if (savedTodos) {
+      const todos = JSON.parse(savedTodos);
+      this.setState({ todos });
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(
+      "Mustafa's-todo-list",
+      JSON.stringify(this.state.todos)
+    );
   }
 
   addNewTodo(newTodo: ITodo) {
