@@ -1,6 +1,6 @@
 import "./NewBoxForm.css";
 
-import { ChangeEvent, Component, FormEvent } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export interface Box {
@@ -14,102 +14,92 @@ interface NewBoxProps {
   addBox(newBox: Box): void;
 }
 
-interface NewBoxFormState {
-  width: string;
-  height: string;
-  backgroundColor: string;
-}
+const NewBoxForm: FC<NewBoxProps> = ({ addBox }) => {
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("");
 
-class NewBoxForm extends Component<NewBoxProps, NewBoxFormState> {
-  constructor(props: NewBoxProps) {
-    super(props);
-    this.state = {
-      width: "",
-      height: "",
-      backgroundColor: "",
-    };
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.name) {
+      case "width":
+        setWidth(e.target.value);
+        break;
+      case "height":
+        setHeight(e.target.value);
+        break;
+      case "backgroundColor":
+        setBackgroundColor(e.target.value);
+        break;
+      default:
+        return;
+    }
+  };
 
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-  }
-
-  onInputChange(e: ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    } as Pick<NewBoxFormState, keyof NewBoxFormState>);
-  }
-
-  onFormSubmit(e: FormEvent<HTMLFormElement>) {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!this.state.width || !this.state.height || !this.state.backgroundColor)
-      return;
+    if (!width || !height || !backgroundColor) return;
 
     const newBox: Box = {
-      width: this.state.width,
-      height: this.state.height,
-      backgroundColor: this.state.backgroundColor,
+      width: width,
+      height: height,
+      backgroundColor: backgroundColor,
       id: uuidv4(),
     };
 
-    this.props.addBox(newBox);
+    addBox(newBox);
+    setWidth("");
+    setHeight("");
+    setBackgroundColor("");
+  };
 
-    this.setState({
-      width: "",
-      height: "",
-      backgroundColor: "",
-    });
-  }
-
-  render() {
-    return (
-      <form className="NewBoxForm" onSubmit={this.onFormSubmit}>
-        <div>
-          <label htmlFor="width">Width</label>
-          <input
-            type="number"
-            value={this.state.width}
-            placeholder="100"
-            required
-            autoComplete="off"
-            min="1"
-            id="width"
-            name="width"
-            onChange={this.onInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="height">Height</label>
-          <input
-            type="number"
-            value={this.state.height}
-            placeholder="100"
-            required
-            autoComplete="off"
-            min="1"
-            id="height"
-            name="height"
-            onChange={this.onInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="backgroundColor">Background Color</label>
-          <input
-            type="text"
-            value={this.state.backgroundColor}
-            autoComplete="off"
-            required
-            placeholder="blue"
-            id="backgroundColor"
-            name="backgroundColor"
-            onChange={this.onInputChange}
-          />
-        </div>
-        <button className="NewBoxForm__submit" type="submit">
-          Add a new Box
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className="NewBoxForm" onSubmit={onFormSubmit}>
+      <div>
+        <label htmlFor="width">Width</label>
+        <input
+          type="number"
+          value={width}
+          placeholder="100"
+          required
+          autoComplete="off"
+          min="1"
+          id="width"
+          name="width"
+          onChange={onInputChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="height">Height</label>
+        <input
+          type="number"
+          value={height}
+          placeholder="100"
+          required
+          autoComplete="off"
+          min="1"
+          id="height"
+          name="height"
+          onChange={onInputChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="backgroundColor">Background Color</label>
+        <input
+          type="text"
+          value={backgroundColor}
+          autoComplete="off"
+          required
+          placeholder="blue"
+          id="backgroundColor"
+          name="backgroundColor"
+          onChange={onInputChange}
+        />
+      </div>
+      <button className="NewBoxForm__submit" type="submit">
+        Add a new Box
+      </button>
+    </form>
+  );
+};
 
 export default NewBoxForm;
