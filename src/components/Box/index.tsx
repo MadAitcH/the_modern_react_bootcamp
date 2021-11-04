@@ -3,8 +3,8 @@ import "./Box.css";
 import { Component } from "react";
 
 interface BoxProps {
-  width: number;
-  height: number;
+  width: string;
+  height: string;
   bgColor: string;
   id: string;
   removeBox(id: string): void;
@@ -27,8 +27,8 @@ class Box extends Component<BoxProps> {
         className="Box"
         style={{
           backgroundColor: this.props.bgColor,
-          width: this.props.width,
-          height: this.props.height,
+          width: `${this.props.width}px`,
+          height: `${this.props.height}px`,
         }}
       >
         <button className="Box__remove" onClick={this.onBoxRemoveClick}>

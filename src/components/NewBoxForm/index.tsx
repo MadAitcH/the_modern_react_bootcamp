@@ -3,7 +3,7 @@ import "./NewBoxForm.css";
 import { ChangeEvent, Component, FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-interface Box {
+export interface Box {
   width: string;
   height: string;
   backgroundColor: string;
@@ -66,8 +66,10 @@ class NewBoxForm extends Component<NewBoxProps, NewBoxFormState> {
         <div>
           <label htmlFor="width">Width</label>
           <input
-            type="text"
-            placeholder="100px"
+            type="number"
+            value={this.state.width}
+            placeholder="100"
+            required
             autoComplete="off"
             min="1"
             id="width"
@@ -78,8 +80,10 @@ class NewBoxForm extends Component<NewBoxProps, NewBoxFormState> {
         <div>
           <label htmlFor="height">Height</label>
           <input
-            type="text"
-            placeholder="100px"
+            type="number"
+            value={this.state.height}
+            placeholder="100"
+            required
             autoComplete="off"
             min="1"
             id="height"
@@ -91,7 +95,9 @@ class NewBoxForm extends Component<NewBoxProps, NewBoxFormState> {
           <label htmlFor="backgroundColor">Background Color</label>
           <input
             type="text"
+            value={this.state.backgroundColor}
             autoComplete="off"
+            required
             placeholder="blue"
             id="backgroundColor"
             name="backgroundColor"

@@ -1,0 +1,15 @@
+.BoxList {
+  display: flex;
+  flex-direction: row;
+}
+
+.BoxList__boxes {
+  max-height: 100vh;
+  width: 69vw;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: auto;
+  overflow-y: scroll;
+}
