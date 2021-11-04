@@ -61,36 +61,46 @@ class Todo extends Component<TodoProps, TodoState> {
   }
 
   render() {
+    let result = this.state.isEditing ? (
+      <div className="Todo-edit-form">
+        <input
+          type="text"
+          value={this.state.task}
+          name="task"
+          onChange={this.onInputChange}
+          className="Todo__edit--input"
+        />
+        <button className="Todo__edit--save" onClick={this.onSaveClick}>
+          Save
+        </button>
+      </div>
+    ) : (
+      <div className="task-text">
+        <li className={`Todo-task`} onClick={this.onTodoClick}>
+          {this.props.task}
+        </li>
+      </div>
+    );
+
     return (
-      <div className="Todo">
-        {this.state.isEditing ? (
-          <div className="Todo__edit">
-            <input
-              type="text"
-              value={this.state.task}
-              name="task"
-              onChange={this.onInputChange}
-              className="Todo__edit--input"
-            />
-            <button className="Todo__edit--save" onClick={this.onSaveClick}>
-              Save
-            </button>
-          </div>
-        ) : (
-          <div>
-            <li
-              className={`Todo__text ${
-                this.props.completed && "Todo__striked"
-              }`}
-              onClick={this.onTodoClick}
+      <div className={`Todo ${this.props.completed && "completed"}`}>
+        {result}
+
+        {!this.state.isEditing && (
+          <div className="Todo-buttons">
+            <button
+              title="Edit task"
+              className="Todo__edit--button"
+              onClick={this.onEditClick}
             >
-              {this.props.task}
-            </li>
-            <button className="Todo__remove" onClick={this.onRemoveClick}>
-              &#128465;
+              &#9998;
             </button>
-            <button className="Todo__edit--button" onClick={this.onEditClick}>
-              &#128393;
+            <button
+              title="Remove task"
+              className="Todo__remove"
+              onClick={this.onRemoveClick}
+            >
+              &#10007;
             </button>
           </div>
         )}

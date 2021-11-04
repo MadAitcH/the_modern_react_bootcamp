@@ -1,3 +1,5 @@
+import "./NewTodoForm.css";
+
 import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, Component, FormEvent } from "react";
 import { ITodo } from "../Todo";
@@ -43,10 +45,10 @@ class NewTodoForm extends Component<NewTodoFormProps, NewTodoFormState> {
   render() {
     return (
       <form className="NewTodoForm" onSubmit={this.onFormSubmit}>
-        <label htmlFor="newTodo">New Todo</label>
+        <label htmlFor="task">New Todo</label>
         <input
           type="text"
-          id="newTodo"
+          id="task"
           name="task"
           placeholder="New Todo"
           value={this.state.task}
