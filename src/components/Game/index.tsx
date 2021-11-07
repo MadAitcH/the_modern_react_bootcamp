@@ -17,33 +17,34 @@ interface GameState {
 
 const NUM_DICE = 5;
 const NUM_ROLLS = 3;
+const INITIAL_STATE: GameState = {
+  dice: Array.from({ length: NUM_DICE }),
+  locked: Array(NUM_DICE).fill(false),
+  rolling: false,
+  rollsLeft: NUM_ROLLS,
+  isOver: false,
+  scores: {
+    ones: undefined,
+    twos: undefined,
+    threes: undefined,
+    fours: undefined,
+    fives: undefined,
+    sixes: undefined,
+    threeOfKind: undefined,
+    fourOfKind: undefined,
+    fullHouse: undefined,
+    smallStraight: undefined,
+    largeStraight: undefined,
+    yahtzee: undefined,
+    chance: undefined,
+  },
+};
 
 class Game extends Component<any, GameState> {
   constructor(props: any) {
     super(props);
 
-    this.state = {
-      dice: Array.from({ length: NUM_DICE }),
-      locked: Array(NUM_DICE).fill(false),
-      rolling: false,
-      rollsLeft: NUM_ROLLS,
-      isOver: false,
-      scores: {
-        ones: undefined,
-        twos: undefined,
-        threes: undefined,
-        fours: undefined,
-        fives: undefined,
-        sixes: undefined,
-        threeOfKind: undefined,
-        fourOfKind: undefined,
-        fullHouse: undefined,
-        smallStraight: undefined,
-        largeStraight: undefined,
-        yahtzee: undefined,
-        chance: undefined,
-      },
-    };
+    this.state = INITIAL_STATE;
 
     this.roll = this.roll.bind(this);
     this.doScore = this.doScore.bind(this);
@@ -68,31 +69,7 @@ class Game extends Component<any, GameState> {
   }
 
   onRestartClick() {
-    this.setState(
-      {
-        dice: Array.from({ length: NUM_DICE }),
-        locked: Array(NUM_DICE).fill(false),
-        rolling: false,
-        rollsLeft: NUM_ROLLS,
-        isOver: false,
-        scores: {
-          ones: undefined,
-          twos: undefined,
-          threes: undefined,
-          fours: undefined,
-          fives: undefined,
-          sixes: undefined,
-          threeOfKind: undefined,
-          fourOfKind: undefined,
-          fullHouse: undefined,
-          smallStraight: undefined,
-          largeStraight: undefined,
-          yahtzee: undefined,
-          chance: undefined,
-        },
-      },
-      () => this.animateRoll()
-    );
+    this.setState(INITIAL_STATE, () => this.animateRoll());
   }
 
   roll() {
