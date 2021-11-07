@@ -3,9 +3,8 @@ import "./RuleRow.css";
 import { Component } from "react";
 
 interface RuleRowProps {
-  // TODO: fix types
   name: string;
-  score: number;
+  score: number | undefined;
   doScore: () => void;
 }
 
@@ -21,4 +20,3 @@ class RuleRow extends Component<RuleRowProps> {
 }
 
 export default RuleRow;
-
