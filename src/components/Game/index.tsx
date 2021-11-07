@@ -79,7 +79,7 @@ class Game extends Component<any, GameState> {
         st.locked[i] ? d : Math.ceil(Math.random() * 6)
       ),
       locked: st.rollsLeft > 1 ? st.locked : Array(NUM_DICE).fill(true),
-      rollsLeft: st.rollsLeft - 1,
+      rollsLeft: st.rollsLeft >= 1 ? st.rollsLeft - 1 : 0,
       rolling: false,
     }));
   }
@@ -120,7 +120,7 @@ class Game extends Component<any, GameState> {
       "2 Rolls Left",
       "Starting Round",
     ];
-    return messages[this.state.rollsLeft];
+    return messages[this.state.rollsLeft || 0];
   }
 
   render() {
