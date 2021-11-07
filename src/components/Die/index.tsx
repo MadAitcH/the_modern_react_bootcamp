@@ -1,6 +1,6 @@
 import "./Die.css";
 
-import { Component } from "react";
+import { FC } from "react";
 
 interface DieProps {
   locked: boolean;
@@ -20,29 +20,26 @@ const faces: { [key: number]: string } = {
   6: "six",
 };
 
-class Die extends Component<DieProps> {
-  constructor(props: DieProps) {
-    super(props);
+const Die: FC<DieProps> = ({
+  disabled,
+  locked,
+  idx,
+  val,
+  rolling,
+  handleClick,
+}) => {
+  const onDieClick = () => {
+    handleClick(idx);
+  };
 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.props.handleClick(this.props.idx);
-  }
-
-  render() {
-    const { val, locked, rolling } = this.props;
-    return (
-      <i
-        onClick={this.handleClick}
-        data-disabled={locked}
-        className={`Die fas fa-dice-${faces[val]} fa-5x ${
-          rolling && "Die-rolling"
-        } ${locked && "Die-locked"}`}
-      />
-    );
-  }
-}
-
+  return (
+    <i
+      onClick={onDieClick}
+      data-disabled={disabled}
+      className={`Die fas fa-dice-${faces[val]} fa-5x ${
+        rolling && "Die-rolling"
+      } ${locked && "Die-locked"}`}
+    />
+  );
+};
 export default Die;
