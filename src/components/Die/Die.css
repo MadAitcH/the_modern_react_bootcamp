@@ -17,6 +17,7 @@
   color: white;
   text-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  font-size: clamp(60px, 70px, 80px);
 }
 
 .Die-locked {
@@ -33,7 +34,7 @@
 }
 
 .Die-rolling:hover,
-.Die[disabled] {
+.Die[data-disabled] {
   cursor: not-allowed;
 }
 

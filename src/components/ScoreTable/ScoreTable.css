@@ -16,4 +16,10 @@
 .ScoreTable-section {
   vertical-align: top;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }

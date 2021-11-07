@@ -6,6 +6,8 @@ import Die from "../Die";
 interface DiceProps {
   dice: number[];
   locked: boolean[];
+  disabled: boolean;
+  rolling: boolean;
   handleClick: (idx: number) => void;
 }
 
@@ -20,6 +22,8 @@ class Dice extends Component<DiceProps> {
             locked={this.props.locked[idx]}
             idx={idx}
             key={idx}
+            disabled={this.props.disabled}
+            rolling={this.props.rolling && !this.props.locked[idx]}
           />
         ))}
       </div>

@@ -8,6 +8,7 @@ interface GameState {
   dice: number[];
   locked: boolean[];
   rollsLeft: number;
+  rolling: boolean;
   scores: {
     [key in Score]: number | undefined;
   };
@@ -23,6 +24,7 @@ class Game extends Component<any, GameState> {
     this.state = {
       dice: Array.from({ length: NUM_DICE }),
       locked: Array(NUM_DICE).fill(false),
+      rolling: false,
       rollsLeft: NUM_ROLLS,
       scores: {
         ones: undefined,
@@ -44,6 +46,12 @@ class Game extends Component<any, GameState> {
     this.roll = this.roll.bind(this);
     this.doScore = this.doScore.bind(this);
     this.toggleLocked = this.toggleLocked.bind(this);
+    this.animateRoll = this.animateRoll.bind(this);
+    this.displayRollInfo = this.displayRollInfo.bind(this);
+  }
+
+  componentDidMount() {
+    this.animateRoll();
   }
 
   roll() {
@@ -54,18 +62,27 @@ class Game extends Component<any, GameState> {
       ),
       locked: st.rollsLeft > 1 ? st.locked : Array(NUM_DICE).fill(true),
       rollsLeft: st.rollsLeft - 1,
+      rolling: false,
     }));
+  }
+
+  animateRoll() {
+    this.setState({ rolling: true }, () => {
+      setTimeout(this.roll, 1000);
+    });
   }
 
   toggleLocked(idx: number) {
     // toggle whether idx is in locked or not
-    this.setState(st => ({
-      locked: [
-        ...st.locked.slice(0, idx),
-        !st.locked[idx],
-        ...st.locked.slice(idx + 1),
-      ],
-    }));
+    if (this.state.rollsLeft > 0 && !this.state.rolling) {
+      this.setState(st => ({
+        locked: [
+          ...st.locked.slice(0, idx),
+          !st.locked[idx],
+          ...st.locked.slice(idx + 1),
+        ],
+      }));
+    }
   }
 
   doScore(rulename: string, ruleFn: (dice: number[]) => number) {
@@ -75,7 +92,17 @@ class Game extends Component<any, GameState> {
       rollsLeft: NUM_ROLLS,
       locked: Array(NUM_DICE).fill(false),
     }));
-    this.roll();
+    this.animateRoll();
+  }
+
+  displayRollInfo() {
+    const messages = [
+      "0 Rolls Left",
+      "1 Roll Left",
+      "2 Rolls Left",
+      "Starting Round",
+    ];
+    return messages[this.state.rollsLeft];
   }
 
   render() {
@@ -86,6 +113,8 @@ class Game extends Component<any, GameState> {
 
           <section className="Game-dice-section">
             <Dice
+              disabled={this.state.rollsLeft <= 0}
+              rolling={this.state.rolling}
               dice={this.state.dice}
               locked={this.state.locked}
               handleClick={this.toggleLocked}
@@ -93,10 +122,14 @@ class Game extends Component<any, GameState> {
             <div className="Game-button-wrapper">
               <button
                 className="Game-reroll"
-                disabled={this.state.locked.every(x => x)}
-                onClick={this.roll}
+                disabled={
+                  this.state.locked.every(x => x) ||
+                  this.state.rolling ||
+                  this.state.rollsLeft <= 0
+                }
+                onClick={this.animateRoll}
               >
-                {this.state.rollsLeft} Rerolls Left
+                {this.displayRollInfo()}
               </button>
             </div>
           </section>

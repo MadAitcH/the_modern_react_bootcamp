@@ -1,5 +1,6 @@
 .Game {
-  width: 30%;
+  width: 50vw;
+  min-width: fit-content;
   background: white;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);
   margin: 0 30%;
@@ -7,6 +8,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: 5vh;
 }
 h2 {
   font-weight: 100;
@@ -15,10 +18,7 @@ h2 {
   display: inline-block;
 }
 .Game-dice-section {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
+  width: 90%;
 }
 
 .Game-button-wrapper {
@@ -75,6 +75,10 @@ h2 {
   -webkit-animation: Gradient 15s ease infinite;
   -moz-animation: Gradient 15s ease infinite;
   animation: Gradient 15s ease infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes Gradient {

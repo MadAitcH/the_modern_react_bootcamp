@@ -6,11 +6,9 @@ interface DieProps {
   locked: boolean;
   idx: number;
   val: number;
+  rolling: boolean;
+  disabled: boolean;
   handleClick: (idx: number) => void;
-}
-
-interface DieState {
-  isRolling: boolean;
 }
 
 const faces: { [key: number]: string } = {
@@ -22,43 +20,27 @@ const faces: { [key: number]: string } = {
   6: "six",
 };
 
-class Die extends Component<DieProps, DieState> {
+class Die extends Component<DieProps> {
   constructor(props: DieProps) {
     super(props);
-
-    this.state = {
-      isRolling: false,
-    };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    if (this.state.isRolling) return;
-
-    this.setState({
-      isRolling: true,
-    });
-
     this.props.handleClick(this.props.idx);
-
-    setTimeout(() => {
-      this.setState({ isRolling: false });
-    }, 1000);
   }
 
   render() {
+    const { val, locked, rolling } = this.props;
     return (
-      <button
-        className={`Die ${
-          this.state.isRolling && !this.props.locked && "Die-rolling"
-        } ${this.props.locked && "Die-locked"}`}
-        style={{ backgroundColor: this.props.locked ? "grey" : "black" }}
+      <i
         onClick={this.handleClick}
-        disabled={this.props.locked}
-      >
-        <i className={`fas fa-dice-${faces[this.props.val]}`} />
-      </button>
+        data-disabled={locked}
+        className={`Die fas fa-dice-${faces[val]} fa-5x ${
+          rolling && "Die-rolling"
+        } ${locked && "Die-locked"}`}
+      />
     );
   }
 }
