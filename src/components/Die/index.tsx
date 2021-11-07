@@ -6,7 +6,7 @@ interface DieProps {
   locked: boolean;
   idx: number;
   val: number;
-  handleClick: () => void;
+  handleClick: (idx: number) => void;
 }
 
 interface DieState {
@@ -40,7 +40,7 @@ class Die extends Component<DieProps, DieState> {
       isRolling: true,
     });
 
-    // TODO: handle click
+    this.props.handleClick(this.props.idx);
 
     setTimeout(() => {
       this.setState({ isRolling: false });
@@ -54,7 +54,7 @@ class Die extends Component<DieProps, DieState> {
           this.state.isRolling && !this.props.locked && "Die-rolling"
         } ${this.props.locked && "Die-locked"}`}
         style={{ backgroundColor: this.props.locked ? "grey" : "black" }}
-        onClick={this.props.handleClick}
+        onClick={this.handleClick}
         disabled={this.props.locked}
       >
         <i className={`fas fa-dice-${faces[this.props.val]}`} />

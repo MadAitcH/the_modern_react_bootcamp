@@ -4,10 +4,9 @@ import { Component } from "react";
 import Die from "../Die";
 
 interface DiceProps {
-  // TODO: fix all types
   dice: number[];
   locked: boolean[];
-  handleClick: () => void;
+  handleClick: (idx: number) => void;
 }
 
 class Dice extends Component<DiceProps> {
@@ -29,4 +28,3 @@ class Dice extends Component<DiceProps> {
 }
 
 export default Dice;
-
