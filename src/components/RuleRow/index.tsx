@@ -1,6 +1,6 @@
 import "./RuleRow.css";
 
-import { Component } from "react";
+import { FC } from "react";
 
 interface RuleRowProps {
   name: string;
@@ -9,31 +9,23 @@ interface RuleRowProps {
   description: string;
 }
 
-class RuleRow extends Component<RuleRowProps> {
-  constructor(props: RuleRowProps) {
-    super(props);
-    this.onRowClick = this.onRowClick.bind(this);
-  }
+const RuleRow: FC<RuleRowProps> = ({ name, score, doScore, description }) => {
+  const onRowClick = () => {
+    if (score !== undefined) return;
+    doScore();
+  };
 
-  onRowClick() {
-    if (this.props.score !== undefined) return;
-    this.props.doScore();
-  }
+  const disabled = score !== undefined;
 
-  render() {
-    const disabled = this.props.score !== undefined;
-    return (
-      <tr
-        className={`RuleRow RuleRow-${disabled ? "disabled" : "active"}`}
-        onClick={this.onRowClick}
-      >
-        <td className="RuleRow-name">{this.props.name}</td>
-        <td className="RuleRow-score">
-          {disabled ? this.props.score : this.props.description}
-        </td>
-      </tr>
-    );
-  }
-}
+  return (
+    <tr
+      className={`RuleRow RuleRow-${disabled ? "disabled" : "active"}`}
+      onClick={onRowClick}
+    >
+      <td className="RuleRow-name">{name}</td>
+      <td className="RuleRow-score">{disabled ? score : description}</td>
+    </tr>
+  );
+};
 
 export default RuleRow;
