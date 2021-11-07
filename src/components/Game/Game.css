@@ -27,6 +27,7 @@ h2 {
   align-items: center;
 }
 
+.Game-restart,
 .Game-reroll {
   font-size: 2em;
   color: white;
@@ -45,6 +46,10 @@ h2 {
   width: 50%;
 
   margin-bottom: 2rem;
+}
+
+.Game-restart {
+  width: fit-content;
 }
 
 .Game-reroll:hover {

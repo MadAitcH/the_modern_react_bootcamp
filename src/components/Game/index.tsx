@@ -9,6 +9,7 @@ interface GameState {
   locked: boolean[];
   rollsLeft: number;
   rolling: boolean;
+  isOver: boolean;
   scores: {
     [key in Score]: number | undefined;
   };
@@ -26,6 +27,7 @@ class Game extends Component<any, GameState> {
       locked: Array(NUM_DICE).fill(false),
       rolling: false,
       rollsLeft: NUM_ROLLS,
+      isOver: false,
       scores: {
         ones: undefined,
         twos: undefined,
@@ -48,10 +50,49 @@ class Game extends Component<any, GameState> {
     this.toggleLocked = this.toggleLocked.bind(this);
     this.animateRoll = this.animateRoll.bind(this);
     this.displayRollInfo = this.displayRollInfo.bind(this);
+    this.onRestartClick = this.onRestartClick.bind(this);
   }
 
   componentDidMount() {
     this.animateRoll();
+  }
+
+  componentDidUpdate() {
+    if (this.state.isOver) return;
+
+    for (let k in this.state.scores) {
+      if (this.state.scores[k as Score] === undefined) return;
+    }
+
+    this.setState({ isOver: true, rollsLeft: 0 });
+  }
+
+  onRestartClick() {
+    this.setState(
+      {
+        dice: Array.from({ length: NUM_DICE }),
+        locked: Array(NUM_DICE).fill(false),
+        rolling: false,
+        rollsLeft: NUM_ROLLS,
+        isOver: false,
+        scores: {
+          ones: undefined,
+          twos: undefined,
+          threes: undefined,
+          fours: undefined,
+          fives: undefined,
+          sixes: undefined,
+          threeOfKind: undefined,
+          fourOfKind: undefined,
+          fullHouse: undefined,
+          smallStraight: undefined,
+          largeStraight: undefined,
+          yahtzee: undefined,
+          chance: undefined,
+        },
+      },
+      () => this.animateRoll()
+    );
   }
 
   roll() {
@@ -135,7 +176,16 @@ class Game extends Component<any, GameState> {
           </section>
         </header>
 
-        <ScoreTable doScore={this.doScore} scores={this.state.scores} />
+        {this.state.isOver ? (
+          <div className="Game-over">
+            <h1>Game Over</h1>
+            <button className="Game-restart" onClick={this.onRestartClick}>
+              Restart
+            </button>
+          </div>
+        ) : (
+          <ScoreTable doScore={this.doScore} scores={this.state.scores} />
+        )}
       </div>
     );
   }
