@@ -15,6 +15,7 @@ interface JokeListProps {
 }
 interface JokeListState {
   jokes: IJoke[];
+  loading: boolean;
 }
 
 const JOKE_API = "https://icanhazdadjoke.com/";
@@ -30,12 +31,14 @@ class JokeList extends Component<JokeListProps, JokeListState> {
 
     this.state = {
       jokes: [],
+      loading: true,
     };
 
     this.fetchAJoke = this.fetchAJoke.bind(this);
     this.onFetchJokesClick = this.onFetchJokesClick.bind(this);
     this.onVoteClick = this.onVoteClick.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
+    this.getJokes = this.getJokes.bind(this);
   }
 
   async componentDidMount() {
@@ -44,39 +47,21 @@ class JokeList extends Component<JokeListProps, JokeListState> {
     if (jokes) {
       this.setState({
         jokes: JSON.parse(jokes),
+        loading: false,
       });
     } else {
       try {
         await this.onFetchJokesClick();
       } catch (err) {
         console.error((err as Error).message);
+        this.setState({ loading: false });
         return;
       }
     }
   }
 
   async onFetchJokesClick() {
-    const jokes: IJoke[] = [];
-    try {
-      while (jokes.length < this.props.jokesToGet) {
-        const joke = await this.fetchAJoke();
-        if (joke) {
-          jokes.push(joke);
-        }
-      }
-
-      this.setState(st => {
-        const sortedJokes = [...st.jokes, ...jokes].sort(
-          (f, s) => s.votes - f.votes
-        );
-        return {
-          jokes: sortedJokes,
-        };
-      }, this.saveToLocalStorage);
-    } catch (err) {
-      console.error(err.message);
-      return;
-    }
+    this.setState({ loading: true }, this.getJokes);
   }
 
   async fetchAJoke(url: string = JOKE_API) {
@@ -99,6 +84,34 @@ class JokeList extends Component<JokeListProps, JokeListState> {
     }
   }
 
+  async getJokes() {
+    const jokes: IJoke[] = [];
+    try {
+      while (jokes.length < this.props.jokesToGet) {
+        const joke = await this.fetchAJoke();
+        if (joke) {
+          jokes.push(joke);
+        }
+      }
+
+      this.setState(st => {
+        const sortedJokes = [...st.jokes, ...jokes].sort(
+          (f, s) => s.votes - f.votes
+        );
+
+        return {
+          jokes: sortedJokes,
+          loading: false,
+        };
+      }, this.saveToLocalStorage);
+    } catch (err) {
+      // if there's error then ignore jokes that are fetched and return
+      console.error(err.message);
+      this.setState({ loading: false });
+      return;
+    }
+  }
+
   onVoteClick(id: string, type: "upVote" | "downVote") {
     const count = type === "upVote" ? 1 : -1;
     this.setState(st => {
@@ -115,7 +128,12 @@ class JokeList extends Component<JokeListProps, JokeListState> {
   }
 
   render() {
-    return (
+    return this.state.loading ? (
+      <div className="JokeList-spinner">
+        <i className="far fa-8x fa-laugh fa-spin" />
+        <h1 className="JokeList-title">Loading...</h1>
+      </div>
+    ) : (
       <div className="JokeList">
         <div className="JokeList-sidebar">
           <h1 className="JokeList-title">
