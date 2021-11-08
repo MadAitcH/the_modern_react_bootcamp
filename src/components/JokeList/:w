@@ -1,0 +1,110 @@
+import { Component } from "react";
+import Joke from "../Joke";
+
+interface IJoke {
+  id: string;
+  joke: string;
+  status: number;
+  votes: number;
+}
+
+interface JokeListState {
+  jokes: IJoke[];
+}
+
+const JOKE_API = " https://icanhazdadjoke.com/";
+
+class JokeList extends Component<any, JokeListState> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      jokes: [],
+    };
+
+    this.fetchAJoke = this.fetchAJoke.bind(this);
+    this.onFetchJokeClick = this.onFetchJokeClick.bind(this);
+    this.onVoteClick = this.onVoteClick.bind(this);
+  }
+
+  async componentDidMount() {
+    // const jokes = localStorage.getItem("Mustafa's-dad-jokes");
+    const jokes = null;
+
+    if (jokes) {
+      this.setState({
+        jokes: JSON.parse(jokes),
+      });
+    } else {
+      while (this.state.jokes.length < 10) {
+        try {
+          await this.fetchAJoke(JOKE_API);
+        } catch (err) {
+          console.error((err as Error).message);
+          return;
+        }
+      }
+    }
+  }
+
+  async onFetchJokeClick() {
+    const currentJokeLength = this.state.jokes.length;
+
+    while (currentJokeLength <= this.state.jokes.length) {
+      this.fetchAJoke();
+    }
+  }
+
+  async fetchAJoke(url: string = JOKE_API) {
+    const res = await fetch(url);
+    const joke: IJoke = await res.json();
+    console.log(joke);
+
+    const isUnique = !this.state.jokes.some(j => j.id === joke.id);
+
+    if (isUnique && joke.status === 200) {
+      joke.votes = 0;
+
+      this.setState(st => {
+        return {
+          jokes: [...st.jokes, joke],
+        };
+      });
+    }
+  }
+
+  onVoteClick(id: string, type: "upVote" | "downVote") {}
+
+  render() {
+    return (
+      <div className="JokeList">
+        <div className="JokeList-sidebar">
+          <h1 className="JokeList-title">
+            <span>Dad</span> Jokes
+          </h1>
+          <img
+            src="https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg"
+            alt="laughing emoji"
+          />
+          <button className="JokeList-getmore" onClick={this.onFetchJokeClick}>
+            Fetch Jokes
+          </button>
+        </div>
+
+        <div className="JokeList-jokes">
+          {this.state.jokes.map(j => (
+            <Joke
+              key={j.id}
+              id={j.id}
+              votes={j.votes}
+              text={j.joke}
+              onVote={this.onVoteClick}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default JokeList;
