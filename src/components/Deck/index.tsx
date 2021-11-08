@@ -1,6 +1,6 @@
 import "./Deck.css";
 
-import { Component } from "react";
+import { FC, useEffect, useState } from "react";
 import Card from "../Card";
 
 async function fetchDeckId(url: string) {
@@ -35,13 +35,6 @@ async function fetchCard(url: string) {
   }
 }
 
-interface DeckState {
-  remaining: number;
-  deckId: string;
-  cards: ICard[];
-  isDone: boolean;
-}
-
 interface ICard {
   code: string;
   image: string;
@@ -69,98 +62,78 @@ interface Response {
 
 const FETCH_ID_URL = "https://deckofcardsapi.com/api/deck/new/shuffle";
 
-class Deck extends Component<any, DeckState> {
-  constructor(props: any) {
-    super(props);
+const Deck: FC = () => {
+  const [deckId, setDeckId] = useState("");
+  const [cards, setCards] = useState<ICard[]>([]);
+  const [isDone, setIsDone] = useState(false);
 
-    this.state = {
-      remaining: 0,
-      deckId: "",
-      cards: [],
-      isDone: false,
-    };
+  useEffect(() => {
+    if (deckId) return;
 
-    this.onDrawClick = this.onDrawClick.bind(this);
-    this.onRestartClick = this.onRestartClick.bind(this);
-  }
+    async function fetchId() {
+      let data: {
+        deck_id: string;
+        reamining: number;
+      } | null;
 
-  async componentDidMount() {
-    let data: {
-      deck_id: string;
-      reamining: number;
-    } | null;
-
-    // this is not cool.
-    do {
       data = await fetchDeckId(FETCH_ID_URL);
-    } while (!data);
 
-    this.setState({
-      deckId: data.deck_id,
-      remaining: data.reamining,
-    });
-  }
+      if (!data) return;
 
-  async onDrawClick() {
-    if (!this.state.deckId) return;
+      setDeckId(data.deck_id);
+    }
+
+    fetchId();
+  }, [deckId]);
+
+  const onDrawClick = async () => {
+    if (!deckId) return;
 
     const res = await fetchCard(
-      `https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/`
+      `https://deckofcardsapi.com/api/deck/${deckId}/draw/`
     );
 
     if (!res) return;
 
-    this.setState(st => {
-      const { code, value, suit, image } = res.cards[0];
-      return {
-        remaining: res.remaining,
-        cards: [...st.cards, { code, value, suit, image }],
-        isDone: res.remaining <= 0,
-      };
-    });
-  }
+    const { code, value, suit, image } = res.cards[0];
+    setIsDone(res.remaining <= 0);
+    setCards([...cards, { code, value, suit, image }]);
+  };
 
-  async onRestartClick() {
+  const onRestartClick = async () => {
     let data: {
       deck_id: string;
       reamining: number;
     } | null;
 
     data = await fetchDeckId(FETCH_ID_URL);
-
     if (!data) return;
 
-    this.setState({
-      isDone: false,
-      cards: [],
-      deckId: data.deck_id,
-      remaining: data.reamining,
-    });
+    setIsDone(false);
+    setCards([]);
+    setDeckId(data.deck_id);
 
-    this.onDrawClick();
-  }
+    onDrawClick();
+  };
 
-  render() {
-    const cards = this.state.cards.map(c => <Card {...c} key={c.code} />);
-    return (
-      <div className="Deck">
-        <h1 className="Deck-title">♦ Card Dealer ♦</h1>
-        <h2 className="Deck-title subtitle">
-          ♦ A little demo made with React ♦
-        </h2>
-        {this.state.isDone ? (
-          <button className="Deck-btn" onClick={this.onRestartClick}>
-            Restart?
-          </button>
-        ) : (
-          <button className="Deck-btn" onClick={this.onDrawClick}>
-            Get Card!
-          </button>
-        )}
-        <div className="Deck-cardarea">{cards}</div>
-      </div>
-    );
-  }
-}
+  const cardsEl = cards.map(c => <Card {...c} key={c.code} />);
+
+  return (
+    <div className="Deck">
+      <h1 className="Deck-title">♦ Card Dealer ♦</h1>
+      <h2 className="Deck-title subtitle">♦ A little demo made with React ♦</h2>
+      {isDone ? (
+        <button className="Deck-btn" onClick={onRestartClick}>
+          Restart?
+        </button>
+      ) : (
+        <button className="Deck-btn" onClick={onDrawClick}>
+          Get Card!
+        </button>
+      )}
+      <div className="Deck-cardarea">{cardsEl}</div>
+    </div>
+  );
+};
 
 export default Deck;
