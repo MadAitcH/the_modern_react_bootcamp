@@ -66,8 +66,11 @@ class JokeList extends Component<JokeListProps, JokeListState> {
       }
 
       this.setState(st => {
+        const sortedJokes = [...st.jokes, ...jokes].sort(
+          (f, s) => s.votes - f.votes
+        );
         return {
-          jokes: [...st.jokes, ...jokes],
+          jokes: sortedJokes,
         };
       }, this.saveToLocalStorage);
     } catch (err) {
@@ -100,9 +103,9 @@ class JokeList extends Component<JokeListProps, JokeListState> {
     const count = type === "upVote" ? 1 : -1;
     this.setState(st => {
       return {
-        jokes: st.jokes.map(j =>
-          j.id === id ? { ...j, votes: j.votes + count } : j
-        ),
+        jokes: st.jokes
+          .map(j => (j.id === id ? { ...j, votes: j.votes + count } : j))
+          .sort((f, s) => s.votes - f.votes),
       };
     }, this.saveToLocalStorage);
   }
