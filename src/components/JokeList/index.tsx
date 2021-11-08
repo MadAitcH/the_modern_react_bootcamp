@@ -1,6 +1,6 @@
 import "./JokeList.css";
 
-import { Component } from "react";
+import { FC, useEffect, useState } from "react";
 import Joke from "../Joke";
 
 interface IJoke {
@@ -13,58 +13,42 @@ interface IJoke {
 interface JokeListProps {
   jokesToGet: number;
 }
-interface JokeListState {
-  jokes: IJoke[];
-  loading: boolean;
-}
 
 const JOKE_API = "https://icanhazdadjoke.com/";
 const LOCAL_STORAGE_JOKES = "Mustafa's-dad-jokes";
 
-class JokeList extends Component<JokeListProps, JokeListState> {
-  static defaultProps = {
-    jokesToGet: 5,
-  };
+const JokeList: FC<JokeListProps> = ({ jokesToGet = 5 }) => {
+  const [jokes, setJokes] = useState<IJoke[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  constructor(props: JokeListProps) {
-    super(props);
+  useEffect(() => {
+    async function asyncFetchJokes() {
+      const localJokes = localStorage.getItem(LOCAL_STORAGE_JOKES);
 
-    this.state = {
-      jokes: [],
-      loading: true,
-    };
-
-    this.fetchAJoke = this.fetchAJoke.bind(this);
-    this.onFetchJokesClick = this.onFetchJokesClick.bind(this);
-    this.onVoteClick = this.onVoteClick.bind(this);
-    this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
-    this.getJokes = this.getJokes.bind(this);
-  }
-
-  async componentDidMount() {
-    const jokes = localStorage.getItem(LOCAL_STORAGE_JOKES);
-
-    if (jokes) {
-      this.setState({
-        jokes: JSON.parse(jokes),
-        loading: false,
-      });
-    } else {
-      try {
-        await this.onFetchJokesClick();
-      } catch (err) {
-        console.error((err as Error).message);
-        this.setState({ loading: false });
-        return;
+      if (localJokes) {
+        setJokes(JSON.parse(localJokes));
+        setLoading(false);
+      } else {
+        try {
+          await onFetchJokesClick();
+        } catch (err) {
+          console.error((err as Error).message);
+          setLoading(false);
+          return;
+        }
       }
     }
+
+    asyncFetchJokes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function onFetchJokesClick() {
+    setLoading(true);
+    getJokes();
   }
 
-  async onFetchJokesClick() {
-    this.setState({ loading: true }, this.getJokes);
-  }
-
-  async fetchAJoke(url: string = JOKE_API) {
+  async function fetchAJoke(url: string = JOKE_API) {
     const res = await fetch(url, {
       method: "GET",
       headers: {
@@ -75,7 +59,7 @@ class JokeList extends Component<JokeListProps, JokeListState> {
     if (res.status === 200) {
       const joke: IJoke = await res.json();
 
-      const isUnique = !this.state.jokes.some(j => j.id === joke.id);
+      const isUnique = !jokes.some(j => j.id === joke.id);
 
       if (isUnique) {
         joke.votes = 0;
@@ -84,84 +68,78 @@ class JokeList extends Component<JokeListProps, JokeListState> {
     }
   }
 
-  async getJokes() {
-    const jokes: IJoke[] = [];
+  // TODO: maybe we could change getJokes to a generator function.
+  async function getJokes() {
+    const fetchedJokes: IJoke[] = [];
     try {
-      while (jokes.length < this.props.jokesToGet) {
-        const joke = await this.fetchAJoke();
+      while (fetchedJokes.length < jokesToGet) {
+        const joke = await fetchAJoke();
         if (joke) {
-          jokes.push(joke);
+          fetchedJokes.push(joke);
         }
       }
 
-      this.setState(st => {
-        const sortedJokes = [...st.jokes, ...jokes].sort(
-          (f, s) => s.votes - f.votes
-        );
+      const sortedJokes = [...jokes, ...fetchedJokes].sort(
+        (f, s) => s.votes - f.votes
+      );
 
-        return {
-          jokes: sortedJokes,
-          loading: false,
-        };
-      }, this.saveToLocalStorage);
+      setLoading(false);
+      setJokes(sortedJokes);
+      saveToLocalStorage(sortedJokes);
     } catch (err) {
-      // if there's error then ignore jokes that are fetched and return
+      // if there's an error then ignore fetched jokes and return
       console.error(err.message);
-      this.setState({ loading: false });
+      setLoading(false);
       return;
     }
   }
 
-  onVoteClick(id: string, type: "upVote" | "downVote") {
+  const onVoteClick = (id: string, type: "upVote" | "downVote") => {
     const count = type === "upVote" ? 1 : -1;
-    this.setState(st => {
-      return {
-        jokes: st.jokes
-          .map(j => (j.id === id ? { ...j, votes: j.votes + count } : j))
-          .sort((f, s) => s.votes - f.votes),
-      };
-    }, this.saveToLocalStorage);
+    const sortedJokes = jokes
+      .map(j => (j.id === id ? { ...j, votes: j.votes + count } : j))
+      .sort((f, s) => s.votes - f.votes);
+    setJokes(sortedJokes);
+    saveToLocalStorage(sortedJokes);
+  };
+
+  function saveToLocalStorage(jokes: IJoke[]) {
+    localStorage.setItem(LOCAL_STORAGE_JOKES, JSON.stringify(jokes));
   }
 
-  saveToLocalStorage() {
-    localStorage.setItem(LOCAL_STORAGE_JOKES, JSON.stringify(this.state.jokes));
-  }
-
-  render() {
-    return this.state.loading ? (
-      <div className="JokeList-spinner">
-        <i className="far fa-8x fa-laugh fa-spin" />
-        <h1 className="JokeList-title">Loading...</h1>
+  return loading ? (
+    <div className="JokeList-spinner">
+      <i className="far fa-8x fa-laugh fa-spin" />
+      <h1 className="JokeList-title">Loading...</h1>
+    </div>
+  ) : (
+    <div className="JokeList">
+      <div className="JokeList-sidebar">
+        <h1 className="JokeList-title">
+          <span>Dad</span> Jokes
+        </h1>
+        <img
+          src="https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg"
+          alt="laughing emoji"
+        />
+        <button className="JokeList-getmore" onClick={onFetchJokesClick}>
+          Fetch Jokes
+        </button>
       </div>
-    ) : (
-      <div className="JokeList">
-        <div className="JokeList-sidebar">
-          <h1 className="JokeList-title">
-            <span>Dad</span> Jokes
-          </h1>
-          <img
-            src="https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg"
-            alt="laughing emoji"
+
+      <div className="JokeList-jokes">
+        {jokes.map(j => (
+          <Joke
+            key={j.id}
+            id={j.id}
+            votes={j.votes}
+            text={j.joke}
+            onVote={onVoteClick}
           />
-          <button className="JokeList-getmore" onClick={this.onFetchJokesClick}>
-            Fetch Jokes
-          </button>
-        </div>
-
-        <div className="JokeList-jokes">
-          {this.state.jokes.map(j => (
-            <Joke
-              key={j.id}
-              id={j.id}
-              votes={j.votes}
-              text={j.joke}
-              onVote={this.onVoteClick}
-            />
-          ))}
-        </div>
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default JokeList;
