@@ -7,6 +7,7 @@ import tubby from "./images/tubby.jpg";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import DogList from "./components/DogList";
 import DogDetails from "./components/DogDetails";
+import Navbar from "./components/Navbar";
 
 export interface Dog {
   name: string;
@@ -66,15 +67,18 @@ class App extends Component<AppProps> {
       return <DogDetails {...props} dog={currentDog} />;
     };
     return (
-      <Switch>
-        <Route
-          exact
-          path="/dogs"
-          render={() => <DogList dogs={this.props.dogs} />}
-        />
+      <div>
+        <Navbar dogs={this.props.dogs} />
+        <Switch>
+          <Route
+            exact
+            path="/dogs"
+            render={() => <DogList dogs={this.props.dogs} />}
+          />
 
-        <Route exact path="/dogs/:name" render={getDog} />
-      </Switch>
+          <Route exact path="/dogs/:name" render={getDog} />
+        </Switch>
+      </div>
     );
   }
 }
