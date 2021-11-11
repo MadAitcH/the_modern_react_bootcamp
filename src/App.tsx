@@ -58,7 +58,9 @@ class App extends Component<AppProps> {
     return (
       <div>
         <Navbar dogs={this.props.dogs} />
-        <RoutesContainer dogs={this.props.dogs} />
+        <div className="container">
+          <RoutesContainer dogs={this.props.dogs} />
+        </div>
       </div>
     );
   }
