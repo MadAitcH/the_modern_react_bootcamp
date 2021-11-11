@@ -1,5 +1,6 @@
 {
   "name": "the_massive_color_project",
+  "author": "Mustafa Hayati<mustafa.hayati.webdev@gmail.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
