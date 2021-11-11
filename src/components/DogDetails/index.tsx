@@ -1,7 +1,7 @@
 import "./DogDetails.css";
 
 import { Component } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, Redirect, RouteComponentProps } from "react-router-dom";
 import { Dog } from "../../App";
 
 interface DogDetailsProps {
@@ -40,10 +40,7 @@ class DogDetails extends Component<
       </div>
     ) : (
       <div>
-        <h1>Not Found</h1>
-        <Link to="/dogs" className="btn btn-info">
-          Go Back
-        </Link>
+        <Redirect to="/dogs" />
       </div>
     );
   }

@@ -4,10 +4,8 @@ import { Component } from "react";
 import whiskey from "./images/whiskey.jpg";
 import hazel from "./images/hazel.jpg";
 import tubby from "./images/tubby.jpg";
-import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import DogList from "./components/DogList";
-import DogDetails from "./components/DogDetails";
 import Navbar from "./components/Navbar";
+import RoutesContainer from "./components/RoutesContainer";
 
 export interface Dog {
   name: string;
@@ -57,27 +55,10 @@ class App extends Component<AppProps> {
   };
 
   render() {
-    const getDog = (props: RouteComponentProps<{ name: string }>) => {
-      const { name } = props.match.params;
-
-      const currentDog = this.props.dogs.find(
-        dog => dog.name.toLowerCase() === name.toLowerCase()
-      );
-
-      return <DogDetails {...props} dog={currentDog} />;
-    };
     return (
       <div>
         <Navbar dogs={this.props.dogs} />
-        <Switch>
-          <Route
-            exact
-            path="/dogs"
-            render={() => <DogList dogs={this.props.dogs} />}
-          />
-
-          <Route exact path="/dogs/:name" render={getDog} />
-        </Switch>
+        <RoutesContainer dogs={this.props.dogs} />
       </div>
     );
   }
