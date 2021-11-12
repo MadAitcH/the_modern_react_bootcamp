@@ -1,20 +1,54 @@
 import "./Palette.css";
+import "rc-slider/assets/index.css";
 
 import { Component } from "react";
-import { IPalette } from "../../utils/seedColors";
+import Slider from "rc-slider";
 import ColorBox from "../ColorBox";
+import { GeneratedPalette } from "../../utils/colorHelpers";
 
-type PaletteProps = IPalette;
+interface PaletteProps {
+  palette: GeneratedPalette;
+}
 
-class Palette extends Component<PaletteProps> {
+interface PaletteState {
+  level: number;
+}
+
+class Palette extends Component<PaletteProps, PaletteState> {
+  constructor(props: PaletteProps) {
+    super(props);
+
+    this.state = {
+      level: 500,
+    };
+
+    this.onSliderValueChange = this.onSliderValueChange.bind(this);
+  }
+
+  onSliderValueChange(level: number) {
+    this.setState({
+      level,
+    });
+  }
+
   render() {
+    const { level } = this.state;
+    const { palette } = this.props;
+
     // TODO: add key
-    const colorBoxes = this.props.colors.map(color => (
-      <ColorBox background={color.color} name={color.name} />
+    const colorBoxes = palette.colors[level].map(color => (
+      <ColorBox background={color.hex} name={color.name} />
     ));
 
     return (
       <div className="Palette">
+        <Slider
+          defaultValue={level}
+          min={100}
+          max={900}
+          step={100}
+          onAfterChange={this.onSliderValueChange}
+        />
         {/* Navbar */}
         <div className="Palette-colors">{colorBoxes}</div>
         {/* footer */}
