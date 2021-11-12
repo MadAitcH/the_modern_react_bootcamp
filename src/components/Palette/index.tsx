@@ -1,7 +1,7 @@
 import "./Palette.css";
 
 import { Component } from "react";
-import { IPalette } from "../../seedColors";
+import { IPalette } from "../../utils/seedColors";
 import ColorBox from "../ColorBox";
 
 type PaletteProps = IPalette;
