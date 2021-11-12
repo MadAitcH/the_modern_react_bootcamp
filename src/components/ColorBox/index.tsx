@@ -8,12 +8,40 @@ interface ColorBoxProps {
   name: string;
 }
 
-class ColorBox extends Component<ColorBoxProps> {
+interface ColorBoxState {
+  copied: boolean;
+}
+
+class ColorBox extends Component<ColorBoxProps, ColorBoxState> {
+  constructor(props: ColorBoxProps) {
+    super(props);
+
+    this.state = {
+      copied: false,
+    };
+
+    this.onCopyToClipboard = this.onCopyToClipboard.bind(this);
+  }
+
+  onCopyToClipboard() {
+    this.setState({ copied: true }, () => {
+      setTimeout(() => {
+        this.setState({ copied: false });
+      }, 1500);
+    });
+  }
+
   render() {
     const { name, background } = this.props;
+    const { copied } = this.state;
+
     return (
-      <CopyToClipboard text={background}>
+      <CopyToClipboard text={background} onCopy={this.onCopyToClipboard}>
         <div className="ColorBox" style={{ background }}>
+          <div
+            className={`copy-overlay ${copied ? "show" : ""}`}
+            style={{ background }}
+          />
           <div className="copy-container">
             <div className="box-content">
               <span>{name}</span>
