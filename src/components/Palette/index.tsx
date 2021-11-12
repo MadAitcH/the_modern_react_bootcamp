@@ -1,5 +1,5 @@
-import "./Palette.css";
 import "rc-slider/assets/index.css";
+import "./Palette.css";
 
 import { FC, useState } from "react";
 import Slider from "rc-slider";
@@ -22,13 +22,15 @@ const Palette: FC<PaletteProps> = ({ palette }) => {
 
   return (
     <div className="Palette">
-      <Slider
-        defaultValue={level}
-        min={100}
-        max={900}
-        step={100}
-        onAfterChange={onSliderValueChange}
-      />
+      <div className="slider">
+        <Slider
+          defaultValue={level}
+          min={100}
+          max={900}
+          step={100}
+          onAfterChange={onSliderValueChange}
+        />
+      </div>
       {/* Navbar */}
       <div className="Palette-colors">{colorBoxes}</div>
       {/* Footer */}
