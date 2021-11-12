@@ -1,5 +1,9 @@
 .Palette {
   height: 100vh;
+  /* remove overflow if it makes any problem.
+   * I added this to hide overflow when clicking on ColorBox
+   */
+  overflow: hidden;
 }
 
 .Palette-colors {

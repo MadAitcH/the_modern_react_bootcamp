@@ -1,6 +1,6 @@
 import "./ColorBox.css";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 interface ColorBoxProps {
@@ -9,9 +9,22 @@ interface ColorBoxProps {
 }
 
 const ColorBox: FC<ColorBoxProps> = ({ name, background }) => {
+  const [copied, setCopied] = useState(false);
+
+  const onCopyToClipboard = () => {
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1500);
+  };
+
   return (
-    <CopyToClipboard text={background}>
+    <CopyToClipboard text={background} onCopy={onCopyToClipboard}>
       <div className="ColorBox" style={{ background }}>
+        <div
+          className={`copy-overlay ${copied ? "show" : ""}`}
+          style={{ background }}
+        />
         <div className="copy-container">
           <div className="box-content">
             <span>{name}</span>
