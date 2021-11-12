@@ -1,10 +1,9 @@
-import "rc-slider/assets/index.css";
 import "./Palette.css";
 
 import { Component } from "react";
-import Slider from "rc-slider";
 import ColorBox from "../ColorBox";
 import { GeneratedPalette } from "../../utils/colorHelpers";
+import Navbar from "../Navbar";
 
 interface PaletteProps {
   palette: GeneratedPalette;
@@ -42,15 +41,7 @@ class Palette extends Component<PaletteProps, PaletteState> {
 
     return (
       <div className="Palette">
-        <div className="slider">
-          <Slider
-            defaultValue={level}
-            min={100}
-            max={900}
-            step={100}
-            onAfterChange={this.onSliderValueChange}
-          />
-        </div>
+        <Navbar level={level} onSliderValueChange={this.onSliderValueChange} />
         {/* Navbar */}
         <div className="Palette-colors">{colorBoxes}</div>
         {/* footer */}
