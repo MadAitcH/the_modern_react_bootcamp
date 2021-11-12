@@ -1,5 +1,5 @@
 import Palette from "./components/Palette";
-import seedColors from "./seedColors";
+import seedColors from "./utils/seedColors";
 
 function App() {
   return (
