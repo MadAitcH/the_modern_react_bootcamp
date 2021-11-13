@@ -1,15 +1,38 @@
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
 
-import { FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import Slider from "rc-slider";
+import { Select, MenuItem } from "@material-ui/core";
 
 interface NavbarProps {
   level: number;
   onSliderValueChange: (level: number) => void;
+  onColorFormateChange: (colorFormat: AcceptedFormats) => void;
 }
 
-const Navbar: FC<NavbarProps> = ({ level, onSliderValueChange }) => {
+export type AcceptedFormats = "hex" | "rgb" | "rgba";
+
+const Navbar: FC<NavbarProps> = ({
+  level,
+  onSliderValueChange,
+  onColorFormateChange,
+}) => {
+  const [format, setFormat] = useState<AcceptedFormats>("hex");
+
+  const handleFormatChange = (e: ChangeEvent<{ value: unknown }>) => {
+    switch (e.target.value) {
+      case "hex":
+      case "rgb":
+      case "rgba":
+        setFormat(e.target.value);
+        onColorFormateChange(e.target.value);
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
     <header className="Navbar">
       <div className="logo">
@@ -27,6 +50,13 @@ const Navbar: FC<NavbarProps> = ({ level, onSliderValueChange }) => {
             onAfterChange={onSliderValueChange}
           />
         </div>
+      </div>
+      <div className="select-container">
+        <Select value={format} onChange={handleFormatChange}>
+          <MenuItem value="hex">HEX - #ffffff</MenuItem>
+          <MenuItem value="rgb">RGB - rgb(255, 255, 255)</MenuItem>
+          <MenuItem value="rgba">RGBA - rgba(255, 255, 255, 1.0)</MenuItem>
+        </Select>
       </div>
     </header>
   );
