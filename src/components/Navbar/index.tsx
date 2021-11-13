@@ -1,9 +1,9 @@
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
 
-import { Component, ChangeEvent } from "react";
+import { Component } from "react";
 import Slider from "rc-slider";
-import { Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
 
 interface NavbarProps {
   level: number;
@@ -28,9 +28,7 @@ class Navbar extends Component<NavbarProps, NavbarState> {
     this.onColorFormatChange = this.onColorFormatChange.bind(this);
   }
 
-  onColorFormatChange(
-    e: ChangeEvent<{ name?: string | undefined; value: unknown }>
-  ) {
+  onColorFormatChange(e: SelectChangeEvent<"hex" | "rgb" | "rgba">) {
     switch (e.target.value) {
       case "hex":
       case "rgb":
