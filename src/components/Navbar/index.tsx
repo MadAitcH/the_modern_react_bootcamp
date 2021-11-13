@@ -1,9 +1,9 @@
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
 
-import { ChangeEvent, FC, useState } from "react";
+import { FC, useState } from "react";
 import Slider from "rc-slider";
-import { Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
 
 interface NavbarProps {
   level: number;
@@ -20,7 +20,7 @@ const Navbar: FC<NavbarProps> = ({
 }) => {
   const [format, setFormat] = useState<AcceptedFormats>("hex");
 
-  const handleFormatChange = (e: ChangeEvent<{ value: unknown }>) => {
+  const handleFormatChange = (e: SelectChangeEvent<AcceptedFormats>) => {
     switch (e.target.value) {
       case "hex":
       case "rgb":
