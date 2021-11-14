@@ -4,9 +4,10 @@ import { Component } from "react";
 import ColorBox from "../ColorBox";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import Navbar, { AcceptedFormats } from "../Navbar";
+import { Redirect } from "react-router-dom";
 
 interface PaletteProps {
-  palette: GeneratedPalette;
+  palette: GeneratedPalette | null;
 }
 
 interface PaletteState {
@@ -38,6 +39,11 @@ class Palette extends Component<PaletteProps, PaletteState> {
   }
 
   render() {
+    // TODO: find a better solution
+    if (!this.props.palette) {
+      return <Redirect to="/" />;
+    }
+
     const { level } = this.state;
     const {
       palette: { colors, paletteName, emoji },

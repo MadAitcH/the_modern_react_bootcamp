@@ -11,6 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   level: number;
@@ -63,8 +64,7 @@ class Navbar extends Component<NavbarProps, NavbarState> {
     return (
       <header className="Navbar">
         <div className="logo">
-          {/* TODO: Change this to a Link */}
-          <a href="/">ReactColorPicker</a>
+          <Link to="/"> ReactColorPicker</Link>
         </div>
         <div className="silder-container">
           <span>Level: {level}</span>
