@@ -9,7 +9,9 @@ interface PaletteProps {
   palette: GeneratedPalette;
 }
 
-const Palette: FC<PaletteProps> = ({ palette }) => {
+const Palette: FC<PaletteProps> = ({
+  palette: { colors, paletteName, emoji },
+}) => {
   const [level, setLevel] = useState(500);
   const [format, setFormat] = useState<AcceptedFormats>("hex");
 
@@ -19,9 +21,8 @@ const Palette: FC<PaletteProps> = ({ palette }) => {
 
   const onSliderValueChange = (level: number) => setLevel(level);
 
-  // TODO: add key
-  const colorBoxes = palette.colors[level].map(color => (
-    <ColorBox background={color[format]} name={color.name} />
+  const colorBoxes = colors[level].map(color => (
+    <ColorBox key={color.id} background={color[format]} name={color.name} />
   ));
 
   return (
@@ -32,7 +33,10 @@ const Palette: FC<PaletteProps> = ({ palette }) => {
         onColorFormateChange={onColorFormateChange}
       />
       <div className="Palette-colors">{colorBoxes}</div>
-      {/* Footer */}
+      <footer className="Palette-footer">
+        {paletteName}
+        <span className="emoji">{emoji}</span>
+      </footer>
     </div>
   );
 };
