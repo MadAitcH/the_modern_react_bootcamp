@@ -1,14 +1,13 @@
 import { Component } from "react";
-import Palette from "./components/Palette";
-import { generatePalette } from "./utils/colorHelpers";
-import seedColors from "./utils/seedColors";
+import { Route, Switch } from "react-router-dom";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <Palette palette={generatePalette(seedColors[4])} />
-      </div>
+      <Switch>
+        <Route exact path="/" render={() => <h1>Home</h1>} />
+        <Route exact path="/palette/:id" render={() => <h1>palette</h1>} />
+      </Switch>
     );
   }
 }
