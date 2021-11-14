@@ -4,16 +4,22 @@ import { FC, useState } from "react";
 import ColorBox from "../ColorBox";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import Navbar, { AcceptedFormats } from "../Navbar";
+import { Redirect } from "react-router-dom";
 
 interface PaletteProps {
-  palette: GeneratedPalette;
+  palette: GeneratedPalette | null;
 }
 
-const Palette: FC<PaletteProps> = ({
-  palette: { colors, paletteName, emoji },
-}) => {
+const Palette: FC<PaletteProps> = props => {
   const [level, setLevel] = useState(500);
   const [format, setFormat] = useState<AcceptedFormats>("hex");
+
+  // TODO: find a better solution
+  if (!props.palette) return <Redirect to="/" />;
+
+  const {
+    palette: { colors, paletteName, emoji },
+  } = props;
 
   const onColorFormateChange = (colorFormat: AcceptedFormats) => {
     setFormat(colorFormat);
@@ -30,7 +36,7 @@ const Palette: FC<PaletteProps> = ({
       <Navbar
         level={level}
         onSliderValueChange={onSliderValueChange}
-        onColorFormateChange={onColorFormateChange}
+        onColorFormatChange={onColorFormateChange}
       />
       <div className="Palette-colors">{colorBoxes}</div>
       <footer className="Palette-footer">

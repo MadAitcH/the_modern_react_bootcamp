@@ -11,11 +11,12 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import CloseButton from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   level: number;
   onSliderValueChange: (level: number) => void;
-  onColorFormateChange: (colorFormat: AcceptedFormats) => void;
+  onColorFormatChange: (colorFormat: AcceptedFormats) => void;
 }
 
 export type AcceptedFormats = "hex" | "rgb" | "rgba";
@@ -23,7 +24,7 @@ export type AcceptedFormats = "hex" | "rgb" | "rgba";
 const Navbar: FC<NavbarProps> = ({
   level,
   onSliderValueChange,
-  onColorFormateChange,
+  onColorFormatChange,
 }) => {
   const [format, setFormat] = useState<AcceptedFormats>("hex");
   const [open, setOpen] = useState(false);
@@ -35,7 +36,7 @@ const Navbar: FC<NavbarProps> = ({
       case "rgba":
         setFormat(e.target.value);
         setOpen(true);
-        onColorFormateChange(e.target.value);
+        onColorFormatChange(e.target.value);
         break;
       default:
         return;
@@ -49,8 +50,7 @@ const Navbar: FC<NavbarProps> = ({
   return (
     <header className="Navbar">
       <div className="logo">
-        {/* TODO: Change this to a Link */}
-        <a href="/">ReactColorPicker</a>
+        <Link to="/">ReactColorPicker</Link>
       </div>
       <div className="silder-container">
         <span>Level: {level}</span>
