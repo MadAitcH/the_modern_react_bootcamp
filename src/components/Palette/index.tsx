@@ -39,11 +39,16 @@ class Palette extends Component<PaletteProps, PaletteState> {
 
   render() {
     const { level } = this.state;
-    const { palette } = this.props;
+    const {
+      palette: { colors, paletteName, emoji },
+    } = this.props;
 
-    // TODO: add key
-    const colorBoxes = palette.colors[level].map(color => (
-      <ColorBox background={color[this.state.format]} name={color.name} />
+    const colorBoxes = colors[level].map(color => (
+      <ColorBox
+        key={color.id}
+        background={color[this.state.format]}
+        name={color.name}
+      />
     ));
 
     return (
@@ -53,9 +58,11 @@ class Palette extends Component<PaletteProps, PaletteState> {
           onSliderValueChange={this.onSliderValueChange}
           onColorFormatChange={this.onColorFormatChange}
         />
-        {/* Navbar */}
         <div className="Palette-colors">{colorBoxes}</div>
-        {/* footer */}
+        <footer className="Palette-footer">
+          {paletteName}
+          <span className="emoji">{emoji}</span>
+        </footer>
       </div>
     );
   }

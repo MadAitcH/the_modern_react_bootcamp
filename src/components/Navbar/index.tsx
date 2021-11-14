@@ -38,7 +38,7 @@ class Navbar extends Component<NavbarProps, NavbarState> {
     this.closeSnackbar = this.closeSnackbar.bind(this);
   }
 
-  onColorFormatChange(e: SelectChangeEvent<"hex" | "rgb" | "rgba">) {
+  onColorFormatChange(e: SelectChangeEvent<AcceptedFormats>) {
     switch (e.target.value) {
       case "hex":
       case "rgb":
