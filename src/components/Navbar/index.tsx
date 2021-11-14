@@ -3,7 +3,14 @@ import "./Navbar.css";
 
 import { FC, useState } from "react";
 import Slider from "rc-slider";
-import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Snackbar,
+  IconButton,
+  SelectChangeEvent,
+} from "@mui/material";
+import CloseButton from "@mui/icons-material/Close";
 
 interface NavbarProps {
   level: number;
@@ -19,6 +26,7 @@ const Navbar: FC<NavbarProps> = ({
   onColorFormateChange,
 }) => {
   const [format, setFormat] = useState<AcceptedFormats>("hex");
+  const [open, setOpen] = useState(false);
 
   const handleFormatChange = (e: SelectChangeEvent<AcceptedFormats>) => {
     switch (e.target.value) {
@@ -26,11 +34,16 @@ const Navbar: FC<NavbarProps> = ({
       case "rgb":
       case "rgba":
         setFormat(e.target.value);
+        setOpen(true);
         onColorFormateChange(e.target.value);
         break;
       default:
         return;
     }
+  };
+
+  const closeSnackbar = () => {
+    setOpen(false);
   };
 
   return (
@@ -58,6 +71,31 @@ const Navbar: FC<NavbarProps> = ({
           <MenuItem value="rgba">RGBA - rgba(255, 255, 255, 1.0)</MenuItem>
         </Select>
       </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={open}
+        autoHideDuration={3000}
+        message={
+          <span id="message-id">Format changed to {format.toUpperCase()}!</span>
+        }
+        ContentProps={{
+          "aria-describedby": "message-id",
+        }}
+        onClose={closeSnackbar}
+        action={[
+          <IconButton
+            color="inherit"
+            onClick={closeSnackbar}
+            key="close"
+            aria-label="close"
+          >
+            <CloseButton />
+          </IconButton>,
+        ]}
+      ></Snackbar>
     </header>
   );
 };
