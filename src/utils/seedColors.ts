@@ -8,6 +8,14 @@ export interface IPalette {
   }[];
 }
 
+interface Style {
+  [key: string]: React.CSSProperties;
+}
+
+export interface IStyles {
+  [key: string]: React.CSSProperties | Style;
+}
+
 const seedColors: IPalette[] = [
   {
     paletteName: "Material UI Colors",
