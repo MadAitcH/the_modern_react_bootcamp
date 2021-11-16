@@ -33,6 +33,7 @@ const Palette: FC<PaletteProps> = props => {
       background={color[format]}
       name={color.name}
       moreUrl={`/palette/${id}/${color.id}`}
+      showLink
     />
   ));
 
