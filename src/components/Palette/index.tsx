@@ -54,6 +54,7 @@ class Palette extends Component<PaletteProps, PaletteState> {
         key={color.id}
         background={color[this.state.format]}
         name={color.name}
+        showLink
         moreUrl={`/palette/${id}/${color.id}`}
       />
     ));

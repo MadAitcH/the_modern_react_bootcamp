@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 interface ColorBoxProps {
   background: string;
   name: string;
-  moreUrl: string;
+  moreUrl?: string;
+  showLink?: boolean;
 }
 
 interface ColorBoxState {
@@ -34,7 +35,7 @@ class ColorBox extends Component<ColorBoxProps, ColorBoxState> {
   }
 
   render() {
-    const { name, background, moreUrl } = this.props;
+    const { name, background, moreUrl, showLink } = this.props;
     const { copied } = this.state;
 
     return (
@@ -54,9 +55,11 @@ class ColorBox extends Component<ColorBoxProps, ColorBoxState> {
             </div>
             <button className="copy-button">Copy</button>
           </div>
-          <Link to={moreUrl} onClick={(e: MouseEvent) => e.stopPropagation()}>
-            <span className="see-more">More</span>
-          </Link>
+          {showLink && moreUrl && (
+            <Link to={moreUrl} onClick={(e: MouseEvent) => e.stopPropagation()}>
+              <span className="see-more">More</span>
+            </Link>
+          )}
         </div>
       </CopyToClipboard>
     );
