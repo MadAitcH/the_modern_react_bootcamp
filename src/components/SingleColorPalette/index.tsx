@@ -2,6 +2,8 @@ import { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import ColorBox from "../ColorBox";
+import Navbar, { AcceptedFormats } from "../Navbar";
+import PaletteFooter from "../PaletteFooter";
 
 interface IColor {
   name: string;
@@ -16,7 +18,14 @@ interface SingleColorPaletteProps {
   colorId: string;
 }
 
-class SingleColorPalette extends Component<SingleColorPaletteProps> {
+interface SingleColorPaletteState {
+  format: AcceptedFormats;
+}
+
+class SingleColorPalette extends Component<
+  SingleColorPaletteProps,
+  SingleColorPaletteState
+> {
   private shades: IColor[];
 
   constructor(props: SingleColorPaletteProps) {
@@ -24,7 +33,12 @@ class SingleColorPalette extends Component<SingleColorPaletteProps> {
 
     this.shades = [];
 
+    this.state = {
+      format: "hex",
+    };
+
     this.gatherShades = this.gatherShades.bind(this);
+    this.onColorFormatChange = this.onColorFormatChange.bind(this);
   }
 
   gatherShades(palette: GeneratedPalette, colorToFilterBy: string) {
@@ -40,22 +54,29 @@ class SingleColorPalette extends Component<SingleColorPaletteProps> {
     return shades.slice(1);
   }
 
+  onColorFormatChange(format: AcceptedFormats) {
+    this.setState({ format });
+  }
+
   render() {
     // TODO: find a better solution
     if (!this.props.palette) {
       return <Redirect to="/" />;
     }
 
+    const { format } = this.state;
+    const { paletteName, emoji } = this.props.palette;
     this.shades = this.gatherShades(this.props.palette, this.props.colorId);
 
     const colorBoxes = this.shades.map(color => (
-      <ColorBox key={color.name} name={color.name} background={color.hex} />
+      <ColorBox key={color.name} name={color.name} background={color[format]} />
     ));
 
     return (
       <div className="Palette">
-        <div>SingleColorPalette</div>
+        <Navbar onColorFormatChange={this.onColorFormatChange} />
         <div className="Palette-colors">{colorBoxes}</div>
+        <PaletteFooter paletteName={paletteName} emoji={emoji} />
       </div>
     );
   }
