@@ -2,6 +2,7 @@ import { FC } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import { IPalette } from "../../utils/seedColors";
 import MiniPalette from "../MiniPalette";
+import { RouteComponentProps } from "react-router-dom";
 
 const styles: { [key: string]: any } = {
   root: {
@@ -37,11 +38,17 @@ const styles: { [key: string]: any } = {
   },
 };
 
-interface PaletteListProps extends WithStyles<typeof styles> {
+interface PaletteListProps
+  extends RouteComponentProps,
+    WithStyles<typeof styles> {
   palettes: IPalette[];
 }
 
-const PaletteList: FC<PaletteListProps> = ({ palettes, classes }) => {
+const PaletteList: FC<PaletteListProps> = ({ palettes, classes, history }) => {
+  const goToPalette = (id: string) => {
+    history.push(`/palette/${id}`);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -50,7 +57,11 @@ const PaletteList: FC<PaletteListProps> = ({ palettes, classes }) => {
         </nav>
         <div className={classes.palettes}>
           {palettes.map(palette => (
-            <MiniPalette {...palette} />
+            <MiniPalette
+              key={palette.id}
+              {...palette}
+              goToPalette={goToPalette}
+            />
           ))}
         </div>
       </div>

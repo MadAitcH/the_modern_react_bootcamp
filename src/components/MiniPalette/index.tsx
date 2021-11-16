@@ -46,14 +46,22 @@ const styles: { [key: string]: any } = {
   },
 };
 
-type MiniPaletteProps = IPalette & WithStyles<typeof styles>;
+interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
+  goToPalette: (id: string) => void;
+}
 
 const MiniPalette: FC<MiniPaletteProps> = ({
   classes,
   paletteName,
   emoji,
   colors,
+  goToPalette,
+  id,
 }) => {
+  const onLinkClick = () => {
+    goToPalette(id);
+  };
+
   const miniColorBoxes = colors.map(color => (
     <div
       key={color.name}
@@ -65,7 +73,7 @@ const MiniPalette: FC<MiniPaletteProps> = ({
   ));
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={onLinkClick}>
       <div className={classes.colors}>{miniColorBoxes}</div>
       <h5 className={classes.title}>
         {paletteName} <span className={classes.emoji}>{emoji}</span>
