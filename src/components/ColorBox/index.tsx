@@ -1,7 +1,8 @@
 import "./ColorBox.css";
 
-import { FC, useState } from "react";
+import { FC, useState, MouseEvent } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Link } from "react-router-dom";
 
 interface ColorBoxProps {
   background: string;
@@ -35,7 +36,9 @@ const ColorBox: FC<ColorBoxProps> = ({ name, background }) => {
           </div>
           <button className="copy-button">Copy</button>
         </div>
-        <span className="see-more">More</span>
+        <Link to="/" onClick={(e: MouseEvent) => e.stopPropagation()}>
+          <span className="see-more">More</span>
+        </Link>
       </div>
     </CopyToClipboard>
   );
