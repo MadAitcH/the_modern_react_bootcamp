@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import ColorBox from "../ColorBox";
 import Navbar, { AcceptedFormats } from "../Navbar";
@@ -46,7 +46,7 @@ const SingleColorPalette: FC<SingleColorPaletteProps> = ({
     setFormat(format);
   };
 
-  const { paletteName, emoji } = palette;
+  const { paletteName, emoji, id } = palette;
   const shades = gatherShades(palette, colorId);
 
   const colorBoxes = shades.map(color => (
@@ -54,9 +54,16 @@ const SingleColorPalette: FC<SingleColorPaletteProps> = ({
   ));
 
   return (
-    <div className="Palette">
+    <div className="SingleColorPalette Palette">
       <Navbar onColorFormatChange={onColorFormatChange} />
-      <div className="Palette-colors">{colorBoxes}</div>
+      <div className="Palette-colors">
+        {colorBoxes}
+        <div className="go-back ColorBox">
+          <Link to={`/palette/${id}`} className="back-button">
+            Go Back
+          </Link>
+        </div>
+      </div>
       <PaletteFooter paletteName={paletteName} emoji={emoji} />
     </div>
   );
