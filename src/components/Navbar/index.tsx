@@ -14,9 +14,10 @@ import CloseButton from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 
 interface NavbarProps {
-  level: number;
-  onSliderValueChange: (level: number) => void;
+  level?: number;
+  onSliderValueChange?: (level: number) => void;
   onColorFormatChange: (colorFormat: AcceptedFormats) => void;
+  showingAllColors?: boolean;
 }
 
 export type AcceptedFormats = "hex" | "rgb" | "rgba";
@@ -25,6 +26,7 @@ const Navbar: FC<NavbarProps> = ({
   level,
   onSliderValueChange,
   onColorFormatChange,
+  showingAllColors,
 }) => {
   const [format, setFormat] = useState<AcceptedFormats>("hex");
   const [open, setOpen] = useState(false);
@@ -52,18 +54,20 @@ const Navbar: FC<NavbarProps> = ({
       <div className="logo">
         <Link to="/">ReactColorPicker</Link>
       </div>
-      <div className="silder-container">
-        <span>Level: {level}</span>
-        <div className="slider">
-          <Slider
-            defaultValue={level}
-            min={100}
-            max={900}
-            step={100}
-            onAfterChange={onSliderValueChange}
-          />
+      {showingAllColors && level && onSliderValueChange && (
+        <div className="silder-container">
+          <span>Level: {level}</span>
+          <div className="slider">
+            <Slider
+              defaultValue={level}
+              min={100}
+              max={900}
+              step={100}
+              onAfterChange={onSliderValueChange}
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="select-container">
         <Select value={format} onChange={handleFormatChange}>
           <MenuItem value="hex">HEX - #ffffff</MenuItem>

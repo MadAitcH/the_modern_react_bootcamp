@@ -5,6 +5,7 @@ import ColorBox from "../ColorBox";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import Navbar, { AcceptedFormats } from "../Navbar";
 import { Redirect } from "react-router-dom";
+import PaletteFooter from "../PaletteFooter";
 
 interface PaletteProps {
   palette: GeneratedPalette | null;
@@ -43,12 +44,10 @@ const Palette: FC<PaletteProps> = props => {
         level={level}
         onSliderValueChange={onSliderValueChange}
         onColorFormatChange={onColorFormateChange}
+        showingAllColors
       />
       <div className="Palette-colors">{colorBoxes}</div>
-      <footer className="Palette-footer">
-        {paletteName}
-        <span className="emoji">{emoji}</span>
-      </footer>
+      <PaletteFooter paletteName={paletteName} emoji={emoji} />
     </div>
   );
 };

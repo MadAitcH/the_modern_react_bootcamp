@@ -1,7 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import ColorBox from "../ColorBox";
+import Navbar, { AcceptedFormats } from "../Navbar";
+import PaletteFooter from "../PaletteFooter";
 
 interface IColor {
   name: string;
@@ -20,6 +22,8 @@ const SingleColorPalette: FC<SingleColorPaletteProps> = ({
   colorId,
   palette,
 }) => {
+  const [format, setFormat] = useState<AcceptedFormats>("hex");
+
   const gatherShades = (palette: GeneratedPalette, colorToFilterBy: string) => {
     const shades: IColor[] = [];
     const allColors = palette.colors;
@@ -38,16 +42,22 @@ const SingleColorPalette: FC<SingleColorPaletteProps> = ({
     return <Redirect to="/" />;
   }
 
+  const onColorFormatChange = (format: AcceptedFormats) => {
+    setFormat(format);
+  };
+
+  const { paletteName, emoji } = palette;
   const shades = gatherShades(palette, colorId);
 
   const colorBoxes = shades.map(color => (
-    <ColorBox key={color.name} name={color.name} background={color.hex} />
+    <ColorBox key={color.name} name={color.name} background={color[format]} />
   ));
 
   return (
     <div className="Palette">
-      <div>SingleColorPalette</div>
+      <Navbar onColorFormatChange={onColorFormatChange} />
       <div className="Palette-colors">{colorBoxes}</div>
+      <PaletteFooter paletteName={paletteName} emoji={emoji} />
     </div>
   );
 };
