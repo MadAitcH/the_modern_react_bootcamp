@@ -7,9 +7,10 @@ import { Link } from "react-router-dom";
 interface ColorBoxProps {
   background: string;
   name: string;
+  moreUrl: string;
 }
 
-const ColorBox: FC<ColorBoxProps> = ({ name, background }) => {
+const ColorBox: FC<ColorBoxProps> = ({ name, background, moreUrl }) => {
   const [copied, setCopied] = useState(false);
 
   const onCopyToClipboard = () => {
@@ -36,7 +37,7 @@ const ColorBox: FC<ColorBoxProps> = ({ name, background }) => {
           </div>
           <button className="copy-button">Copy</button>
         </div>
-        <Link to="/" onClick={(e: MouseEvent) => e.stopPropagation()}>
+        <Link to={moreUrl} onClick={(e: MouseEvent) => e.stopPropagation()}>
           <span className="see-more">More</span>
         </Link>
       </div>

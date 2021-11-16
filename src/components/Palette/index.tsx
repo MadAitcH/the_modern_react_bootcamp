@@ -18,7 +18,7 @@ const Palette: FC<PaletteProps> = props => {
   if (!props.palette) return <Redirect to="/" />;
 
   const {
-    palette: { colors, paletteName, emoji },
+    palette: { colors, paletteName, emoji, id },
   } = props;
 
   const onColorFormateChange = (colorFormat: AcceptedFormats) => {
@@ -28,7 +28,12 @@ const Palette: FC<PaletteProps> = props => {
   const onSliderValueChange = (level: number) => setLevel(level);
 
   const colorBoxes = colors[level].map(color => (
-    <ColorBox key={color.id} background={color[format]} name={color.name} />
+    <ColorBox
+      key={color.id}
+      background={color[format]}
+      name={color.name}
+      moreUrl={`/palette/${id}/${color.id}`}
+    />
   ));
 
   return (
