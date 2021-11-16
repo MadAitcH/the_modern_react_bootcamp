@@ -46,9 +46,21 @@ const styles: { [key: string]: any } = {
   },
 };
 
-interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {}
+interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
+  goToPalette: (id: string) => void;
+}
 
 class MiniPalette extends Component<MiniPaletteProps> {
+  constructor(props: MiniPaletteProps) {
+    super(props);
+
+    this.onLinkClick = this.onLinkClick.bind(this);
+  }
+
+  onLinkClick() {
+    this.props.goToPalette(this.props.id);
+  }
+
   render() {
     const { classes, emoji, paletteName, colors } = this.props;
     const miniColorBoxes = colors.map(color => (
@@ -61,7 +73,7 @@ class MiniPalette extends Component<MiniPaletteProps> {
       />
     ));
     return (
-      <div className={classes.root}>
+      <div className={classes.root} onClick={this.onLinkClick}>
         <div className={classes.colors}>{miniColorBoxes}</div>
         <h5 className={classes.title}>
           {paletteName} <span className={classes.emoji}>{emoji}</span>

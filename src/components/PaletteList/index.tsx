@@ -2,6 +2,7 @@ import { Component } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import { IPalette } from "../../utils/seedColors";
 import MiniPalette from "../MiniPalette";
+import { RouteComponentProps } from "react-router-dom";
 
 // TODO: find a bettery type for styles
 const styles: { [key: string]: any } = {
@@ -38,11 +39,23 @@ const styles: { [key: string]: any } = {
   },
 };
 
-interface PaletteListProps extends WithStyles<typeof styles> {
+interface PaletteListProps
+  extends RouteComponentProps,
+    WithStyles<typeof styles> {
   palettes: IPalette[];
 }
 
 class PaletteList extends Component<PaletteListProps> {
+  constructor(props: PaletteListProps) {
+    super(props);
+
+    this.goToPalette = this.goToPalette.bind(this);
+  }
+
+  goToPalette(id: string) {
+    this.props.history.push(`/palette/${id}`);
+  }
+
   render() {
     const { palettes, classes } = this.props;
 
@@ -54,7 +67,11 @@ class PaletteList extends Component<PaletteListProps> {
           </nav>
           <div className={classes.palettes}>
             {palettes.map(palette => (
-              <MiniPalette {...palette} />
+              <MiniPalette
+                key={palette.id}
+                {...palette}
+                goToPalette={this.goToPalette}
+              />
             ))}
           </div>
         </div>
