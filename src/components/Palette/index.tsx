@@ -1,5 +1,3 @@
-import "./Palette.css";
-
 import { FC, useState } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import ColorBox from "../ColorBox";
@@ -7,21 +5,7 @@ import { GeneratedPalette } from "../../utils/colorHelpers";
 import Navbar, { AcceptedFormats } from "../Navbar";
 import { Redirect } from "react-router-dom";
 import PaletteFooter from "../PaletteFooter";
-
-const styles: { [key: string]: any } = {
-  Palette: {
-    height: "100vh",
-    /* remove overflow if it makes any problem.
-     * I added this to hide overflow when clicking on ColorBox
-     */
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
-  },
-  colors: {
-    height: "90%",
-  },
-};
+import styles from "../../styles/PaletteStyles";
 
 interface PaletteProps extends WithStyles<typeof styles> {
   palette: GeneratedPalette | null;
