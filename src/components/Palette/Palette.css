@@ -1,8 +1,6 @@
+/*
 .Palette {
   height: 100vh;
-  /* remove overflow if it makes any problem.
-   * I added this to hide overflow when clicking on ColorBox
-   */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -11,6 +9,7 @@
 .Palette-colors {
   height: 90%;
 }
+*/
 
 .Palette-footer {
   background-color: white;
