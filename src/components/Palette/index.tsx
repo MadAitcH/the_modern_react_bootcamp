@@ -1,13 +1,29 @@
 import "./Palette.css";
 
 import { Component } from "react";
+import { withStyles, WithStyles } from "@mui/styles";
 import ColorBox from "../ColorBox";
 import { GeneratedPalette } from "../../utils/colorHelpers";
 import Navbar, { AcceptedFormats } from "../Navbar";
 import { Redirect } from "react-router-dom";
 import PaletteFooter from "../PaletteFooter";
 
-interface PaletteProps {
+const styles: { [key: string]: any } = {
+  Palette: {
+    height: "100vh",
+    /* remove overflow if it makes any problem.
+     * I added this to hide overflow when clicking on ColorBox
+     */
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
+  },
+  colors: {
+    height: "90%",
+  },
+};
+
+interface PaletteProps extends WithStyles<typeof styles> {
   palette: GeneratedPalette | null;
 }
 
@@ -47,6 +63,7 @@ class Palette extends Component<PaletteProps, PaletteState> {
 
     const { level } = this.state;
     const {
+      classes,
       palette: { colors, paletteName, emoji, id },
     } = this.props;
 
@@ -61,18 +78,18 @@ class Palette extends Component<PaletteProps, PaletteState> {
     ));
 
     return (
-      <div className="Palette">
+      <div className={classes.Palette}>
         <Navbar
           level={level}
           onSliderValueChange={this.onSliderValueChange}
           onColorFormatChange={this.onColorFormatChange}
           showingAllColors
         />
-        <div className="Palette-colors">{colorBoxes}</div>
+        <div className={classes.colors}>{colorBoxes}</div>
         <PaletteFooter paletteName={paletteName} emoji={emoji} />
       </div>
     );
   }
 }
 
-export default Palette;
+export default withStyles(styles)(Palette);
