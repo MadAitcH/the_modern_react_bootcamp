@@ -1,5 +1,4 @@
 import "rc-slider/assets/index.css";
-import "./Navbar.css";
 
 import { FC, useState } from "react";
 import Slider from "rc-slider";
@@ -10,10 +9,12 @@ import {
   IconButton,
   SelectChangeEvent,
 } from "@mui/material";
+import { withStyles, WithStyles } from "@mui/styles";
 import CloseButton from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
+import styles from "../../styles/NavbarStyles";
 
-interface NavbarProps {
+interface NavbarProps extends WithStyles<typeof styles> {
   level?: number;
   onSliderValueChange?: (level: number) => void;
   onColorFormatChange: (colorFormat: AcceptedFormats) => void;
@@ -23,6 +24,7 @@ interface NavbarProps {
 export type AcceptedFormats = "hex" | "rgb" | "rgba";
 
 const Navbar: FC<NavbarProps> = ({
+  classes,
   level,
   onSliderValueChange,
   onColorFormatChange,
@@ -50,14 +52,14 @@ const Navbar: FC<NavbarProps> = ({
   };
 
   return (
-    <header className="Navbar">
-      <div className="logo">
+    <header className={classes.Navbar}>
+      <div className={classes.logo}>
         <Link to="/">ReactColorPicker</Link>
       </div>
       {showingAllColors && level && onSliderValueChange && (
-        <div className="silder-container">
+        <div>
           <span>Level: {level}</span>
-          <div className="slider">
+          <div className={classes.slider}>
             <Slider
               defaultValue={level}
               min={100}
@@ -68,7 +70,7 @@ const Navbar: FC<NavbarProps> = ({
           </div>
         </div>
       )}
-      <div className="select-container">
+      <div className={classes.selectContainer}>
         <Select value={format} onChange={handleFormatChange}>
           <MenuItem value="hex">HEX - #ffffff</MenuItem>
           <MenuItem value="rgb">RGB - rgb(255, 255, 255)</MenuItem>
@@ -104,4 +106,4 @@ const Navbar: FC<NavbarProps> = ({
   );
 };
 
-export default Navbar;
+export default withStyles(styles)(Navbar);

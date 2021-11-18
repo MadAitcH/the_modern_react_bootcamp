@@ -4,7 +4,7 @@ import { withStyles, WithStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 import styles from "../../styles/ColorBoxStyles";
 
-interface ColorBoxProps extends WithStyles<typeof styles> {
+export interface ColorBoxProps extends WithStyles<typeof styles> {
   background: string;
   name: string;
   moreUrl?: string;
