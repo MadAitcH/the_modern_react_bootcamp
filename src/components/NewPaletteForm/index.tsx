@@ -12,6 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
+import DraggableColorBox from "../DraggableColorBox";
 
 const drawerWidth = 400;
 
@@ -19,6 +20,7 @@ const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
+  height: "calc(100vh - 64px)",
   padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
@@ -100,7 +102,7 @@ const NewPaletteForm: FC = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Create A Palette
           </Typography>
         </Toolbar>
       </AppBar>
@@ -148,13 +150,9 @@ const NewPaletteForm: FC = () => {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <ul>
-          {colors.map(color => (
-            <li key={color} style={{ backgroundColor: color }}>
-              {color}
-            </li>
-          ))}
-        </ul>
+        {colors.map(color => (
+          <DraggableColorBox color={color} key={color} />
+        ))}
       </Main>
     </Box>
   );
