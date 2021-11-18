@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, ChangeEvent, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -12,7 +12,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorBox from "../DraggableColorBox";
+
+interface NewColor {
+  color: string;
+  name: string;
+}
 
 const drawerWidth = 400;
 
@@ -69,7 +75,18 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const NewPaletteForm: FC = () => {
   const [open, setOpen] = useState(false);
   const [currentColor, setCurrentColor] = useState<string>("teal");
-  const [colors, setColors] = useState<any[]>(["purple", "#049139"]); // TODO: fix the type
+  const [colors, setColors] = useState<NewColor[]>([]);
+  const [newName, setNewName] = useState("");
+
+  useEffect(() => {
+    ValidatorForm.addValidationRule("isColorNameUnique", value =>
+      colors.every(color => color.name.toLowerCase() !== value.toLowerCase())
+    );
+
+    ValidatorForm.addValidationRule("isColorUnique", value =>
+      colors.every(color => color.color !== currentColor)
+    );
+  }, [colors, currentColor]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -84,7 +101,16 @@ const NewPaletteForm: FC = () => {
   };
 
   const addNewColor = () => {
-    setColors([...colors, currentColor]);
+    const newColor = {
+      color: currentColor,
+      name: newName,
+    };
+    setColors([...colors, newColor]);
+    setNewName("");
+  };
+
+  const onValidatorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value);
   };
 
   return (
@@ -134,24 +160,38 @@ const NewPaletteForm: FC = () => {
             Random Color
           </Button>
         </div>
+        {/* TODO: fix alpha slider or disable it */}
         <ChromePicker
           color={currentColor}
           onChangeComplete={updateCurrentColor}
         />
-        {/* TODO: fix alpha slider or disable it */}
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ backgroundColor: currentColor }}
-          onClick={addNewColor}
-        >
-          Add Color
-        </Button>
+        <ValidatorForm onSubmit={addNewColor}>
+          <TextValidator
+            value={newName}
+            name="textValidator"
+            onChange={onValidatorChange}
+            validators={["required", "isColorNameUnique", "isColorUnique"]}
+            errorMessages={[
+              "Enter a color name",
+              "Color name must be unique",
+              "Color already exist",
+            ]}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: currentColor }}
+            type="submit"
+          >
+            Add Color
+          </Button>
+        </ValidatorForm>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
         {colors.map(color => (
-          <DraggableColorBox color={color} key={color} />
+          <DraggableColorBox {...color} key={color.name} />
         ))}
       </Main>
     </Box>

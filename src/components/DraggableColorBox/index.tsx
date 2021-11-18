@@ -15,14 +15,15 @@ const styles: { [key: string]: any } = {
 
 interface DraggableColorBoxProps extends WithStyles<typeof styles> {
   color: string;
+  name: string;
 }
 
 class DraggableColorBox extends Component<DraggableColorBoxProps> {
   render() {
-    const { color, classes } = this.props;
+    const { color, name, classes } = this.props;
     return (
       <div className={classes.root} style={{ backgroundColor: color }}>
-        {color}
+        {name}
       </div>
     );
   }
