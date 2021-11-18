@@ -1,4 +1,4 @@
-import * as React from "react";
+import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { ChromePicker } from "react-color";
+import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
 
 const drawerWidth = 400;
@@ -64,8 +64,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-function NewPaletteForm() {
-  const [open, setOpen] = React.useState(false);
+const NewPaletteForm: FC = () => {
+  const [open, setOpen] = useState(false);
+  const [currentColor, setCurrentColor] = useState<string>("teal");
+  const [colors, setColors] = useState<any[]>(["purple", "#049139"]); // TODO: fix the type
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -73,6 +75,14 @@ function NewPaletteForm() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const updateCurrentColor = (newColor: ColorResult) => {
+    setCurrentColor(newColor.hex);
+  };
+
+  const addNewColor = () => {
+    setColors([...colors, currentColor]);
   };
 
   return (
@@ -123,18 +133,31 @@ function NewPaletteForm() {
           </Button>
         </div>
         <ChromePicker
-          color="mintcream"
-          onChangeComplete={newColor => console.log(newColor)}
+          color={currentColor}
+          onChangeComplete={updateCurrentColor}
         />
-        <Button variant="contained" color="primary">
+        {/* TODO: fix alpha slider or disable it */}
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ backgroundColor: currentColor }}
+          onClick={addNewColor}
+        >
           Add Color
         </Button>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
+        <ul>
+          {colors.map(color => (
+            <li key={color} style={{ backgroundColor: color }}>
+              {color}
+            </li>
+          ))}
+        </ul>
       </Main>
     </Box>
   );
-}
+};
 
 export default NewPaletteForm;
