@@ -21,6 +21,10 @@ const styles: { [key: string]: any } = {
     display: "flex",
     justifyContent: "space-between",
     color: "white",
+    alignItems: "center",
+    "& a": {
+      color: "white",
+    },
   },
 
   palettes: {

@@ -2,7 +2,7 @@ import { Component } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import { IPalette } from "../../utils/seedColors";
 import MiniPalette from "../MiniPalette";
-import { RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import styles from "../../styles/PaletteListStyles";
 
 interface PaletteListProps
@@ -30,6 +30,7 @@ class PaletteList extends Component<PaletteListProps> {
         <div className={classes.container}>
           <nav className={classes.nav}>
             <h1>React Colors</h1>
+            <Link to="/palette/new">Create Palette</Link>
           </nav>
           <div className={classes.palettes}>
             {palettes.map(palette => (
