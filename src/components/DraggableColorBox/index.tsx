@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -37,18 +37,20 @@ const styles: { [key: string]: any } = {
 interface DraggableColorBoxProps extends WithStyles<typeof styles> {
   color: string;
   name: string;
+  removeColorBox: (e: MouseEvent) => void;
 }
 
 const DraggableColorBox: FC<DraggableColorBoxProps> = ({
   color,
   classes,
   name,
+  removeColorBox,
 }) => {
   return (
     <div className={classes.root} style={{ backgroundColor: color }}>
       <div className={classes.boxContent}>
         <span>{name}</span>
-        <DeleteIcon className={classes.deleteIcon} />
+        <DeleteIcon className={classes.deleteIcon} onClick={removeColorBox} />
       </div>
     </div>
   );
