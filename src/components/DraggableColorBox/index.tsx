@@ -1,6 +1,7 @@
 import { FC, MouseEvent } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { SortableElement } from "react-sortable-hoc";
 
 const styles: { [key: string]: any } = {
   root: {
@@ -56,4 +57,4 @@ const DraggableColorBox: FC<DraggableColorBoxProps> = ({
   );
 };
 
-export default withStyles(styles)(DraggableColorBox);
+export default withStyles(styles)(SortableElement(DraggableColorBox));

@@ -13,9 +13,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import DraggableColorBox from "../DraggableColorBox";
+// import { arrayMove } from "react-sortable-hoc";
+import { arrayMoveImmutable } from "array-move";
 import { IPalette, NewColor } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
+import DraggableColorList from "../DraggableColorList";
 
 const drawerWidth = 400;
 
@@ -151,6 +153,16 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setColors(colors.filter(color => color.name !== colorName));
   };
 
+  const onSortEnd = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    setColors(arrayMoveImmutable(colors, oldIndex, newIndex));
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -241,13 +253,12 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {colors.map(color => (
-          <DraggableColorBox
-            {...color}
-            key={color.name}
-            removeColorBox={() => removeColorBox(color.name)}
-          />
-        ))}
+        <DraggableColorList
+          colors={colors}
+          removeColorBox={removeColorBox}
+          axis="xy"
+          onSortEnd={onSortEnd}
+        />
       </Main>
     </Box>
   );
