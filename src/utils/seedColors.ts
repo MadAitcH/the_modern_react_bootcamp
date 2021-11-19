@@ -1,11 +1,13 @@
+export interface NewColor {
+  color: string;
+  name: string;
+}
+
 export interface IPalette {
   paletteName: string;
   id: string;
   emoji: string;
-  colors: {
-    name: string;
-    color: string;
-  }[];
+  colors: NewColor[];
 }
 
 interface Style {

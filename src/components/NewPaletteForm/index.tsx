@@ -14,11 +14,8 @@ import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorBox from "../DraggableColorBox";
-
-interface NewColor {
-  color: string;
-  name: string;
-}
+import { IPalette, NewColor } from "../../utils/seedColors";
+import { RouteComponentProps } from "react-router-dom";
 
 const drawerWidth = 400;
 
@@ -72,7 +69,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-const NewPaletteForm: FC = () => {
+interface NewPaletteFormProps extends RouteComponentProps {
+  savePalette: (newColor: IPalette) => void;
+}
+
+const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
   const [open, setOpen] = useState(false);
   const [currentColor, setCurrentColor] = useState<string>("teal");
   const [colors, setColors] = useState<NewColor[]>([]);
@@ -83,7 +84,7 @@ const NewPaletteForm: FC = () => {
       colors.every(color => color.name.toLowerCase() !== value.toLowerCase())
     );
 
-    ValidatorForm.addValidationRule("isColorUnique", value =>
+    ValidatorForm.addValidationRule("isColorUnique", () =>
       colors.every(color => color.color !== currentColor)
     );
   }, [colors, currentColor]);
@@ -113,10 +114,23 @@ const NewPaletteForm: FC = () => {
     setNewName(e.target.value);
   };
 
+  const onSubmitPalette = () => {
+    // TODO: finish palette, choose a dynamic name, id and emoji
+    const newName = "New Test Palette";
+    const newPalette: IPalette = {
+      colors,
+      paletteName: newName,
+      emoji: "🚀",
+      id: newName.toLowerCase().replace(/ /g, "-"),
+    };
+    savePalette(newPalette);
+    history.push("/");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} color="default">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -130,6 +144,9 @@ const NewPaletteForm: FC = () => {
           <Typography variant="h6" noWrap component="div">
             Create A Palette
           </Typography>
+          <Button variant="contained" color="primary" onClick={onSubmitPalette}>
+            Save Palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
