@@ -79,7 +79,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   savePalette,
   history,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [currentColor, setCurrentColor] = useState<string>("teal");
   const [colors, setColors] = useState<NewColor[]>([]);
   const [newColorName, setNewColorName] = useState("");
