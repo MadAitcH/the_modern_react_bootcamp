@@ -70,14 +70,20 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 interface NewPaletteFormProps extends RouteComponentProps {
-  savePalette: (newColor: IPalette) => void;
+  palettes: IPalette[];
+  savePalette: (newPalette: IPalette) => void;
 }
 
-const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
+const NewPaletteForm: FC<NewPaletteFormProps> = ({
+  palettes,
+  savePalette,
+  history,
+}) => {
   const [open, setOpen] = useState(false);
   const [currentColor, setCurrentColor] = useState<string>("teal");
   const [colors, setColors] = useState<NewColor[]>([]);
-  const [newName, setNewName] = useState("");
+  const [newColorName, setNewColorName] = useState("");
+  const [newPaletteName, setNewPaletteName] = useState("");
 
   useEffect(() => {
     ValidatorForm.addValidationRule("isColorNameUnique", value =>
@@ -87,7 +93,13 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
     ValidatorForm.addValidationRule("isColorUnique", () =>
       colors.every(color => color.color !== currentColor)
     );
-  }, [colors, currentColor]);
+
+    ValidatorForm.addValidationRule("isPaletteNameUnique", value =>
+      palettes.every(
+        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
+      )
+    );
+  }, [colors, currentColor, palettes]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,27 +116,35 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
   const addNewColor = () => {
     const newColor = {
       color: currentColor,
-      name: newName,
+      name: newColorName,
     };
     setColors([...colors, newColor]);
-    setNewName("");
-  };
-
-  const onValidatorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewName(e.target.value);
+    setNewColorName("");
   };
 
   const onSubmitPalette = () => {
-    // TODO: finish palette, choose a dynamic name, id and emoji
-    const newName = "New Test Palette";
+    const newName = newPaletteName;
     const newPalette: IPalette = {
       colors,
       paletteName: newName,
-      emoji: "🚀",
+      emoji: "🚀", // TODO: add emoji dynamically
       id: newName.toLowerCase().replace(/ /g, "-"),
     };
     savePalette(newPalette);
     history.push("/");
+  };
+
+  const onTextValidatorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.name) {
+      case "newColorName":
+        setNewColorName(e.target.value);
+        break;
+      case "newPaletteName":
+        setNewPaletteName(e.target.value);
+        break;
+      default:
+        return;
+    }
   };
 
   return (
@@ -144,9 +164,19 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
           <Typography variant="h6" noWrap component="div">
             Create A Palette
           </Typography>
-          <Button variant="contained" color="primary" onClick={onSubmitPalette}>
-            Save Palette
-          </Button>
+          <ValidatorForm onSubmit={onSubmitPalette}>
+            <TextValidator
+              name="newPaletteName"
+              lable="Palette Name"
+              value={newPaletteName}
+              onChange={onTextValidatorChange}
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={["Enter a palette name", "Name already used"]}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Save Palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -184,9 +214,9 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({ savePalette, history }) => {
         />
         <ValidatorForm onSubmit={addNewColor}>
           <TextValidator
-            value={newName}
-            name="textValidator"
-            onChange={onValidatorChange}
+            value={newColorName}
+            name="newColorName"
+            onChange={onTextValidatorChange}
             validators={["required", "isColorNameUnique", "isColorUnique"]}
             errorMessages={[
               "Enter a color name",
