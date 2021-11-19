@@ -147,6 +147,10 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     }
   };
 
+  const removeColorBox = (colorName: string) => {
+    setColors(colors.filter(color => color.name !== colorName));
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -238,7 +242,11 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
       <Main open={open}>
         <DrawerHeader />
         {colors.map(color => (
-          <DraggableColorBox {...color} key={color.name} />
+          <DraggableColorBox
+            {...color}
+            key={color.name}
+            removeColorBox={() => removeColorBox(color.name)}
+          />
         ))}
       </Main>
     </Box>
