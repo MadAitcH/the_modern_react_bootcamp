@@ -2,24 +2,22 @@ import { FC, ChangeEvent, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-// import { arrayMove } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
 import { IPalette, NewColor } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
+import PaletteFormNav from "../PaletteFormNav";
 
 const drawerWidth = 400;
+// if you change this value, you MAY need to change the value of drawerWidth
+// in PaletteFormNav too.
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
@@ -38,27 +36,6 @@ const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-  }),
-}));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   }),
 }));
 
@@ -86,7 +63,6 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   const [currentColor, setCurrentColor] = useState<string>("teal");
   const [colors, setColors] = useState<NewColor[]>([...palettes[0].colors]);
   const [newColorName, setNewColorName] = useState("");
-  const [newPaletteName, setNewPaletteName] = useState("");
   const isPaletteFull = colors.length >= maxColors;
 
   useEffect(() => {
@@ -96,12 +72,6 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 
     ValidatorForm.addValidationRule("isColorUnique", () =>
       colors.every(color => color.color !== currentColor)
-    );
-
-    ValidatorForm.addValidationRule("isPaletteNameUnique", value =>
-      palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      )
     );
   }, [colors, currentColor, palettes]);
 
@@ -126,26 +96,10 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setNewColorName("");
   };
 
-  const onSubmitPalette = () => {
-    if (newPaletteName === "new") return;
-    const newName = newPaletteName;
-    const newPalette: IPalette = {
-      colors,
-      paletteName: newName,
-      emoji: "🚀", // TODO: add emoji dynamically
-      id: newName.toLowerCase().replace(/ /g, "-"),
-    };
-    savePalette(newPalette);
-    history.push("/");
-  };
-
   const onTextValidatorChange = (e: ChangeEvent<HTMLInputElement>) => {
     switch (e.target.name) {
       case "newColorName":
         setNewColorName(e.target.value);
-        break;
-      case "newPaletteName":
-        setNewPaletteName(e.target.value);
         break;
       default:
         return;
@@ -189,39 +143,27 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     return colors.every(color => color.name !== currentColor.name);
   };
 
+  const onSubmitPalette = (newPaletteName: string) => {
+    if (newPaletteName === "new") return;
+    const newPalette: IPalette = {
+      colors,
+      paletteName: newPaletteName,
+      emoji: "🚀", // TODO: add emoji dynamically
+      id: newPaletteName.toLowerCase().replace(/ /g, "-"),
+    };
+    savePalette(newPalette);
+    history.push("/");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} color="default">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Create A Palette
-          </Typography>
-          <ValidatorForm onSubmit={onSubmitPalette}>
-            {/* TODO: Fix TextValidator's styles */}
-            <TextValidator
-              name="newPaletteName"
-              lable="Palette Name"
-              value={newPaletteName}
-              onChange={onTextValidatorChange}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter a palette name", "Name already used"]}
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Save Palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <PaletteFormNav
+        theDrawerWidth={drawerWidth}
+        open={open}
+        palettes={palettes}
+        handleDrawerOpen={handleDrawerOpen}
+        onSubmitPalette={onSubmitPalette}
+      />
       <Drawer
         sx={{
           width: drawerWidth,
