@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
+import { withStyles, WithStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Button } from "@mui/material";
@@ -13,6 +13,28 @@ import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav, { drawerWidth } from "../PaletteFormNav";
 import ColorPickerForm from "../ColorPickerForm";
+
+const styles: { [key: string]: any } = {
+  drawer: {
+    display: "flex",
+    alignItems: "center",
+  },
+  container: {
+    width: "90%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",
+  },
+  buttons: {
+    width: "100%",
+  },
+  button: {
+    width: "50%",
+  },
+};
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
@@ -43,12 +65,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-interface NewPaletteFormProps extends RouteComponentProps {
+interface NewPaletteFormProps
+  extends RouteComponentProps,
+    WithStyles<typeof styles> {
   palettes: IPalette[];
   savePalette: (newPalette: IPalette) => void;
 }
 
 const NewPaletteForm: FC<NewPaletteFormProps> = ({
+  classes,
   palettes,
   savePalette,
   history,
@@ -136,6 +161,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             boxSizing: "border-box",
           },
         }}
+        className={classes.drawer}
         variant="persistent"
         anchor="left"
         open={open}
@@ -145,26 +171,35 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
-        <Divider />
-        <Typography variant="h4">Design Your Palette</Typography>
-        <div>
-          <Button variant="contained" color="error" onClick={onClearPalette}>
-            Clear Palette
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onAddRandomColor}
-            disabled={isPaletteFull}
-          >
-            Random Color
-          </Button>
+        <div className={classes.container}>
+          <Typography variant="h4" gutterBottom>
+            Design Your Palette
+          </Typography>
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={onClearPalette}
+              className={classes.button}
+            >
+              Clear Palette
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onAddRandomColor}
+              disabled={isPaletteFull}
+              className={classes.button}
+            >
+              Random Color
+            </Button>
+          </div>
+          <ColorPickerForm
+            isPaletteFull={isPaletteFull}
+            addNewColor={addNewColor}
+            colors={colors}
+          />
         </div>
-        <ColorPickerForm
-          isPaletteFull={isPaletteFull}
-          addNewColor={addNewColor}
-          colors={colors}
-        />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
@@ -179,4 +214,4 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   );
 };
 
-export default NewPaletteForm;
+export default withStyles(styles)(NewPaletteForm);
