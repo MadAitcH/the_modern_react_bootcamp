@@ -81,11 +81,13 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   savePalette,
   history,
 }) => {
+  const maxColors = 20;
   const [open, setOpen] = useState(true);
   const [currentColor, setCurrentColor] = useState<string>("teal");
-  const [colors, setColors] = useState<NewColor[]>([]);
+  const [colors, setColors] = useState<NewColor[]>([...palettes[0].colors]);
   const [newColorName, setNewColorName] = useState("");
   const [newPaletteName, setNewPaletteName] = useState("");
+  const isPaletteFull = colors.length >= maxColors;
 
   useEffect(() => {
     ValidatorForm.addValidationRule("isColorNameUnique", value =>
@@ -125,6 +127,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   };
 
   const onSubmitPalette = () => {
+    if (newPaletteName === "new") return;
     const newName = newPaletteName;
     const newPalette: IPalette = {
       colors,
@@ -163,6 +166,29 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setColors(arrayMoveImmutable(colors, oldIndex, newIndex));
   };
 
+  const onClearPalette = () => {
+    setColors([]);
+  };
+
+  const onAddRandomColor = () => {
+    let isUnique = false;
+    let randomColor: NewColor;
+
+    do {
+      const i = Math.floor(Math.random() * palettes.length);
+      const j = Math.floor(Math.random() * palettes[i].colors.length);
+
+      randomColor = palettes[i].colors[j];
+
+      isUnique = isColorUnique(randomColor);
+    } while (!isUnique);
+    setColors([...colors, randomColor]);
+  };
+
+  const isColorUnique = (currentColor: NewColor) => {
+    return colors.every(color => color.name !== currentColor.name);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -181,6 +207,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             Create A Palette
           </Typography>
           <ValidatorForm onSubmit={onSubmitPalette}>
+            {/* TODO: Fix TextValidator's styles */}
             <TextValidator
               name="newPaletteName"
               lable="Palette Name"
@@ -216,10 +243,15 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
         <Divider />
         <Typography variant="h4">Design Your Palette</Typography>
         <div>
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={onClearPalette}>
             Clear Palette
           </Button>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onAddRandomColor}
+            disabled={isPaletteFull}
+          >
             Random Color
           </Button>
         </div>
@@ -244,10 +276,13 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
           <Button
             variant="contained"
             color="primary"
-            style={{ backgroundColor: currentColor }}
+            style={{
+              backgroundColor: isPaletteFull ? "grey" : currentColor,
+            }}
             type="submit"
+            disabled={isPaletteFull}
           >
-            Add Color
+            {isPaletteFull ? "Palette Full" : "Add Color"}
           </Button>
         </ValidatorForm>
       </Drawer>
