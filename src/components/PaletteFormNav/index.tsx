@@ -1,5 +1,6 @@
 import { useState, useEffect, FC, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import { withStyles, WithStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -11,7 +12,14 @@ import { Button } from "@mui/material";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { IPalette } from "../../utils/seedColors";
 
-let drawerWidth = 400;
+export const drawerWidth = 400;
+
+const styles: { [key: string]: any } = {
+  root: {
+    display: "flex",
+  },
+  navBtns: {},
+};
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -20,6 +28,9 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  height: "64px",
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -34,22 +45,20 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-interface PaletteFormNavProps {
+interface PaletteFormNavProps extends WithStyles<typeof styles> {
   open: boolean;
   palettes: IPalette[];
-  theDrawerWidth: number;
   handleDrawerOpen: () => void;
   onSubmitPalette: (newPaletteName: string) => void;
 }
 
 const PaletteFormNav: FC<PaletteFormNavProps> = ({
+  classes,
   open,
   palettes,
-  theDrawerWidth,
   handleDrawerOpen,
   onSubmitPalette,
 }) => {
-  drawerWidth = theDrawerWidth;
   const [newPaletteName, setNewPaletteName] = useState("");
 
   useEffect(() => {
@@ -75,7 +84,7 @@ const PaletteFormNav: FC<PaletteFormNavProps> = ({
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" open={open} color="default">
         <Toolbar>
@@ -91,6 +100,8 @@ const PaletteFormNav: FC<PaletteFormNavProps> = ({
           <Typography variant="h6" noWrap component="div">
             Create A Palette
           </Typography>
+        </Toolbar>
+        <div className={classes.navBtns}>
           <ValidatorForm onSubmit={handleSubmit}>
             {/* TODO: Fix TextValidator's styles */}
             <TextValidator
@@ -104,16 +115,16 @@ const PaletteFormNav: FC<PaletteFormNavProps> = ({
             <Button variant="contained" color="primary" type="submit">
               Save Palette
             </Button>
-            <Link to="/">
-              <Button variant="contained" color="error">
-                Go Back
-              </Button>
-            </Link>
           </ValidatorForm>
-        </Toolbar>
+          <Link to="/">
+            <Button variant="contained" color="error">
+              Go Back
+            </Button>
+          </Link>
+        </div>
       </AppBar>
     </div>
   );
 };
 
-export default PaletteFormNav;
+export default withStyles(styles)(PaletteFormNav);
