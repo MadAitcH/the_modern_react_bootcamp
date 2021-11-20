@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -6,14 +6,13 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { ChromePicker, ColorResult } from "react-color";
 import { Button } from "@mui/material";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { arrayMoveImmutable } from "array-move";
 import { IPalette, NewColor } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav from "../PaletteFormNav";
+import ColorPickerForm from "../ColorPickerForm";
 
 const drawerWidth = 400;
 // if you change this value, you MAY need to change the value of drawerWidth
@@ -60,20 +59,8 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 }) => {
   const maxColors = 20;
   const [open, setOpen] = useState(true);
-  const [currentColor, setCurrentColor] = useState<string>("teal");
   const [colors, setColors] = useState<NewColor[]>([...palettes[0].colors]);
-  const [newColorName, setNewColorName] = useState("");
   const isPaletteFull = colors.length >= maxColors;
-
-  useEffect(() => {
-    ValidatorForm.addValidationRule("isColorNameUnique", value =>
-      colors.every(color => color.name.toLowerCase() !== value.toLowerCase())
-    );
-
-    ValidatorForm.addValidationRule("isColorUnique", () =>
-      colors.every(color => color.color !== currentColor)
-    );
-  }, [colors, currentColor, palettes]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -81,29 +68,6 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const updateCurrentColor = (newColor: ColorResult) => {
-    setCurrentColor(newColor.hex);
-  };
-
-  const addNewColor = () => {
-    const newColor = {
-      color: currentColor,
-      name: newColorName,
-    };
-    setColors([...colors, newColor]);
-    setNewColorName("");
-  };
-
-  const onTextValidatorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    switch (e.target.name) {
-      case "newColorName":
-        setNewColorName(e.target.value);
-        break;
-      default:
-        return;
-    }
   };
 
   const removeColorBox = (colorName: string) => {
@@ -155,6 +119,10 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     history.push("/");
   };
 
+  const addNewColor = (newColor: NewColor) => {
+    setColors([...colors, newColor]);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <PaletteFormNav
@@ -197,36 +165,11 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             Random Color
           </Button>
         </div>
-        {/* TODO: fix alpha slider or disable it */}
-        <ChromePicker
-          color={currentColor}
-          onChangeComplete={updateCurrentColor}
+        <ColorPickerForm
+          isPaletteFull={isPaletteFull}
+          addNewColor={addNewColor}
+          colors={colors}
         />
-        <ValidatorForm onSubmit={addNewColor}>
-          <TextValidator
-            value={newColorName}
-            name="newColorName"
-            onChange={onTextValidatorChange}
-            validators={["required", "isColorNameUnique", "isColorUnique"]}
-            errorMessages={[
-              "Enter a color name",
-              "Color name must be unique",
-              "Color already exist",
-            ]}
-          />
-
-          <Button
-            variant="contained"
-            color="primary"
-            style={{
-              backgroundColor: isPaletteFull ? "grey" : currentColor,
-            }}
-            type="submit"
-            disabled={isPaletteFull}
-          >
-            {isPaletteFull ? "Palette Full" : "Add Color"}
-          </Button>
-        </ValidatorForm>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
