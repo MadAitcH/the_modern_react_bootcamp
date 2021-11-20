@@ -11,12 +11,8 @@ import { arrayMoveImmutable } from "array-move";
 import { IPalette, NewColor } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
-import PaletteFormNav from "../PaletteFormNav";
+import PaletteFormNav, { drawerWidth } from "../PaletteFormNav";
 import ColorPickerForm from "../ColorPickerForm";
-
-const drawerWidth = 400;
-// if you change this value, you MAY need to change the value of drawerWidth
-// in PaletteFormNav too.
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
@@ -126,7 +122,6 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   return (
     <Box sx={{ display: "flex" }}>
       <PaletteFormNav
-        theDrawerWidth={drawerWidth}
         open={open}
         palettes={palettes}
         handleDrawerOpen={handleDrawerOpen}
