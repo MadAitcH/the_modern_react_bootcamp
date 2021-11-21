@@ -1,3 +1,4 @@
+import "emoji-mart/css/emoji-mart.css";
 import "./index.css";
 
 import ReactDOM from "react-dom";
