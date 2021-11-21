@@ -1,4 +1,4 @@
-import { Component, MouseEvent } from "react";
+import { Component } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SortableElement } from "react-sortable-hoc";
@@ -38,21 +38,34 @@ const styles: { [key: string]: any } = {
 interface DraggableColorBoxProps extends WithStyles<typeof styles> {
   color: string;
   name: string;
-  removeColorBox: (e: MouseEvent) => void;
+  removeColorBox: (colorName: string) => void;
 }
 
 class DraggableColorBox extends Component<DraggableColorBoxProps> {
+  constructor(props: DraggableColorBoxProps) {
+    super(props);
+
+    this.onRemoveColorBoxClick = this.onRemoveColorBoxClick.bind(this);
+  }
+
+  onRemoveColorBoxClick() {
+    this.props.removeColorBox(this.props.name);
+  }
+
   render() {
-    const { color, name, removeColorBox, classes } = this.props;
+    const { color, name, classes } = this.props;
     return (
       <div className={classes.root} style={{ backgroundColor: color }}>
         <div className={classes.boxContent}>
           <span>{name}</span>
-          <DeleteIcon className={classes.deleteIcon} onClick={removeColorBox} />
+          <DeleteIcon
+            className={classes.deleteIcon}
+            onClick={this.onRemoveColorBoxClick}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(SortableElement(DraggableColorBox));
+export default SortableElement(withStyles(styles)(DraggableColorBox));

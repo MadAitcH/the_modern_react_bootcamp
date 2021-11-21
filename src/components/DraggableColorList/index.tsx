@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { SortableContainer } from "react-sortable-hoc";
+import { SortableContainer, SortEndHandler } from "react-sortable-hoc";
 import { NewColor } from "../../utils/seedColors";
 import DraggableColorBox from "../DraggableColorBox";
 
@@ -7,13 +7,7 @@ interface DraggableColorListProps {
   colors: NewColor[];
   removeColorBox: (colorName: string) => void;
   axis: "x" | "y" | "xy";
-  onSortEnd: ({
-    oldIndex,
-    newIndex,
-  }: {
-    oldIndex: number;
-    newIndex: number;
-  }) => void;
+  onSortEnd: SortEndHandler;
 }
 
 class DraggableColorList extends Component<DraggableColorListProps> {
@@ -26,7 +20,7 @@ class DraggableColorList extends Component<DraggableColorListProps> {
             {...color}
             key={color.name}
             index={i}
-            removeColorBox={() => removeColorBox(color.name)}
+            removeColorBox={removeColorBox}
           />
         ))}
       </div>

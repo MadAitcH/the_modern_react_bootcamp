@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { withStyles, WithStyles } from "@mui/styles";
+// import { withStyles, WithStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -13,28 +13,29 @@ import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav, { drawerWidth } from "../PaletteFormNav";
 import ColorPickerForm from "../ColorPickerForm";
+import { SortEndHandler } from "react-sortable-hoc";
 
-const styles: { [key: string]: any } = {
-  drawer: {
-    display: "flex",
-    alignItems: "center",
-  },
-  container: {
-    width: "90%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "0 auto",
-  },
-  buttons: {
-    width: "100%",
-  },
-  button: {
-    width: "50%",
-  },
-};
+// const styles: { [key: string]: any } = {
+//   drawer: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   container: {
+//     width: "90%",
+//     height: "100%",
+//     display: "flex",
+//     flexDirection: "column",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: "0 auto",
+//   },
+//   buttons: {
+//     width: "100%",
+//   },
+//   button: {
+//     width: "50%",
+//   },
+// };
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
@@ -65,15 +66,12 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-interface NewPaletteFormProps
-  extends RouteComponentProps,
-    WithStyles<typeof styles> {
+interface NewPaletteFormProps extends RouteComponentProps {
   palettes: IPalette[];
   savePalette: (newPalette: IPalette) => void;
 }
 
 const NewPaletteForm: FC<NewPaletteFormProps> = ({
-  classes,
   palettes,
   savePalette,
   history,
@@ -95,13 +93,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setColors(colors.filter(color => color.name !== colorName));
   };
 
-  const onSortEnd = ({
-    oldIndex,
-    newIndex,
-  }: {
-    oldIndex: number;
-    newIndex: number;
-  }) => {
+  const onSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
     setColors(arrayMoveImmutable(colors, oldIndex, newIndex));
   };
 
@@ -154,6 +146,8 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
       />
       <Drawer
         sx={{
+          display: "flex",
+          alignItems: "center",
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
@@ -161,7 +155,6 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             boxSizing: "border-box",
           },
         }}
-        className={classes.drawer}
         variant="persistent"
         anchor="left"
         open={open}
@@ -171,16 +164,26 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
-        <div className={classes.container}>
+        <Box
+          sx={{
+            width: "90%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
+          }}
+        >
           <Typography variant="h4" gutterBottom>
             Design Your Palette
           </Typography>
-          <div className={classes.buttons}>
+          <Box sx={{ width: "100%" }}>
             <Button
               variant="contained"
               color="error"
               onClick={onClearPalette}
-              className={classes.button}
+              sx={{ width: "50%" }}
             >
               Clear Palette
             </Button>
@@ -189,17 +192,17 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
               color="primary"
               onClick={onAddRandomColor}
               disabled={isPaletteFull}
-              className={classes.button}
+              sx={{ width: "50%" }}
             >
               Random Color
             </Button>
-          </div>
+          </Box>
           <ColorPickerForm
             isPaletteFull={isPaletteFull}
             addNewColor={addNewColor}
             colors={colors}
           />
-        </div>
+        </Box>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
@@ -214,4 +217,4 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   );
 };
 
-export default withStyles(styles)(NewPaletteForm);
+export default NewPaletteForm;
