@@ -11,23 +11,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Button } from "@mui/material";
 import { IPalette, IPartialPalette } from "../../utils/seedColors";
 import PaletteMetaForm from "../PaletteMetaForm";
-
-export const drawerWidth = 400;
-
-const styles: { [key: string]: any } = {
-  root: {
-    display: "flex",
-  },
-  navBtns: {
-    marginRight: "1rem",
-    "& a": {
-      textDecoration: "none",
-    },
-  },
-  button: {
-    margin: "0 0.5rem",
-  },
-};
+import styles from "../../styles/PaletteFormNavStyles";
+import { DRAWER_WIDTH as drawerWidth } from "../../constants";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
