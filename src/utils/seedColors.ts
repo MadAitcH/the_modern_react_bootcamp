@@ -3,10 +3,14 @@ export interface NewColor {
   name: string;
 }
 
-export interface IPalette {
+export interface IPartialPalette {
   paletteName: string;
-  id: string;
   emoji: string;
+}
+
+export interface IPalette extends IPartialPalette {
+  emoji: string;
+  id: string;
   colors: NewColor[];
 }
 

@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Button } from "@mui/material";
 import { arrayMoveImmutable } from "array-move";
-import { IPalette, NewColor } from "../../utils/seedColors";
+import { IPalette, NewColor, IPartialPalette } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav, { drawerWidth } from "../PaletteFormNav";
@@ -120,14 +120,15 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     return colors.every(color => color.name !== currentColor.name);
   };
 
-  const onSubmitPalette = (newPaletteName: string) => {
-    if (newPaletteName === "new") return;
+  const onSubmitPalette = (partialPalette: IPartialPalette) => {
+    if (partialPalette.paletteName === "new") return;
+
     const newPalette: IPalette = {
+      ...partialPalette,
       colors,
-      paletteName: newPaletteName,
-      emoji: "🚀", // TODO: add emoji dynamically
-      id: newPaletteName.toLowerCase().replace(/ /g, "-"),
+      id: partialPalette.paletteName.toLowerCase().replace(/ /g, "-"),
     };
+
     savePalette(newPalette);
     history.push("/");
   };

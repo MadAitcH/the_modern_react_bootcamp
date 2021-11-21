@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button } from "@mui/material";
-import { IPalette } from "../../utils/seedColors";
+import { IPalette, IPartialPalette } from "../../utils/seedColors";
 import PaletteMetaForm from "../PaletteMetaForm";
 
 export const drawerWidth = 400;
@@ -58,7 +58,7 @@ interface PaletteFormNavProps extends WithStyles<typeof styles> {
   open: boolean;
   palettes: IPalette[];
   handleDrawerOpen: () => void;
-  onSubmitPalette: (newPaletteName: string) => void;
+  onSubmitPalette: (newPalette: IPartialPalette) => void;
 }
 
 const PaletteFormNav: FC<PaletteFormNavProps> = ({
