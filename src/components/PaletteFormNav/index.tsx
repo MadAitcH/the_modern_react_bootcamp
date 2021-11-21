@@ -74,6 +74,10 @@ const PaletteFormNav: FC<PaletteFormNavProps> = ({
     setFormShowing(true);
   };
 
+  const hideForm = () => {
+    setFormShowing(false);
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -114,6 +118,7 @@ const PaletteFormNav: FC<PaletteFormNavProps> = ({
       </AppBar>
       {formShowing && (
         <PaletteMetaForm
+          hideForm={hideForm}
           palettes={palettes}
           onSubmitPalette={onSubmitPalette}
         />

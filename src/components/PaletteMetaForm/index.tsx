@@ -6,16 +6,19 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import { Picker } from "emoji-mart";
 import { IPalette } from "../../utils/seedColors";
 
 interface PaletteMetaFormProps {
   palettes: IPalette[];
   onSubmitPalette: (newPaletteName: string) => void;
+  hideForm: () => void;
 }
 
 const PaletteMetaForm: FC<PaletteMetaFormProps> = ({
   palettes,
   onSubmitPalette,
+  hideForm,
 }) => {
   const [open, setOpen] = useState(true);
   const [newPaletteName, setNewPaletteName] = useState("");
@@ -44,6 +47,7 @@ const PaletteMetaForm: FC<PaletteMetaFormProps> = ({
 
   const handleClose = () => {
     setOpen(false);
+    hideForm();
   };
 
   return (
@@ -56,6 +60,7 @@ const PaletteMetaForm: FC<PaletteMetaFormProps> = ({
             Please enter a name for your newly created palette. Make sure it's
             unique!
           </DialogContentText>
+          <Picker />
           <TextValidator
             name="newPaletteName"
             label="Palette Name"
