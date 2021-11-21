@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-// import { withStyles, WithStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -11,31 +10,10 @@ import { arrayMoveImmutable } from "array-move";
 import { IPalette, NewColor, IPartialPalette } from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
-import PaletteFormNav, { drawerWidth } from "../PaletteFormNav";
+import PaletteFormNav from "../PaletteFormNav";
 import ColorPickerForm from "../ColorPickerForm";
 import { SortEndHandler } from "react-sortable-hoc";
-
-// const styles: { [key: string]: any } = {
-//   drawer: {
-//     display: "flex",
-//     alignItems: "center",
-//   },
-//   container: {
-//     width: "90%",
-//     height: "100%",
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     margin: "0 auto",
-//   },
-//   buttons: {
-//     width: "100%",
-//   },
-//   button: {
-//     width: "50%",
-//   },
-// };
+import { DRAWER_WIDTH as drawerWidth } from "../../constants";
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
