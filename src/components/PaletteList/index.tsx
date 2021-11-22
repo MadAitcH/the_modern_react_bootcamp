@@ -9,9 +9,15 @@ interface PaletteListProps
   extends RouteComponentProps,
     WithStyles<typeof styles> {
   palettes: IPalette[];
+  deletePalette: (paletteId: string) => void;
 }
 
-const PaletteList: FC<PaletteListProps> = ({ palettes, classes, history }) => {
+const PaletteList: FC<PaletteListProps> = ({
+  palettes,
+  classes,
+  history,
+  deletePalette,
+}) => {
   const goToPalette = (id: string) => {
     history.push(`/palette/${id}`);
   };
@@ -29,6 +35,7 @@ const PaletteList: FC<PaletteListProps> = ({ palettes, classes, history }) => {
               key={palette.id}
               {...palette}
               goToPalette={goToPalette}
+              deletePalette={deletePalette}
             />
           ))}
         </div>
