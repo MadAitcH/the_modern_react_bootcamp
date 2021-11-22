@@ -1,5 +1,6 @@
 import chroma from "chroma-js";
 import { ColorBoxProps } from "../components/ColorBox";
+import sizes from "./sizes";
 
 const styles: { [key: string]: any } = {
   ColorBox: {
@@ -12,6 +13,18 @@ const styles: { [key: string]: any } = {
     marginBottom: "-3.5px",
     "&:hover button": {
       opacity: 1,
+    },
+    [sizes.down("lg")]: {
+      width: "25%",
+      height: (props: ColorBoxProps) => (props.showFullPalette ? "20%" : "25%"),
+    },
+    [sizes.down("md")]: {
+      width: "50%",
+      height: (props: ColorBoxProps) => (props.showFullPalette ? "10%" : "25%"),
+    },
+    [sizes.down("xs")]: {
+      width: "100%",
+      height: (props: ColorBoxProps) => (props.showFullPalette ? "5%" : "10%"),
     },
   },
   copyText: {
