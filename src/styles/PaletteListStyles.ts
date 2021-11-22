@@ -1,13 +1,21 @@
 import sizes from "./sizes";
+import bg from "./confetti-doodles.svg";
 
 const styles: { [key: string]: any } = {
   root: {
-    backgroundColor: "blue",
     height: "100vh",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
     overflow: "auto", // added by me
+    backgroundColor: "#0C0BAA",
+    backgroundAttachment: "fixed",
+    /* background by SVGBackgrounds.com */
+    backgroundImage: `url(${bg})`,
+  },
+
+  heading: {
+    fontSize: "2rem",
   },
 
   container: {
@@ -46,7 +54,7 @@ const styles: { [key: string]: any } = {
     },
     [sizes.down("xs")]: {
       gridTemplateColumns: "repeat(1, 100%)",
-      gridGap: "1rem",
+      gridGap: "1.4rem",
     },
   },
 };
