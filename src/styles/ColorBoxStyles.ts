@@ -16,11 +16,12 @@ const styles: { [key: string]: any } = {
     },
     [sizes.down("lg")]: {
       width: "25%",
-      height: (props: ColorBoxProps) => (props.showFullPalette ? "20%" : "25%"),
+      height: (props: ColorBoxProps) =>
+        props.showFullPalette ? "25%" : "33.3333%",
     },
     [sizes.down("md")]: {
       width: "50%",
-      height: (props: ColorBoxProps) => (props.showFullPalette ? "10%" : "25%"),
+      height: (props: ColorBoxProps) => (props.showFullPalette ? "10%" : "20%"),
     },
     [sizes.down("xs")]: {
       width: "100%",
@@ -123,6 +124,10 @@ const styles: { [key: string]: any } = {
       marginBottom: "0",
       padding: "1rem",
       textTransform: "uppercase",
+
+      [sizes.down("xs")]: {
+        fontSize: "4.5rem",
+      },
     },
     "& p": {
       fontSize: "2rem",
