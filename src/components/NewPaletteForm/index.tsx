@@ -86,7 +86,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setColors([]);
   };
 
-  const onAddRandomColor = () => {
+  const pickUniqueRandomColor = (palettes: IPalette[]): NewColor => {
     let isUnique = false;
     let randomColor: NewColor;
 
@@ -98,7 +98,16 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 
       isUnique = isColorUnique(randomColor);
     } while (!isUnique);
-    setColors([...colors, randomColor]);
+
+    return randomColor;
+  };
+
+  const onAddRandomColor = () => {
+    if (palettes.length) {
+      setColors([...colors, pickUniqueRandomColor(palettes)]);
+    } else {
+      setColors([...colors, pickUniqueRandomColor(seedColors)]);
+    }
   };
 
   const isColorUnique = (currentColor: NewColor) => {
