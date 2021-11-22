@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { WithStyles, withStyles } from "@mui/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { IPalette } from "../../utils/seedColors";
 import styles from "../../styles/MiniPaletteStyles";
 
@@ -31,6 +32,12 @@ const MiniPalette: FC<MiniPaletteProps> = ({
 
   return (
     <div className={classes.root} onClick={onLinkClick}>
+      <div className={classes.delete}>
+        <DeleteIcon
+          className={classes.deleteIcon}
+          style={{ transition: "all 0.3s ease-in-out" }}
+        />
+      </div>
       <div className={classes.colors}>{miniColorBoxes}</div>
       <h5 className={classes.title}>
         {paletteName} <span className={classes.emoji}>{emoji}</span>
