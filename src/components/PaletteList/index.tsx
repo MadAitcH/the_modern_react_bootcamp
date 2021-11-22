@@ -9,6 +9,7 @@ interface PaletteListProps
   extends RouteComponentProps,
     WithStyles<typeof styles> {
   palettes: IPalette[];
+  deletePalette: (paletteId: string) => void;
 }
 
 class PaletteList extends Component<PaletteListProps> {
@@ -23,7 +24,7 @@ class PaletteList extends Component<PaletteListProps> {
   }
 
   render() {
-    const { palettes, classes } = this.props;
+    const { palettes, classes, deletePalette } = this.props;
 
     return (
       <div className={classes.root}>
@@ -38,6 +39,7 @@ class PaletteList extends Component<PaletteListProps> {
                 key={palette.id}
                 {...palette}
                 goToPalette={this.goToPalette}
+                deletePalette={deletePalette}
               />
             ))}
           </div>

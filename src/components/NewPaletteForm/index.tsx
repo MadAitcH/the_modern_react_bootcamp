@@ -7,7 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Button } from "@mui/material";
 import { arrayMoveImmutable } from "array-move";
-import { IPalette, NewColor, IPartialPalette } from "../../utils/seedColors";
+import seedColors, {
+  IPalette,
+  NewColor,
+  IPartialPalette,
+} from "../../utils/seedColors";
 import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav from "../PaletteFormNav";
@@ -56,7 +60,10 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 }) => {
   const maxColors = 20;
   const [open, setOpen] = useState(true);
-  const [colors, setColors] = useState<NewColor[]>([...palettes[0].colors]);
+  const initialColors = palettes?.[0]?.colors;
+  const [colors, setColors] = useState<NewColor[]>(
+    initialColors?.length ? initialColors : seedColors[0].colors
+  );
   const isPaletteFull = colors.length >= maxColors;
 
   const handleDrawerOpen = () => {

@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, MouseEvent } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IPalette } from "../../utils/seedColors";
@@ -6,6 +6,7 @@ import styles from "../../styles/MiniPaletteStyles";
 
 interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
   goToPalette: (id: string) => void;
+  deletePalette: (paletteId: string) => void;
 }
 
 class MiniPalette extends Component<MiniPaletteProps> {
@@ -13,10 +14,16 @@ class MiniPalette extends Component<MiniPaletteProps> {
     super(props);
 
     this.onLinkClick = this.onLinkClick.bind(this);
+    this.deletePalette = this.deletePalette.bind(this);
   }
 
   onLinkClick() {
     this.props.goToPalette(this.props.id);
+  }
+
+  deletePalette(e: MouseEvent) {
+    e.stopPropagation();
+    this.props.deletePalette(this.props.id);
   }
 
   render() {
@@ -32,12 +39,11 @@ class MiniPalette extends Component<MiniPaletteProps> {
     ));
     return (
       <div className={classes.root} onClick={this.onLinkClick}>
-        <div className={classes.delete}>
-          <DeleteIcon
-            className={classes.deleteIcon}
-            style={{ transition: "all 0.3s ease-in-out" }}
-          />
-        </div>
+        <DeleteIcon
+          className={classes.deleteIcon}
+          style={{ transition: "all 0.3s ease-in-out" }}
+          onClick={this.deletePalette}
+        />
         <div className={classes.colors}>{miniColorBoxes}</div>
         <h5 className={classes.title}>
           {paletteName} <span className={classes.emoji}>{emoji}</span>
