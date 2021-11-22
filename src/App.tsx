@@ -4,6 +4,7 @@ import NewPaletteForm from "./components/NewPaletteForm";
 import Palette from "./components/Palette";
 import PaletteList from "./components/PaletteList";
 import SingleColorPalette from "./components/SingleColorPalette";
+import { LOCAL_STORAGE_NAME } from "./constants";
 import { generatePalette } from "./utils/colorHelpers";
 import seedColors, { IPalette } from "./utils/seedColors";
 
@@ -15,12 +16,14 @@ class App extends Component<any, AppState> {
   constructor(props: any) {
     super(props);
 
+    const localPalettes = localStorage.getItem(LOCAL_STORAGE_NAME);
     this.state = {
-      palettes: seedColors,
+      palettes: localPalettes ? JSON.parse(localPalettes) : seedColors,
     };
 
     this.findPalette = this.findPalette.bind(this);
     this.savePalette = this.savePalette.bind(this);
+    this.syncLocalStorage = this.syncLocalStorage.bind(this);
   }
 
   findPalette(id: string) {
@@ -28,9 +31,20 @@ class App extends Component<any, AppState> {
   }
 
   savePalette(newPalette: IPalette) {
-    this.setState({
-      palettes: [...this.state.palettes, newPalette],
-    });
+    this.setState(
+      {
+        palettes: [...this.state.palettes, newPalette],
+      },
+      this.syncLocalStorage
+    );
+  }
+
+  /** Save palettes to local storage */
+  syncLocalStorage() {
+    localStorage.setItem(
+      LOCAL_STORAGE_NAME,
+      JSON.stringify(this.state.palettes)
+    );
   }
 
   render() {
