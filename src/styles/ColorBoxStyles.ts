@@ -18,6 +18,7 @@ const styles: { [key: string]: any } = {
       width: "25%",
       height: (props: ColorBoxProps) =>
         props.showFullPalette ? "20%" : "33.3333%",
+      marginBottom: "-4.9px",
     },
     [sizes.down("md")]: {
       width: "50%",
