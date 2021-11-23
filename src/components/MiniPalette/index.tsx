@@ -37,8 +37,6 @@ const MiniPalette: FC<MiniPaletteProps> = ({
     openDialog(id);
   };
 
-  console.log(paletteName);
-
   return (
     <div className={classes.root} onClick={onLinkClick}>
       <div className={classes.delete}>

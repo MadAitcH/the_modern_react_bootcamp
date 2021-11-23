@@ -1,3 +1,5 @@
+import chroma from "chroma-js";
+import { DraggableColorBoxProps } from "../components/DraggableColorBox";
 import sizes from "./sizes";
 
 const styles: { [key: string]: any } = {
@@ -32,7 +34,10 @@ const styles: { [key: string]: any } = {
     left: "0",
     bottom: "0",
     padding: "10px",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: (props: DraggableColorBoxProps) =>
+      chroma(props.color).luminance() <= 0.08
+        ? "rgba(255, 255, 255, 0.8)"
+        : "rgba(0, 0, 0, 0.6)",
     letterSpacing: "1px",
     textTransform: "uppercase",
     fontSize: "12px",

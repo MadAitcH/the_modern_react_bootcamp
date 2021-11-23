@@ -60,10 +60,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 }) => {
   const maxColors = 20;
   const [open, setOpen] = useState(true);
-  const initialColors = palettes?.[0]?.colors;
-  const [colors, setColors] = useState<NewColor[]>(
-    initialColors?.length ? initialColors : seedColors[0].colors
-  );
+  const [colors, setColors] = useState<NewColor[]>(seedColors[0].colors);
   const isPaletteFull = colors.length >= maxColors;
 
   const handleDrawerOpen = () => {

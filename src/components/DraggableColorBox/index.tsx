@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { SortableElement } from "react-sortable-hoc";
 import styles from "../../styles/DraggableColorBoxStyles";
 
-interface DraggableColorBoxProps extends WithStyles<typeof styles> {
+export interface DraggableColorBoxProps extends WithStyles<typeof styles> {
   color: string;
   name: string;
   removeColorBox: (colorName: string) => void;

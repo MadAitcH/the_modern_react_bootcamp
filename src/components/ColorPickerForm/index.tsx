@@ -63,7 +63,7 @@ const ColorPickerForm: FC<ColorPickerFormProps> = ({
         onChangeComplete={updateCurrentColor}
         className={classes.colorPicker}
       />
-      <ValidatorForm onSubmit={onColorSubmit}>
+      <ValidatorForm onSubmit={onColorSubmit} instantValidate={false}>
         <TextValidator
           value={newColorName}
           name="newColorName"
