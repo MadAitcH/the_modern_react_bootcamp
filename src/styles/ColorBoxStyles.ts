@@ -10,22 +10,24 @@ const styles: { [key: string]: any } = {
     display: "inline-block",
     position: "relative",
     cursor: "pointer",
-    marginBottom: "-3.5px",
+    marginBottom: "-7.2px",
     "&:hover button": {
       opacity: 1,
     },
     [sizes.down("lg")]: {
       width: "25%",
       height: (props: ColorBoxProps) =>
-        props.showFullPalette ? "25%" : "33.3333%",
+        props.showFullPalette ? "20%" : "33.3333%",
     },
     [sizes.down("md")]: {
       width: "50%",
       height: (props: ColorBoxProps) => (props.showFullPalette ? "10%" : "20%"),
+      marginBottom: "-4.3px",
     },
     [sizes.down("xs")]: {
       width: "100%",
       height: (props: ColorBoxProps) => (props.showFullPalette ? "5%" : "10%"),
+      marginBottom: "-4px",
     },
   },
   copyText: {
