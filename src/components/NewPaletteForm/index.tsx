@@ -60,7 +60,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
 }) => {
   const maxColors = 20;
   const [open, setOpen] = useState(true);
-  const [colors, setColors] = useState<NewColor[]>(seedColors[0].colors);
+  const [colors, setColors] = useState<NewColor[]>(seedColors[1].colors);
   const isPaletteFull = colors.length >= maxColors;
 
   const handleDrawerOpen = () => {
@@ -83,7 +83,8 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
     setColors([]);
   };
 
-  const pickUniqueRandomColor = (palettes: IPalette[]): NewColor => {
+  const pickUniqueRandomColor = (): NewColor => {
+    const palettes: IPalette[] = seedColors;
     let isUnique = false;
     let randomColor: NewColor;
 
@@ -100,15 +101,11 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
   };
 
   const onAddRandomColor = () => {
-    if (palettes.length) {
-      setColors([...colors, pickUniqueRandomColor(palettes)]);
-    } else {
-      setColors([...colors, pickUniqueRandomColor(seedColors)]);
-    }
+    setColors([...colors, pickUniqueRandomColor()]);
   };
 
   const isColorUnique = (currentColor: NewColor) => {
-    return colors.every(color => color.name !== currentColor.name);
+    return !colors.some(color => color.name === currentColor.name);
   };
 
   const onSubmitPalette = (partialPalette: IPartialPalette) => {

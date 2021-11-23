@@ -9,6 +9,7 @@ import { generatePalette } from "./utils/colorHelpers";
 import seedColors, { IPalette } from "./utils/seedColors";
 import { LOCAL_STORAGE_NAME } from "./constants";
 import Page from "./components/Page";
+import NotFound from "./components/NotFound";
 
 function App() {
   const localPalettes = localStorage.getItem(LOCAL_STORAGE_NAME);
@@ -92,6 +93,13 @@ function App() {
                         findPalette(routeProps.match.params.paletteId)
                       )}
                     />
+                  </Page>
+                )}
+              />
+              <Route
+                render={() => (
+                  <Page>
+                    <NotFound />
                   </Page>
                 )}
               />
