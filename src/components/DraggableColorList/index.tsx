@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { SortableContainer, SortEndHandler } from "react-sortable-hoc";
+import { withStyles, WithStyles } from "@mui/styles";
 import { NewColor } from "../../utils/seedColors";
 import DraggableColorBox from "../DraggableColorBox";
+import styles from "../../styles/DraggableColorListStyles";
 
-interface DraggableColorListProps {
+interface DraggableColorListProps extends WithStyles<typeof styles> {
   colors: NewColor[];
   removeColorBox: (colorName: string) => void;
   axis: "x" | "y" | "xy";
@@ -13,9 +15,10 @@ interface DraggableColorListProps {
 const DraggableColorList: FC<DraggableColorListProps> = ({
   colors,
   removeColorBox,
+  classes,
 }) => {
   return (
-    <div style={{ height: "100%" }}>
+    <div className={classes.root}>
       {colors.map((color, i) => (
         <DraggableColorBox
           {...color}
@@ -28,4 +31,4 @@ const DraggableColorList: FC<DraggableColorListProps> = ({
   );
 };
 
-export default SortableContainer(DraggableColorList);
+export default SortableContainer(withStyles(styles)(DraggableColorList));
