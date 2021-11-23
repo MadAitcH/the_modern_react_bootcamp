@@ -9,6 +9,7 @@ import { LOCAL_STORAGE_NAME } from "./constants";
 import { generatePalette } from "./utils/colorHelpers";
 import seedColors, { IPalette } from "./utils/seedColors";
 import Page from "./components/Page";
+import NotFound from "./components/NotFound";
 
 interface AppState {
   palettes: IPalette[];
@@ -115,6 +116,14 @@ class App extends Component<any, AppState> {
                           this.findPalette(routeProps.match.params.paletteId)
                         )}
                       />
+                    </Page>
+                  )}
+                />
+
+                <Route
+                  render={() => (
+                    <Page>
+                      <NotFound />
                     </Page>
                   )}
                 />
