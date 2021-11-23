@@ -6,7 +6,7 @@ import styles from "../../styles/MiniPaletteStyles";
 
 interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
   goToPalette: (id: string) => void;
-  deletePalette: (paletteId: string) => void;
+  openDialog: (paletteId: string) => void;
 }
 
 const MiniPalette: FC<MiniPaletteProps> = ({
@@ -15,7 +15,7 @@ const MiniPalette: FC<MiniPaletteProps> = ({
   emoji,
   colors,
   goToPalette,
-  deletePalette,
+  openDialog,
   id,
 }) => {
   const onLinkClick = () => {
@@ -34,7 +34,7 @@ const MiniPalette: FC<MiniPaletteProps> = ({
 
   const removePalette = (e: MouseEvent) => {
     e.stopPropagation();
-    deletePalette(id);
+    openDialog(id);
   };
 
   return (
