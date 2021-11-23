@@ -206,6 +206,7 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
           removeColorBox={removeColorBox}
           axis="xy"
           onSortEnd={onSortEnd}
+          distance={13}
         />
       </Main>
     </Box>
