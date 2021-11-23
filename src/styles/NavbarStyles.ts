@@ -6,13 +6,23 @@ const styles: { [key: string]: any } = {
     justifyContent: "flex-start",
     alignItems: "center",
     height: "5vh",
+    fontSize: "2rem",
+    [sizes.down("lg")]: {
+      fontSize: "1.7rem",
+    },
+    [sizes.down("md")]: {
+      fontSize: "1.1rem",
+    },
+    [sizes.down("md")]: {
+      fontSize: "0.8rem",
+    },
   },
   logo: {
     display: "flex",
     alignItems: "center",
     marginRight: "15px",
     padding: "0 13px",
-    fontSize: "22px",
+    fontSize: "2.7rem",
     backgroundColor: "#eceff1",
     fontFamily: "Roboto, sans-serif",
     height: "100%",
@@ -20,12 +30,20 @@ const styles: { [key: string]: any } = {
       color: "black",
       textDecoration: "none",
     },
+    [sizes.down("lg")]: {
+      fontSize: "2.1rem",
+    },
+    [sizes.down("md")]: {
+      fontSize: "1.1rem",
+    },
     [sizes.down("xs")]: {
-      display: "none",
+      fontSize: "0.7rem",
+      padding: "0 5px",
+      fontWeight: "bold",
     },
   },
   slider: {
-    width: "350px",
+    width: "385px",
     margin: "0 10px",
     display: "inline-block",
     "& .rc-slider-track": {
@@ -47,6 +65,9 @@ const styles: { [key: string]: any } = {
         marginLeft: "-7px",
         marginTop: "-3px",
       },
+    [sizes.down("lg")]: {
+      width: "305px",
+    },
     [sizes.down("sm")]: {
       width: "150px",
     },

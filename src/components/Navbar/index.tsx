@@ -13,6 +13,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import styles from "../../styles/NavbarStyles";
+import sizes from "../../styles/sizes";
 
 interface NavbarProps extends WithStyles<typeof styles> {
   level?: number;
@@ -84,7 +85,22 @@ class Navbar extends Component<NavbarProps, NavbarState> {
           </div>
         )}
         <div className={classes.selectContainer}>
-          <Select value={format} onChange={this.onColorFormatChange}>
+          <Select
+            value={format}
+            onChange={this.onColorFormatChange}
+            sx={{
+              fontSize: "1.7rem",
+              [sizes.down("lg")]: {
+                fontSize: "1.3rem",
+              },
+              [sizes.down("md")]: {
+                fontSize: "0.8rem",
+              },
+              [sizes.down("xs")]: {
+                fontSize: "0.6rem",
+              },
+            }}
+          >
             <MenuItem value="hex">HEX - #ffffff</MenuItem>
             <MenuItem value="rgb">RGB - rgb(255, 255, 255)</MenuItem>
             <MenuItem value="rgba">RGBA - rgba(255, 255, 255, 1.0)</MenuItem>
