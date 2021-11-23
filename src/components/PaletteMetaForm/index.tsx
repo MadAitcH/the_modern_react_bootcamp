@@ -16,7 +16,7 @@ interface PaletteMetaFormProps {
 }
 
 interface PaletteMetaFormState {
-  stage: "form" | "emoji";
+  stage: "form" | "emoji" | "";
   newPaletteName: string;
 }
 
@@ -66,6 +66,7 @@ class PaletteMetaForm extends Component<
       paletteName: this.state.newPaletteName,
       emoji: emoji.native || "🎨",
     });
+    this.setState({ stage: "" });
   }
 
   render() {
