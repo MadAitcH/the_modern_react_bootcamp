@@ -1,4 +1,4 @@
-import { Component, MouseEvent } from "react";
+import { PureComponent, MouseEvent } from "react";
 import { withStyles, WithStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IPalette } from "../../utils/seedColors";
@@ -9,7 +9,7 @@ interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
   openDialog: (paletteId: string) => void;
 }
 
-class MiniPalette extends Component<MiniPaletteProps> {
+class MiniPalette extends PureComponent<MiniPaletteProps> {
   constructor(props: MiniPaletteProps) {
     super(props);
 
