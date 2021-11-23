@@ -6,7 +6,7 @@ import styles from "../../styles/MiniPaletteStyles";
 
 interface MiniPaletteProps extends IPalette, WithStyles<typeof styles> {
   goToPalette: (id: string) => void;
-  deletePalette: (paletteId: string) => void;
+  openDialog: (paletteId: string) => void;
 }
 
 class MiniPalette extends Component<MiniPaletteProps> {
@@ -23,7 +23,7 @@ class MiniPalette extends Component<MiniPaletteProps> {
 
   deletePalette(e: MouseEvent) {
     e.stopPropagation();
-    this.props.deletePalette(this.props.id);
+    this.props.openDialog(this.props.id);
   }
 
   render() {
