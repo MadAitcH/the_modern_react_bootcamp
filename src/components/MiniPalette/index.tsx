@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { FC, memo, MouseEvent } from "react";
 import { WithStyles, withStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IPalette } from "../../utils/seedColors";
@@ -37,6 +37,8 @@ const MiniPalette: FC<MiniPaletteProps> = ({
     openDialog(id);
   };
 
+  console.log(paletteName);
+
   return (
     <div className={classes.root} onClick={onLinkClick}>
       <div className={classes.delete}>
@@ -54,4 +56,9 @@ const MiniPalette: FC<MiniPaletteProps> = ({
   );
 };
 
-export default withStyles(styles)(MiniPalette);
+export default memo(withStyles(styles)(MiniPalette), () => {
+  // NOTE: true means never re-render without checking the prevProps and
+  // nextProps so if you want to re-render programmatically
+  // you may need to change this.
+  return true;
+});
