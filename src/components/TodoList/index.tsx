@@ -1,11 +1,6 @@
 import { FC, Fragment } from "react";
-import { Paper, List, ListItem, ListItemText, Divider } from "@mui/material";
-
-export interface ITodo {
-  id: string;
-  task: string;
-  completed: boolean;
-}
+import { Paper, List, Divider } from "@mui/material";
+import TodoItem, { ITodo } from "../TodoItem";
 
 interface TodoListProps {
   todos: ITodo[];
@@ -17,9 +12,7 @@ const TodoList: FC<TodoListProps> = ({ todos }) => {
       <List>
         {todos.map(todo => (
           <Fragment key={todo.id}>
-            <ListItem>
-              <ListItemText>{todo.task}</ListItemText>
-            </ListItem>
+            <TodoItem {...todo} />
             <Divider />
           </Fragment>
         ))}

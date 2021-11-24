@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
-import { AppBar, Paper, Toolbar, Typography } from "@mui/material";
-import TodoList, { ITodo } from "../TodoList";
+import { AppBar, Paper, Toolbar, Typography, Grid } from "@mui/material";
+import TodoList from "../TodoList";
+import { ITodo } from "../TodoItem";
 import TodoForm from "../TodoForm";
 
 const initialTodos: ITodo[] = [
@@ -40,8 +41,12 @@ const TodoApp: FC = () => {
           <Typography color="inherit">Todos with Hooks</Typography>
         </Toolbar>
       </AppBar>
-      <TodoForm addTodo={addTodo} />
-      <TodoList todos={todos} />
+      <Grid container justifyContent="center" mt="1rem">
+        <Grid item xs={11} md={8} lg={4}>
+          <TodoForm addTodo={addTodo} />
+          <TodoList todos={todos} />
+        </Grid>
+      </Grid>
     </Paper>
   );
 };

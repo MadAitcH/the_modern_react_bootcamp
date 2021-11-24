@@ -17,9 +17,16 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
   };
 
   return (
-    <Paper>
+    <Paper style={{ margin: "1rem 0", padding: "0 1rem" }}>
       <form onSubmit={onSubmitTodo}>
-        <TextField value={text} onChange={changeText} />
+        <TextField
+          value={text}
+          onChange={changeText}
+          margin="normal"
+          label="Add New Todo"
+          fullWidth
+          variant="standard"
+        />
       </form>
     </Paper>
   );
