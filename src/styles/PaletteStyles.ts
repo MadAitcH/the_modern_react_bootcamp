@@ -20,7 +20,7 @@ const styles: { [key: string]: any } = {
     display: "inline-block",
     position: "relative",
     cursor: "pointer",
-    marginBottom: "-3.5px",
+    marginBottom: "-7.2px",
     opacity: 1,
     backgroundColor: "black",
     "& a": {
@@ -45,14 +45,17 @@ const styles: { [key: string]: any } = {
     [sizes.down("lg")]: {
       width: "25%",
       height: "33.3333%",
+      marginBottom: "-4.9px",
     },
     [sizes.down("md")]: {
       width: "50%",
       height: "20%",
+      marginBottom: "-4.3px",
     },
     [sizes.down("xs")]: {
       width: "100%",
       height: "10%",
+      marginBottom: "-4px",
     },
   },
 };
