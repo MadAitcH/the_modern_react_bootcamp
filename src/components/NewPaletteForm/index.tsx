@@ -1,4 +1,6 @@
 import { FC, useState } from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { SortEndHandler } from "react-sortable-hoc";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -12,12 +14,11 @@ import seedColors, {
   NewColor,
   IPartialPalette,
 } from "../../utils/seedColors";
-import { RouteComponentProps } from "react-router-dom";
 import DraggableColorList from "../DraggableColorList";
 import PaletteFormNav from "../PaletteFormNav";
 import ColorPickerForm from "../ColorPickerForm";
-import { SortEndHandler } from "react-sortable-hoc";
 import { DRAWER_WIDTH as drawerWidth } from "../../constants";
+import sizes from "../../styles/sizes";
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })<{
   open?: boolean;
@@ -142,6 +143,9 @@ const NewPaletteForm: FC<NewPaletteFormProps> = ({
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            [sizes.down("xs")]: {
+              width: "100%",
+            },
           },
         }}
         variant="persistent"
