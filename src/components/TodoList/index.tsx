@@ -4,15 +4,25 @@ import TodoItem, { ITodo } from "../TodoItem";
 
 interface TodoListProps {
   todos: ITodo[];
+  removeTodo: (todoId: string) => void;
+  toggleCompletion: (todoId: string) => void;
 }
 
-const TodoList: FC<TodoListProps> = ({ todos }) => {
+const TodoList: FC<TodoListProps> = ({
+  todos,
+  removeTodo,
+  toggleCompletion,
+}) => {
   return (
     <Paper>
       <List>
         {todos.map(todo => (
           <Fragment key={todo.id}>
-            <TodoItem {...todo} />
+            <TodoItem
+              {...todo}
+              removeTodo={removeTodo}
+              toggleCompletion={toggleCompletion}
+            />
             <Divider />
           </Fragment>
         ))}

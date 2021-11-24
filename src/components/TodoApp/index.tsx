@@ -3,6 +3,7 @@ import { AppBar, Paper, Toolbar, Typography, Grid } from "@mui/material";
 import TodoList from "../TodoList";
 import { ITodo } from "../TodoItem";
 import TodoForm from "../TodoForm";
+import { v4 as uuidv4 } from "uuid";
 
 const initialTodos: ITodo[] = [
   { id: "1", task: "finish the app", completed: false },
@@ -19,11 +20,23 @@ const TodoApp: FC = () => {
     setTodos([
       ...todos,
       {
-        id: (Math.random() * Math.random() ** 3).toString(16),
+        id: uuidv4(),
         task: text,
         completed: false,
       },
     ]);
+  };
+
+  const removeTodo = (todoId: string) => {
+    setTodos(todos.filter(todo => todo.id !== todoId));
+  };
+
+  const toggleCompletion = (todoId: string) => {
+    setTodos(
+      todos.map(todo =>
+        todoId === todo.id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   return (
@@ -44,7 +57,11 @@ const TodoApp: FC = () => {
       <Grid container justifyContent="center" mt="1rem">
         <Grid item xs={11} md={8} lg={4}>
           <TodoForm addTodo={addTodo} />
-          <TodoList todos={todos} />
+          <TodoList
+            todos={todos}
+            removeTodo={removeTodo}
+            toggleCompletion={toggleCompletion}
+          />
         </Grid>
       </Grid>
     </Paper>

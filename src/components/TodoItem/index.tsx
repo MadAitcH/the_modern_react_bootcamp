@@ -15,17 +15,36 @@ export interface ITodo {
   completed: boolean;
 }
 
-const TodoItem: FC<ITodo> = ({ task, completed }) => {
+interface TodoItemProps extends ITodo {
+  removeTodo: (todoId: string) => void;
+  toggleCompletion: (todoId: string) => void;
+}
+
+const TodoItem: FC<TodoItemProps> = ({
+  task,
+  id,
+  completed,
+  removeTodo,
+  toggleCompletion,
+}) => {
+  const deleteTodo = () => {
+    removeTodo(id);
+  };
+
+  const changeCompletion = () => {
+    toggleCompletion(id);
+  };
+
   return (
     <ListItem>
-      <Checkbox tabIndex={-1} checked={completed} />
+      <Checkbox tabIndex={-1} checked={completed} onClick={changeCompletion} />
       <ListItemText
-        style={{ textDecoration: completed ? "line-through" : "non" }}
+        style={{ textDecoration: completed ? "line-through" : "none" }}
       >
         {task}
       </ListItemText>
       <ListItemSecondaryAction>
-        <IconButton aria-label="delete todo">
+        <IconButton aria-label="delete todo" onClick={deleteTodo}>
           <DeleteIcon />
         </IconButton>
         <IconButton aria-label="edit todo">
