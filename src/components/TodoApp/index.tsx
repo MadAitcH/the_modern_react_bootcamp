@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { AppBar, Paper, Toolbar, Typography } from "@mui/material";
 import TodoList, { ITodo } from "../TodoList";
+import TodoForm from "../TodoForm";
 
 const initialTodos: ITodo[] = [
   { id: "1", task: "finish the app", completed: false },
@@ -10,6 +11,19 @@ const initialTodos: ITodo[] = [
 
 const TodoApp: FC = () => {
   const [todos, setTodos] = useState<ITodo[]>(initialTodos);
+
+  // useEffect(() => console.log(todos), [todos]);
+
+  const addTodo = (text: string) => {
+    setTodos([
+      ...todos,
+      {
+        id: (Math.random() * Math.random() ** 3).toString(16),
+        task: text,
+        completed: false,
+      },
+    ]);
+  };
 
   return (
     <Paper
@@ -26,6 +40,7 @@ const TodoApp: FC = () => {
           <Typography color="inherit">Todos with Hooks</Typography>
         </Toolbar>
       </AppBar>
+      <TodoForm addTodo={addTodo} />
       <TodoList todos={todos} />
     </Paper>
   );
