@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# 🎨 React Colors Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is one of the projects of [Colt Steele's](https://github.com/colt)
+[The Modern React Bootcamp (Hooks, Context, NextJS, Router)](https://www.udemy.com/course/modern-react-bootcamp/)
+course.
+The whole project is written with [TypeScript](https://www.typescriptlang.org/)
+instead of JavaScript.
 
-## Available Scripts
+The main branch contains the code for class based components. You can find code
+for functional compnents at other branches.
 
-In the project directory, you can run:
+- A clone of websites like [Flat UI Colors](https://flatuicolors.com/) and
+  [Material UI Colors](http://materialuicolors.co/?utm_source=launchers).
 
-### `yarn start`
+## Technology used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [React-router-dom v5 and v6](https://reactrouter.com/)
+- [Material-UI](https://mui.com/)
+- [Chroma.js](https://gka.github.io/chroma.js/)
+- [emoji-mart](https://github.com/missive/emoji-mart)
+- [React-color](https://casesandberg.github.io/react-color/)
+- [React Sortable HOC](https://github.com/clauderic/react-sortable-hoc)
+- [React-copy-to-clipboard](https://www.npmjs.com/package/react-copy-to-clipboard)
+- [React-material-ui-form-validator](https://github.com/NewOldMax/react-material-ui-form-validator)
+- [React-transition-group](https://reactcommunity.org/react-transition-group/)
+- [JSS](https://cssinjs.org/?v=v10.8.2)
+- [rc-slider](https://github.com/react-component/slider)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Quick Start
 
-### `yarn test`
+Download the zip file or Clone this repo:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/MadAitcH/react-color-picker.git
+```
 
-### `yarn build`
+Install the dependencies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Run the project:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `yarn eject`
+![image](https://i.imgur.com/9x1F9At.png)
+![image](https://i.imgur.com/GM0etHA.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image](https://i.imgur.com/QB2zRzf.png)
