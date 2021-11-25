@@ -15,10 +15,10 @@ const TodoList: FC<TodoListProps> = ({
   toggleCompletion,
   editTodo,
 }) => {
-  return (
+  return todos.length ? (
     <Paper>
       <List>
-        {todos.map(todo => (
+        {todos.map((todo, i) => (
           <Fragment key={todo.id}>
             <TodoItem
               {...todo}
@@ -26,12 +26,12 @@ const TodoList: FC<TodoListProps> = ({
               toggleCompletion={toggleCompletion}
               editTodo={editTodo}
             />
-            <Divider />
+            {i < todos.length - 1 && <Divider />}
           </Fragment>
         ))}
       </List>
     </Paper>
-  );
+  ) : null;
 };
 
 export default TodoList;

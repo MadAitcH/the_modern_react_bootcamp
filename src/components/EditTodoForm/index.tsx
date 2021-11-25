@@ -25,12 +25,13 @@ const EditTodoForm: FC<EditTodoFormProps> = ({
   };
 
   return (
-    <form onSubmit={onSubmitEdit}>
+    <form onSubmit={onSubmitEdit} style={{ marginLeft: "1rem", width: "50%" }}>
       <TextField
         value={editText}
         onChange={changeEditText}
         margin="normal"
         fullWidth
+        autoFocus
         variant="standard"
       />
     </form>

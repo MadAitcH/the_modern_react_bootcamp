@@ -42,7 +42,7 @@ const TodoItem: FC<TodoItemProps> = ({
   };
 
   return (
-    <ListItem>
+    <ListItem style={{ height: "64px" }}>
       {isEditing ? (
         <EditTodoForm
           editTodo={editTodo}
