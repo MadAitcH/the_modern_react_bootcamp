@@ -10,14 +10,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EditTodoForm from "../EditTodoForm";
 import useToggleState from "../../hooks/useToggle";
-import { TodosContext } from "../../contexts/todos.context";
+import { DispatchContext } from "../../contexts/todos.context";
 import { ITodo } from "../../hooks/useTodoState";
 
 interface TodoItemProps extends ITodo {}
 
 const TodoItem: FC<TodoItemProps> = ({ id, task, completed }) => {
   const [isEditing, toggleIsEditing] = useToggleState(false);
-  const { dispatchTodos } = useContext(TodosContext);
+  const dispatchTodos = useContext(DispatchContext);
 
   const deleteTodo = () => {
     dispatchTodos({ type: "REMOVE", payload: { id } });

@@ -7,7 +7,7 @@ export type ActionType =
   | { type: "TOGGLE"; payload: { id: string } }
   | { type: "EDIT"; payload: { id: string; newTask: string } };
 
-export default function reducer(state: ITodo[] = [], action: ActionType) {
+const reducer = (state: ITodo[], action: ActionType) => {
   switch (action.type) {
     case "ADD":
       return [
@@ -39,4 +39,5 @@ export default function reducer(state: ITodo[] = [], action: ActionType) {
     default:
       return state;
   }
-}
+};
+export default reducer;

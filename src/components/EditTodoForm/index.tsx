@@ -1,7 +1,7 @@
 import { FC, useContext, FormEvent } from "react";
 import { TextField } from "@mui/material";
 import useInputState from "../../hooks/useInputState";
-import { TodosContext } from "../../contexts/todos.context";
+import { DispatchContext } from "../../contexts/todos.context";
 
 interface EditTodoFormProps {
   id: string;
@@ -11,7 +11,7 @@ interface EditTodoFormProps {
 
 const EditTodoForm: FC<EditTodoFormProps> = ({ id, task, toggleIsEditing }) => {
   const [editText, changeEditText] = useInputState(task);
-  const { dispatchTodos } = useContext(TodosContext);
+  const dispatchTodos = useContext(DispatchContext);
 
   const onSubmitEdit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

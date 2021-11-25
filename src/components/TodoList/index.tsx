@@ -4,7 +4,7 @@ import TodoItem from "../TodoItem";
 import { TodosContext } from "../../contexts/todos.context";
 
 const TodoList: FC = () => {
-  const { todos } = useContext(TodosContext);
+  const todos = useContext(TodosContext);
 
   return todos.length ? (
     <Paper>
