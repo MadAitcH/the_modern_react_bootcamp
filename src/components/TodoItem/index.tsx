@@ -17,14 +17,14 @@ interface TodoItemProps extends ITodo {}
 
 const TodoItem: FC<TodoItemProps> = ({ id, task, completed }) => {
   const [isEditing, toggleIsEditing] = useToggleState(false);
-  const { removeTodo, toggleCompletion } = useContext(TodosContext);
+  const { dispatchTodos } = useContext(TodosContext);
 
   const deleteTodo = () => {
-    removeTodo(id);
+    dispatchTodos({ type: "REMOVE", payload: { id } });
   };
 
   const changeCompletion = () => {
-    toggleCompletion(id);
+    dispatchTodos({ type: "TOGGLE", payload: { id } });
   };
 
   return (

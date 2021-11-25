@@ -11,12 +11,18 @@ interface EditTodoFormProps {
 
 const EditTodoForm: FC<EditTodoFormProps> = ({ id, task, toggleIsEditing }) => {
   const [editText, changeEditText] = useInputState(task);
-  const { editTodo } = useContext(TodosContext);
+  const { dispatchTodos } = useContext(TodosContext);
 
   const onSubmitEdit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    editTodo(id, editText);
+    dispatchTodos({
+      type: "EDIT",
+      payload: {
+        newTask: editText,
+        id,
+      },
+    });
     toggleIsEditing();
   };
 

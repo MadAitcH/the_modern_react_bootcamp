@@ -5,12 +5,12 @@ import { TodosContext } from "../../contexts/todos.context";
 
 const TodoForm: FC = () => {
   const [text, changeText, resetText] = useInputState("");
-  const { addTodo } = useContext(TodosContext);
+  const { dispatchTodos } = useContext(TodosContext);
 
   const onSubmitTodo = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    addTodo(text);
+    dispatchTodos({ type: "ADD", payload: { task: text } });
     resetText();
   };
 

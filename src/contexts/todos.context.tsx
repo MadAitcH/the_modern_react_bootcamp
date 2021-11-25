@@ -1,12 +1,20 @@
-import { createContext, FC } from "react";
-import useTodoState, { TodoStuff } from "../hooks/useTodoState";
+import { createContext, FC, useReducer, Dispatch } from "react";
+import { ITodo } from "../hooks/useTodoState";
+import TodosReducer, { ActionType } from "../state/reducers/todo.reducer";
 
-export const TodosContext = createContext<TodoStuff>({} as TodoStuff);
+interface ITodoContext {
+  todos: ITodo[];
+  dispatchTodos: Dispatch<ActionType>;
+}
+
+export const TodosContext = createContext<ITodoContext>({} as ITodoContext);
 
 export const TodosProvider: FC = ({ children }) => {
-  const todosStuff = useTodoState();
+  const [todos, dispatchTodos] = useReducer(TodosReducer, []);
 
   return (
-    <TodosContext.Provider value={todosStuff}>{children}</TodosContext.Provider>
+    <TodosContext.Provider value={{ todos, dispatchTodos }}>
+      {children}
+    </TodosContext.Provider>
   );
 };
