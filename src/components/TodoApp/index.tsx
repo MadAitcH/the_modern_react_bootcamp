@@ -1,20 +1,24 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { AppBar, Paper, Toolbar, Typography, Grid } from "@mui/material";
 import TodoList from "../TodoList";
 import { ITodo } from "../TodoItem";
 import TodoForm from "../TodoForm";
 import { v4 as uuidv4 } from "uuid";
 
-const initialTodos: ITodo[] = [
-  { id: "1", task: "finish the app", completed: false },
-  { id: "2", task: "Complete the react colors app", completed: true },
-  { id: "3", task: "watch the Great", completed: false },
-];
+const LOCAL_STORAGE = "react-hooks-todo-list";
+
+const initialTodos = localStorage.getItem(LOCAL_STORAGE);
 
 const TodoApp: FC = () => {
-  const [todos, setTodos] = useState<ITodo[]>(initialTodos);
+  const [todos, setTodos] = useState<ITodo[]>([]);
 
-  // useEffect(() => console.log(todos), [todos]);
+  useEffect(() => {
+    initialTodos && setTodos(JSON.parse(initialTodos));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE, JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (text: string) => {
     setTodos([

@@ -25,6 +25,7 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
           margin="normal"
           label="Add New Todo"
           fullWidth
+          autoFocus
           variant="standard"
         />
       </form>
