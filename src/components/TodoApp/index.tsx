@@ -39,6 +39,12 @@ const TodoApp: FC = () => {
     );
   };
 
+  const editTodo = (todoId: string, task: string) => {
+    setTodos(
+      todos.map(todo => (todoId === todo.id ? { ...todo, task } : todo))
+    );
+  };
+
   return (
     <Paper
       style={{
@@ -61,6 +67,7 @@ const TodoApp: FC = () => {
             todos={todos}
             removeTodo={removeTodo}
             toggleCompletion={toggleCompletion}
+            editTodo={editTodo}
           />
         </Grid>
       </Grid>

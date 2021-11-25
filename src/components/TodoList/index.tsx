@@ -6,12 +6,14 @@ interface TodoListProps {
   todos: ITodo[];
   removeTodo: (todoId: string) => void;
   toggleCompletion: (todoId: string) => void;
+  editTodo: (todoId: string, task: string) => void;
 }
 
 const TodoList: FC<TodoListProps> = ({
   todos,
   removeTodo,
   toggleCompletion,
+  editTodo,
 }) => {
   return (
     <Paper>
@@ -22,6 +24,7 @@ const TodoList: FC<TodoListProps> = ({
               {...todo}
               removeTodo={removeTodo}
               toggleCompletion={toggleCompletion}
+              editTodo={editTodo}
             />
             <Divider />
           </Fragment>
