@@ -1,13 +1,11 @@
-import { FC, MouseEvent } from "react";
+import { FC, useContext, MouseEvent } from "react";
 import { Paper, TextField } from "@mui/material";
 import useInputState from "../../hooks/useInputState";
+import { TodosContext } from "../../contexts/todos.context";
 
-interface TodoFormProps {
-  addTodo: (text: string) => void;
-}
-
-const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
+const TodoForm: FC = () => {
   const [text, changeText, resetText] = useInputState("");
+  const { addTodo } = useContext(TodosContext);
 
   const onSubmitTodo = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();

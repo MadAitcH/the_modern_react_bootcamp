@@ -1,21 +1,17 @@
-import { FC, FormEvent } from "react";
+import { FC, useContext, FormEvent } from "react";
 import { TextField } from "@mui/material";
 import useInputState from "../../hooks/useInputState";
+import { TodosContext } from "../../contexts/todos.context";
 
 interface EditTodoFormProps {
   id: string;
   task: string;
-  editTodo: (todoId: string, task: string) => void;
   toggleIsEditing: () => void;
 }
 
-const EditTodoForm: FC<EditTodoFormProps> = ({
-  id,
-  editTodo,
-  task,
-  toggleIsEditing,
-}) => {
+const EditTodoForm: FC<EditTodoFormProps> = ({ id, task, toggleIsEditing }) => {
   const [editText, changeEditText] = useInputState(task);
+  const { editTodo } = useContext(TodosContext);
 
   const onSubmitEdit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

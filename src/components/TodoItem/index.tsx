@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import {
   ListItem,
   ListItemText,
@@ -10,28 +10,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EditTodoForm from "../EditTodoForm";
 import useToggleState from "../../hooks/useToggle";
+import { TodosContext } from "../../contexts/todos.context";
+import { ITodo } from "../../hooks/useTodoState";
 
-export interface ITodo {
-  id: string;
-  task: string;
-  completed: boolean;
-}
+interface TodoItemProps extends ITodo {}
 
-interface TodoItemProps extends ITodo {
-  removeTodo: (todoId: string) => void;
-  toggleCompletion: (todoId: string) => void;
-  editTodo: (todoId: string, task: string) => void;
-}
-
-const TodoItem: FC<TodoItemProps> = ({
-  task,
-  id,
-  completed,
-  removeTodo,
-  toggleCompletion,
-  editTodo,
-}) => {
+const TodoItem: FC<TodoItemProps> = ({ id, task, completed }) => {
   const [isEditing, toggleIsEditing] = useToggleState(false);
+  const { removeTodo, toggleCompletion } = useContext(TodosContext);
 
   const deleteTodo = () => {
     removeTodo(id);
@@ -44,12 +30,7 @@ const TodoItem: FC<TodoItemProps> = ({
   return (
     <ListItem style={{ height: "64px" }}>
       {isEditing ? (
-        <EditTodoForm
-          editTodo={editTodo}
-          id={id}
-          task={task}
-          toggleIsEditing={toggleIsEditing}
-        />
+        <EditTodoForm id={id} task={task} toggleIsEditing={toggleIsEditing} />
       ) : (
         <>
           <Checkbox

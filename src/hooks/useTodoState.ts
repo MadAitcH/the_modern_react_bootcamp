@@ -1,6 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 import useLocalStorageState from "./useLocalStorageState";
-import { ITodo } from "../components/TodoItem";
+
+export interface ITodo {
+  id: string;
+  task: string;
+  completed: boolean;
+}
 
 export interface TodoStuff {
   todos: ITodo[];

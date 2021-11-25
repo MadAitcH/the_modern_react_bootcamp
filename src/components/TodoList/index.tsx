@@ -1,31 +1,17 @@
-import { FC, Fragment } from "react";
+import { FC, useContext, Fragment } from "react";
 import { Paper, List, Divider } from "@mui/material";
-import TodoItem, { ITodo } from "../TodoItem";
+import TodoItem from "../TodoItem";
+import { TodosContext } from "../../contexts/todos.context";
 
-interface TodoListProps {
-  todos: ITodo[];
-  removeTodo: (todoId: string) => void;
-  toggleCompletion: (todoId: string) => void;
-  editTodo: (todoId: string, task: string) => void;
-}
+const TodoList: FC = () => {
+  const { todos } = useContext(TodosContext);
 
-const TodoList: FC<TodoListProps> = ({
-  todos,
-  removeTodo,
-  toggleCompletion,
-  editTodo,
-}) => {
   return todos.length ? (
     <Paper>
       <List>
         {todos.map((todo, i) => (
           <Fragment key={todo.id}>
-            <TodoItem
-              {...todo}
-              removeTodo={removeTodo}
-              toggleCompletion={toggleCompletion}
-              editTodo={editTodo}
-            />
+            <TodoItem {...todo} />
             {i < todos.length - 1 && <Divider />}
           </Fragment>
         ))}
