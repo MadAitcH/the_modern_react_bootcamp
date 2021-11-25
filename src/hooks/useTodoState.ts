@@ -1,9 +1,12 @@
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import useLocalStorageState from "./useLocalStorageState";
 import { ITodo } from "../components/TodoItem";
 
 export default function useTodoState(initialValue: ITodo[] = []) {
-  const [todos, setTodos] = useState<ITodo[]>(initialValue);
+  const [todos, setTodos] = useLocalStorageState<ITodo[]>(
+    "react-hooks-todo-list",
+    initialValue
+  );
 
   const addTodo = (text: string) => {
     setTodos([
