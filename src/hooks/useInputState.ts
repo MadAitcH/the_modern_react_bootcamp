@@ -1,12 +1,6 @@
 import { useState, ChangeEvent } from "react";
 
-function useInputState(
-  initialValue: string
-): [
-  string,
-  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-  () => void
-] {
+function useInputState(initialValue: string) {
   const [value, setValue] = useState<string>(initialValue);
 
   const handleChange = (
@@ -19,7 +13,7 @@ function useInputState(
     setValue("");
   };
 
-  return [value, handleChange, reset];
+  return [value, handleChange, reset] as const;
 }
 
 export default useInputState;

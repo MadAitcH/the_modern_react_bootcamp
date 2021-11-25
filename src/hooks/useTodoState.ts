@@ -15,7 +15,7 @@ export interface TodoStuff {
   editTodo: (todoId: string, task: string) => void;
 }
 
-export default function useTodoState(initialValue: ITodo[] = []): TodoStuff {
+export default function useTodoState(initialValue: ITodo[] = []) {
   const [todos, setTodos] = useLocalStorageState<ITodo[]>(
     "react-hooks-todo-list",
     initialValue
@@ -56,5 +56,5 @@ export default function useTodoState(initialValue: ITodo[] = []): TodoStuff {
     removeTodo,
     toggleCompletion,
     editTodo,
-  };
+  } as const;
 }
