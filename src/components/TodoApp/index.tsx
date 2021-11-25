@@ -3,6 +3,7 @@ import { AppBar, Paper, Toolbar, Typography, Grid } from "@mui/material";
 import TodoList from "../TodoList";
 import TodoForm from "../TodoForm";
 import useTodoState from "../../hooks/useTodoState";
+import { TodosProvider } from "../../contexts/todos.context";
 
 const TodoApp: FC = () => {
   const { todos, addTodo, removeTodo, editTodo, toggleCompletion } =
@@ -25,13 +26,15 @@ const TodoApp: FC = () => {
       </AppBar>
       <Grid container justifyContent="center" mt="1rem">
         <Grid item xs={11} md={8} lg={4}>
-          <TodoForm addTodo={addTodo} />
-          <TodoList
-            todos={todos}
-            removeTodo={removeTodo}
-            toggleCompletion={toggleCompletion}
-            editTodo={editTodo}
-          />
+          <TodosProvider>
+            <TodoForm addTodo={addTodo} />
+            <TodoList
+              todos={todos}
+              removeTodo={removeTodo}
+              toggleCompletion={toggleCompletion}
+              editTodo={editTodo}
+            />
+          </TodosProvider>
         </Grid>
       </Grid>
     </Paper>
