@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, memo } from "react";
 import {
   ListItem,
   ListItemText,
@@ -57,4 +57,4 @@ const TodoItem: FC<TodoItemProps> = ({ id, task, completed }) => {
   );
 };
 
-export default TodoItem;
+export default memo(TodoItem);

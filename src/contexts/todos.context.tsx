@@ -1,12 +1,17 @@
-import { createContext, FC, useReducer, Dispatch } from "react";
+import { createContext, FC, Dispatch } from "react";
+import useLocalStorageReducer from "../hooks/useLocalStorageReducer";
 import { ITodo } from "../hooks/useTodoState";
-import TodosReducer, { ActionType } from "../state/reducers/todo.reducer";
+import todoReducer, { ActionType } from "../state/reducers/todo.reducer";
 
 export const TodosContext = createContext<ITodo[]>([]);
 export const DispatchContext = createContext<Dispatch<ActionType>>(() => {});
 
 export const TodosProvider: FC = ({ children }) => {
-  const [todos, dispatchTodos] = useReducer(TodosReducer, []);
+  const [todos, dispatchTodos] = useLocalStorageReducer<ITodo[], ActionType>(
+    "react-hooks-todo-list",
+    [],
+    todoReducer
+  );
 
   return (
     <TodosContext.Provider value={todos}>
