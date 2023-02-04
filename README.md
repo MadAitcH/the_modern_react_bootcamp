@@ -9,7 +9,7 @@ This repository comes with many branches - different branches reflect different 
 Download the zip file or Clone this repo, using:
 
 ```bash
-git clone https://github.com/MadAitcH/the_modern_react_bootcamp.git
+git clone https://github.com/eXvimmer/the_modern_react_bootcamp.git
 ```
 
 Switch to the relevant branch:
